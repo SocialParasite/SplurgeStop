@@ -21,4 +21,10 @@
     <ProjectReference Include="..\SplurgeStop.UI.WebApi\SplurgeStop.UI.WebApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

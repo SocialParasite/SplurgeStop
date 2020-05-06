@@ -75,5 +75,34 @@ namespace SplurgeStop.Integration.Tests
             Assert.True(await repository.Exists(transaction.Id));
             Assert.Equal(typeof(OkResult), result.GetType());
         }
+
+        [Fact]
+        public async Task Update_transaction_date()
+        {
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
+            var service = new PurchaseTransactionService(repository, unitOfWork);
+            var transaction = new transaction.PurchaseTransaction();
+            transaction.SetTransactionDate(DateTime.Now.AddDays(-1));
+            var command = new Commands.Create();
+            command.Transaction = transaction;
+
+            var transactionController = new PurchaseTransactionController(service);
+            var result = await transactionController.Post(command);
+
+            Assert.True(await repository.Exists(transaction.Id));
+            Assert.Equal(typeof(OkResult), result.GetType());
+            
+            var sut = await repository.Load(transaction.Id);
+            Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
+
+            var updateCommand = new Commands.SetPurchaseTransactionDate();
+            updateCommand.Id = sut.Id;
+            updateCommand.TransactionDate = DateTime.Now;
+            await transactionController.Put(updateCommand);
+
+            sut = await repository.Load(transaction.Id);
+            Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
+        }
     }
 }

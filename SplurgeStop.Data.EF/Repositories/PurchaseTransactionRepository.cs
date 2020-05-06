@@ -26,7 +26,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<PurchaseTransaction> Load(PurchaseTransactionId id)
         {
-            throw new NotImplementedException();
+            return await context.Purchases.FindAsync(id);
         }
     }
 }
