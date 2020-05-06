@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using GuidHelpers;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
-    public class TransactionId : ValueObject
+    public class PurchaseTransactionId : ValueObject
     {
         public Guid Value { get; protected set; }
 
-        public TransactionId(Guid id)
+        public PurchaseTransactionId(Guid id)
         {
-            //Contract.Requires(id != default);
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));
 
@@ -26,12 +24,12 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         //public static implicit operator SequentialGuid(TransactionId id)
         //    => new SequentialGuid(id.Value);
 
-        public static implicit operator Guid(TransactionId self) => self.Value;
+        public static implicit operator Guid(PurchaseTransactionId self) => self.Value;
 
         //public static implicit operator TransactionId(SequentialGuid id)
         //    => new TransactionId(id);
 
-        public static implicit operator TransactionId(Guid value)
-            => new TransactionId(new SequentialGuid(value));
+        public static implicit operator PurchaseTransactionId(Guid value)
+            => new PurchaseTransactionId(new SequentialGuid(value));
     }
 }

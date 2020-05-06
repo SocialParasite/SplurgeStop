@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using GuidHelpers;
-using SplurgeStop.Domain.Exceptions;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -14,11 +13,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             Apply(new Events.PurchaseTransactionCreated
             {
-                Id = new TransactionId(SequentialGuid.NewSequentialGuid())
+                Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid())
             });
         }
 
-        public TransactionId Id { get; private set; }
+        public PurchaseTransactionId Id { get; private set; }
 
         public PurchaseDate PurchaseDate
         {
@@ -55,7 +54,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             switch (@event)
             {
                 case Events.PurchaseTransactionCreated e:
-                    Id = new TransactionId(e.Id);
+                    Id = new PurchaseTransactionId(e.Id);
                     PurchaseDate = PurchaseDate.Now;
                     Store = null;
                     Items = new List<LineItem>();

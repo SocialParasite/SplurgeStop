@@ -19,12 +19,12 @@ namespace SplurgeStop.Data.EF.Repositories
             await context.Purchases.AddAsync(transaction);
         }
 
-        public async Task<bool> Exists(TransactionId id)
+        public async Task<bool> Exists(PurchaseTransactionId id)
         {
             return await context.Purchases.FindAsync(id) != null; 
         }
 
-        public async Task<PurchaseTransaction> Load(TransactionId id)
+        public async Task<PurchaseTransaction> Load(PurchaseTransactionId id)
         {
             throw new NotImplementedException();
         }
