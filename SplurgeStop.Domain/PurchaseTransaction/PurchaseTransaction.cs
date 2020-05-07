@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.StoreProfile;
@@ -24,11 +24,13 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             get => purchaseDate.Value.Date;
             private set { purchaseDate = value; }
         }
+
         public Store Store { get; private set; }
         public List<LineItem> Items { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
+        // TotalPrice Sum(LineItem.Price)
         public void AddLineItem(LineItem lineItem)
         {
             if (Items is null)
@@ -71,13 +73,13 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             PurchaseDate = new PurchaseDate(purchaseDate);
         }
 
-        private bool EnsureValidState()
+        internal bool EnsureValidState()
         {
-            return true;
-            //var valid = Id.Value != default
-            //    && PurchaseDate != default
-            //    && Store != null
-            //    && Items.Count >= 1;
+            //return true;
+            return Id.Value != default
+                && PurchaseDate != default;
+                //&& Store != null
+                //&& Items.Count >= 1;
 
             //if (!valid)
             //    throw new InvalidEntityStateException(this, "Entity is in a invalid state!");
