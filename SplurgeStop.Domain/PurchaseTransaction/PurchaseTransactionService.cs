@@ -42,7 +42,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 throw new InvalidOperationException($"Entity with id {cmd.Transaction.Id} already exists");
 
             await repository.Add(cmd.Transaction);
-            await unitOfWork.Commit();
         }
 
         private async Task HandleUpdate(Guid transactionId, Action<PurchaseTransaction> operation)
@@ -54,7 +53,10 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
             operation(purchaseTransaction);
 
-            await unitOfWork.Commit();
+            if (purchaseTransaction.EnsureValidState())
+            {
+                await unitOfWork.Commit();
+            }
         }
     }
 }
