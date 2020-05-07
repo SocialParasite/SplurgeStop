@@ -52,11 +52,15 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Purchase_transaction_already_exists()
         {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
+
             var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.Exists(transactionId));
+
             var unitOfWork = new EfCoreUnitOfWork(fixture.context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new transaction.PurchaseTransaction();
-            transaction.SetTransactionDate(DateTime.Now);
+            var transaction = new PurchaseTransaction();
+            
             var transactionController = new PurchaseTransactionController(service);
             var command = new Commands.Create();
             command.Transaction = transaction;
@@ -66,25 +70,6 @@ namespace SplurgeStop.Integration.Tests
             await Assert.ThrowsAsync<InvalidOperationException>(async ()
                 => await transactionController.Post(command));
         }
-
-        //[Fact]
-        //public async Task Purchase_transaction_inserted_to_database()
-        //{
-        //    var repository = new PurchaseTransactionRepository(fixture.context);
-        //    var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-        //    var service = new PurchaseTransactionService(repository, unitOfWork);
-        //    var transaction = new transaction.PurchaseTransaction();
-        //    transaction.SetTransactionDate(DateTime.Now);
-        //    var command = new Commands.Create();
-        //    command.Transaction = transaction;
-
-        //    Assert.False(await repository.Exists(transaction.Id));
-
-        //    var transactionController = new PurchaseTransactionController(service);
-        //    var result = await transactionController.Post(command);
-        //    Assert.True(await repository.Exists(transaction.Id));
-        //    Assert.Equal(typeof(OkResult), result.GetType());
-        //}
 
         [Fact]
         public async Task Update_transaction_date()
