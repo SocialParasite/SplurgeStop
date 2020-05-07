@@ -8,6 +8,7 @@ using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using transaction = SplurgeStop.Domain.PurchaseTransaction;
+using static SplurgeStop.Integration.Tests.HelperMethods;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -79,30 +80,57 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Update_transaction_date()
         {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
+
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-            var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new transaction.PurchaseTransaction();
-            transaction.SetTransactionDate(DateTime.Now.AddDays(-1));
-            var command = new Commands.Create();
-            command.Transaction = transaction;
+            Assert.True(await repository.Exists(transactionId));
 
-            var transactionController = new PurchaseTransactionController(service);
-            var result = await transactionController.Post(command);
-
-            Assert.True(await repository.Exists(transaction.Id));
-            Assert.Equal(typeof(OkResult), result.GetType());
-            
-            var sut = await repository.Load(transaction.Id);
-            Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
-
-            var updateCommand = new Commands.SetPurchaseTransactionDate();
-            updateCommand.Id = sut.Id;
-            updateCommand.TransactionDate = DateTime.Now;
-            await transactionController.Put(updateCommand);
-
-            sut = await repository.Load(transaction.Id);
+            var sut = await repository.Load(transactionId);
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
+
+            await UpdatePurchaseDate(sut.Id, DateTime.Now.AddDays(-1));
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
+        }
+
+        //[Fact]
+        //public async Task Update_transaction_date()
+        //{
+        //    var repository = new PurchaseTransactionRepository(fixture.context);
+        //    var unitOfWork = new EfCoreUnitOfWork(fixture.context);
+        //    var service = new PurchaseTransactionService(repository, unitOfWork);
+        //    var transaction = new transaction.PurchaseTransaction();
+
+        //    transaction.SetTransactionDate(DateTime.Now.AddDays(-1)); // TODO: change to Command!
+
+        //    var command = new Commands.Create();
+        //    command.Transaction = transaction;
+
+        //    var transactionController = new PurchaseTransactionController(service);
+        //    var result = await transactionController.Post(command);
+
+        //    // TODO: Update Store
+        //    // TODO: Update Line Items
+
+        //    Assert.True(await repository.Exists(transaction.Id));
+        //    Assert.Equal(typeof(OkResult), result.GetType());
+
+        //    var sut = await repository.Load(transaction.Id);
+        //    Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
+
+        //    var updateCommand = new Commands.SetPurchaseTransactionDate();
+        //    updateCommand.Id = sut.Id;
+        //    updateCommand.TransactionDate = DateTime.Now;
+        //    await transactionController.Put(updateCommand);
+
+        //    sut = await repository.Load(transaction.Id);
+        //    Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
+        //}
+
+        public void Only_Valid_Purchase_Transaction_Can_Be_Persisted_To_Database()
+        {
+            // Two first tests shouldn't execute Commit(), only Add()
         }
     }
 }
