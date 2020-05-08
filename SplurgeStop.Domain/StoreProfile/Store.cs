@@ -5,13 +5,16 @@ using GuidHelpers;
 
 namespace SplurgeStop.Domain.StoreProfile
 {
-    public sealed class Store
+    public class Store
     {
-        public StoreId Id { get; }
-
         public Store()
         {
             Id = new StoreId(SequentialGuid.NewSequentialGuid());
         }
+        public StoreId Id { get; }
+        // store name, K-Citymarket Länsikeskus
+        // chain, Kesko
+        // store type, Citymarket
+        // store location? Länsikeskus / Turku??? Finland!!
     }
 }

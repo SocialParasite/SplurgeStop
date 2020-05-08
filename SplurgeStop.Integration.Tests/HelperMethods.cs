@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using transaction = SplurgeStop.Domain.PurchaseTransaction;
 
@@ -12,10 +11,14 @@ namespace SplurgeStop.Integration.Tests
 {
     public static class HelperMethods
     {
-        public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction()
+        // idea
+        public static PurchaseTransaction WitMissing(this PurchaseTransaction transaction, string propertyName)
         {
-            var connectionString = ConnectivityService.GetConnectionString("TEMP");
-            var context = new SplurgeStopDbContext(connectionString);
+            return new PurchaseTransaction();
+        }
+
+        public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(SplurgeStopDbContext context)
+        {
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
@@ -32,15 +35,17 @@ namespace SplurgeStop.Integration.Tests
             updateCommand.TransactionDate = DateTime.Now;
             await transactionController.Put(updateCommand);
 
-            // TODO: Update Store
+            var updateStoreCommand = new Commands.SetPurchaseTransactionStore();
+            updateStoreCommand.Id = transaction.Id;
+            updateStoreCommand.Store = new Store();
+            await transactionController.Put(updateStoreCommand);
+
             // TODO: Update Line Items
             return command.Transaction.Id;
         }
 
-        public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)
+        public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date, SplurgeStopDbContext context)
         {
-            var connectionString = ConnectivityService.GetConnectionString("TEMP");
-            var context = new SplurgeStopDbContext(connectionString);
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
@@ -49,6 +54,7 @@ namespace SplurgeStop.Integration.Tests
             var updateCommand = new Commands.SetPurchaseTransactionDate();
             updateCommand.Id = id;
             updateCommand.TransactionDate = date;
+
             await transactionController.Put(updateCommand);
         }
     }

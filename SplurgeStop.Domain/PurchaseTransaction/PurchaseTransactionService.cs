@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.StoreProfile;
 using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -32,6 +34,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 Create cmd => HandleCreate(cmd),
                 SetPurchaseTransactionDate cmd
                     => HandleUpdate(cmd.Id, c => c.SetTransactionDate(cmd.TransactionDate)),
+                SetPurchaseTransactionStore cmd
+                    => HandleUpdate(cmd.Id, c => c.SetStore(c.Store)),
                 _ => Task.CompletedTask
             };
         }

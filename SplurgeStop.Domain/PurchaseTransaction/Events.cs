@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
@@ -15,6 +14,18 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             public Guid Id { get; set; }
             public DateTime TransactionDate { get; set; }
+        }
+
+        public class PurchaseTransactionStoreChanged
+        {
+            public Guid Id { get; set; }
+            public Store Store { get; set; }
+        }
+
+        public class PurchaseTransactionLineItemsChanged
+        {
+            public Guid Id { get; set; }
+            public LineItem LineItem { get; set; }
         }
     }
 }

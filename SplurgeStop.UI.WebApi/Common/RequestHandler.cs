@@ -7,7 +7,7 @@ namespace SplurgeStop.UI.WebApi.Common
 {
     public static class RequestHandler
     {
-        public static async Task<IActionResult> HandleCommand<T>(T request, Func<T, Task> handler) //, ILogger log)
+        public static async Task<IActionResult> HandleCommand<T>(T request, Func<T, Task> handler)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace SplurgeStop.UI.WebApi.Common
             }
         }
 
-        public static async Task<IActionResult> HandleQuery<TModel>(Func<Task<TModel>> query) //, ILogger log)
+        public static async Task<IActionResult> HandleQuery<TModel>(Func<Task<TModel>> query)
         {
             try
             {

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
-    public sealed class PurchaseTransaction
+    public class PurchaseTransaction
     {
         private PurchaseDate purchaseDate;
 
@@ -26,17 +26,17 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         }
 
         public Store Store { get; private set; }
-        public List<LineItem> Items { get; private set; }
+        public List<LineItem> LineItems { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
         // TotalPrice Sum(LineItem.Price)
         public void AddLineItem(LineItem lineItem)
         {
-            if (Items is null)
-                Items = new List<LineItem>();
+            if (LineItems is null)
+                LineItems = new List<LineItem>();
 
-            Items.Add(lineItem);
+            LineItems.Add(lineItem);
         }
 
         public void SetStore(Store store)
@@ -59,11 +59,17 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     Id = new PurchaseTransactionId(e.Id);
                     PurchaseDate = PurchaseDate.Now;
                     Store = null;
-                    Items = new List<LineItem>();
+                    LineItems = new List<LineItem>();
                     Notes = PurchaseTransactionNotes.NoNotes;
                     break;
                 case Events.PurchaseTransactionDateChanged e:
                     PurchaseDate = new PurchaseDate(e.TransactionDate);
+                    break;
+                case Events.PurchaseTransactionStoreChanged e:
+                    Store = new Store(); // TODO:
+                    break;
+                case Events.PurchaseTransactionLineItemsChanged e:
+                    LineItems.Add(new LineItem()); // TODO: 
                     break;
             }
         }
@@ -75,16 +81,10 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         internal bool EnsureValidState()
         {
-            //return true;
             return Id.Value != default
-                && PurchaseDate != default;
-                //&& Store != null
+                && PurchaseDate != default
+                && Store != null;
                 //&& Items.Count >= 1;
-
-            //if (!valid)
-            //    throw new InvalidEntityStateException(this, "Entity is in a invalid state!");
-            //else
-            //    return true;
         }
     }
 }

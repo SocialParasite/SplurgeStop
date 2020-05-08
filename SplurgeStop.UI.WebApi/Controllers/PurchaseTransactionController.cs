@@ -38,5 +38,10 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionDate request)
             => RequestHandler.HandleCommand(request, service.Handle);
+
+        [Route("purchaseStore")]
+        [HttpPut]
+        public Task<IActionResult> Put(Commands.SetPurchaseTransactionStore request)
+            => RequestHandler.HandleCommand(request, service.Handle);
     }
 }
