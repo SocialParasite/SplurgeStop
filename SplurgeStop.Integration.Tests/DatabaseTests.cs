@@ -83,7 +83,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.LoadAllPurchaseTransactionsAsync(transactionId);
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
             //await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
@@ -93,6 +93,26 @@ namespace SplurgeStop.Integration.Tests
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
+        }
+
+        [Fact]
+        public async Task Update_transaction_lineItems()
+        {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(transactionId));
+
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            //await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Single(sut.LineItems);
+
+            await UpdateLineItems(sut.Id, new LineItem(), fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(2, sut.LineItems.Count);
         }
 
         [Fact]

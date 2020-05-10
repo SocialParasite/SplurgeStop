@@ -62,5 +62,19 @@ namespace SplurgeStop.Integration.Tests
 
             await transactionController.Put(updateCommand);
         }
+
+        public async static Task UpdateLineItems(PurchaseTransactionId id, LineItem lineItem, SplurgeStopDbContext context)
+        {
+            var repository = new PurchaseTransactionRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new PurchaseTransactionService(repository, unitOfWork);
+            var transactionController = new PurchaseTransactionController(service);
+
+            var updateCommand = new Commands.SetPurchaseTransactionLineItem();
+            updateCommand.Id = id;
+            updateCommand.LineItem = lineItem;
+
+            await transactionController.Put(updateCommand);
+        }
     }
 }
