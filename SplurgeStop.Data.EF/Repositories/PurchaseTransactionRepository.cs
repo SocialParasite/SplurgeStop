@@ -49,7 +49,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await context.Purchases.FindAsync(id);
         }
 
-        public async Task<PurchaseTransaction> LoadAllPurchaseTransactionsAsync(PurchaseTransactionId id)
+        public async Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id)
         {
             return await context.Purchases.Include(s => s.Store).FirstOrDefaultAsync(s => s.Id == id);
         }
