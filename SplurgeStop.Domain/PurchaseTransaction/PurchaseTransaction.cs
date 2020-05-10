@@ -39,6 +39,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             LineItems.Add(lineItem);
         }
 
+        public void SetTransactionDate(DateTime purchaseDate)
+        {
+            PurchaseDate = new PurchaseDate(purchaseDate);
+        }
+
         public void SetStore(Store store)
         {
             Store = store ?? new Store();
@@ -47,7 +52,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         private void Apply(object @event)
         {
             When(@event);
-            EnsureValidState();
+            //EnsureValidState();
             //_changes.Add(@event);
         }
 
@@ -66,25 +71,20 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     PurchaseDate = new PurchaseDate(e.TransactionDate);
                     break;
                 case Events.PurchaseTransactionStoreChanged e:
-                    Store = new Store(); // TODO:
+                    Store = e.Store;
                     break;
                 case Events.PurchaseTransactionLineItemsChanged e:
-                    LineItems.Add(new LineItem()); // TODO: 
+                    LineItems.Add(e.LineItem); // TODO: 
                     break;
             }
-        }
-
-        public void SetTransactionDate(DateTime purchaseDate)
-        {
-            PurchaseDate = new PurchaseDate(purchaseDate);
         }
 
         internal bool EnsureValidState()
         {
             return Id.Value != default
                 && PurchaseDate != default
-                && Store != null;
-                //&& Items.Count >= 1;
+                && Store != null
+                && LineItems.Count >= 1;
         }
     }
 }

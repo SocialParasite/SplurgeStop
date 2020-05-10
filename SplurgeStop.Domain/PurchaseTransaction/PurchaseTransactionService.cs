@@ -35,22 +35,24 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 SetPurchaseTransactionDate cmd
                     => HandleUpdate(cmd.Id, c => c.SetTransactionDate(cmd.TransactionDate)),
                 SetPurchaseTransactionStore cmd
-                    => HandleUpdate(cmd.Id, c => c.SetStore(c.Store)),
+                    => HandleUpdate(cmd.Id, c => c.SetStore(cmd.Store)),
+                SetPurchaseTransactionLineItem cmd
+                    => HandleUpdate(cmd.Id, c => c.AddLineItem(cmd.LineItem)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.Exists(cmd.Transaction.Id))
+            if (await repository.ExistsAsync(cmd.Transaction.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Transaction.Id} already exists");
 
-            await repository.Add(cmd.Transaction);
+            await repository.AddPurchaseTransactionAsync(cmd.Transaction);
         }
 
         private async Task HandleUpdate(Guid transactionId, Action<PurchaseTransaction> operation)
         {
-            var purchaseTransaction = await repository.Load(transactionId);
+            var purchaseTransaction = await repository.LoadPurchaseTransactionAsync(transactionId);
 
             if (purchaseTransaction == null)
                 throw new InvalidOperationException($"Entity with id {transactionId} cannot be found");
@@ -61,6 +63,16 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             {
                 await unitOfWork.Commit();
             }
+        }
+
+        public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactions()
+        {
+            return await repository.GetAllPurchaseTransactionsAsync();
+        }
+
+        public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
+        {
+            return await repository.GetAllPurchaseTransactionAsync(id);
         }
     }
 }

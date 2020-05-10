@@ -40,6 +40,11 @@ namespace SplurgeStop.Integration.Tests
             updateStoreCommand.Store = new Store();
             await transactionController.Put(updateStoreCommand);
 
+            var updateLineItemCommand = new Commands.SetPurchaseTransactionLineItem();
+            updateLineItemCommand.Id = transaction.Id;
+            updateLineItemCommand.LineItem = new LineItem();
+            await transactionController.Put(updateLineItemCommand);
+
             // TODO: Update Line Items
             return command.Transaction.Id;
         }

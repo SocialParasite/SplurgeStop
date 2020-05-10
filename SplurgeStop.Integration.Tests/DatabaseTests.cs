@@ -24,9 +24,9 @@ namespace SplurgeStop.Integration.Tests
 
         public void Dispose()
         {
+            context.Database.ExecuteSqlRaw("DELETE FROM LineItem");
             context.Database.ExecuteSqlRaw("DELETE FROM Purchases");
             context.Database.ExecuteSqlRaw("DELETE FROM Stores");
-            context.Database.ExecuteSqlRaw("DELETE FROM LineItem");
         }
     }
 
@@ -46,7 +46,11 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.Exists(transactionId));
+            var sut = await repository.LoadPurchaseTransactionAsync(transactionId);
+            
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.True(await repository.ExistsAsync(transactionId));
         }
 
         [Fact]
@@ -55,7 +59,7 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.Exists(transactionId));
+            Assert.True(await repository.ExistsAsync(transactionId));
 
             var unitOfWork = new EfCoreUnitOfWork(fixture.context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
@@ -77,9 +81,9 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.Exists(transactionId));
+            Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.LoadAllAsync(transactionId);
+            var sut = await repository.LoadAllPurchaseTransactionsAsync(transactionId);
             //await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);

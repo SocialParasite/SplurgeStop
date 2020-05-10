@@ -21,5 +21,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             public Guid Id { get; set; }
             public Store Store { get; set; }
         }
+
+        public class SetPurchaseTransactionLineItem
+        {
+            public Guid Id { get; set; }
+            public LineItem LineItem { get; set; }
+        }
     }
 }

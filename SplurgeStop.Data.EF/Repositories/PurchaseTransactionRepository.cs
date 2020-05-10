@@ -1,7 +1,10 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -14,19 +17,41 @@ namespace SplurgeStop.Data.EF.Repositories
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task Add(PurchaseTransaction transaction)
+        public async Task AddPurchaseTransactionAsync(PurchaseTransaction transaction)
         {
             await context.Purchases.AddAsync(transaction);
         }
 
-        public async Task<bool> Exists(PurchaseTransactionId id)
+        public async Task<bool> ExistsAsync(PurchaseTransactionId id)
         {
             return await context.Purchases.FindAsync(id) != null; 
         }
 
-        public async Task<PurchaseTransaction> Load(PurchaseTransactionId id)
+        public async Task<PurchaseTransaction> GetAllPurchaseTransactionAsync(PurchaseTransactionId id)
+        {
+            return await context.Purchases
+                .Include(p => p.Store)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactionsAsync()
+        {
+            return await context.Purchases
+                .Include(s => s.Store)
+                .Select(s => s)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)
         {
             return await context.Purchases.FindAsync(id);
+        }
+
+        public async Task<PurchaseTransaction> LoadAllPurchaseTransactionsAsync(PurchaseTransactionId id)
+        {
+            return await context.Purchases.Include(s => s.Store).FirstOrDefaultAsync(s => s.Id == id);
         }
     }
 }
