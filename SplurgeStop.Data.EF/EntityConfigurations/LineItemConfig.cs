@@ -15,6 +15,7 @@ namespace SplurgeStop.Data.EF
 
             builder.Property(x => x.Price)
                 .HasColumnName("Price")
+                .HasMaxLength(16)
                 .HasConversion(
                     priceWithUnit
                         => new string($"{priceWithUnit.Amount} | {priceWithUnit.CurrencyCode}"),
