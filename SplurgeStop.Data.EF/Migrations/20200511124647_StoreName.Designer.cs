@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SplurgeStop.Data.EF;
 
 namespace SplurgeStop.Data.EF.Migrations
 {
     [DbContext(typeof(SplurgeStopDbContext))]
-    partial class SplurgeStopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200511124647_StoreName")]
+    partial class StoreName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,10 +25,6 @@ namespace SplurgeStop.Data.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Price")
-                        .HasColumnName("Price")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("PurchaseTransactionId")
                         .HasColumnType("uniqueidentifier");

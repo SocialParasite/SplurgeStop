@@ -27,25 +27,30 @@ namespace SplurgeStop.Integration.Tests
             var command = new Commands.Create();
             command.Transaction = transaction;
 
+            // Create PurchaseTransaction
             var transactionController = new PurchaseTransactionController(service);
             var result = await transactionController.Post(command);
 
+            // Add PurchaseDate
             var updateCommand = new Commands.SetPurchaseTransactionDate();
             updateCommand.Id = transaction.Id;
             updateCommand.TransactionDate = DateTime.Now;
             await transactionController.Put(updateCommand);
 
+            // Add Store
             var updateStoreCommand = new Commands.SetPurchaseTransactionStore();
             updateStoreCommand.Id = transaction.Id;
             updateStoreCommand.Store = new Store();
+            updateStoreCommand.Store.Name = "Test market";
             await transactionController.Put(updateStoreCommand);
-
+            
+            // Add one LineItem
             var updateLineItemCommand = new Commands.SetPurchaseTransactionLineItem();
             updateLineItemCommand.Id = transaction.Id;
             updateLineItemCommand.LineItem = new LineItem();
+            updateLineItemCommand.LineItem.Price = new Price() { Amount = 1.23m, CurrencyCode = "EUR" };
             await transactionController.Put(updateLineItemCommand);
 
-            // TODO: Update Line Items
             return command.Transaction.Id;
         }
 
@@ -63,7 +68,9 @@ namespace SplurgeStop.Integration.Tests
             await transactionController.Put(updateCommand);
         }
 
-        public async static Task UpdateLineItems(PurchaseTransactionId id, LineItem lineItem, SplurgeStopDbContext context)
+        public async static Task UpdateLineItems(PurchaseTransactionId id, 
+            LineItem lineItem, 
+            SplurgeStopDbContext context)
         {
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
@@ -73,6 +80,7 @@ namespace SplurgeStop.Integration.Tests
             var updateCommand = new Commands.SetPurchaseTransactionLineItem();
             updateCommand.Id = id;
             updateCommand.LineItem = lineItem;
+            updateCommand.LineItem.Price = lineItem.Price;
 
             await transactionController.Put(updateCommand);
         }

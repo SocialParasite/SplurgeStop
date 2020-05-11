@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20200428152840_init.Designer.cs" />
     <Compile Remove="Migrations\20200505130604_PurchaseTransactionNotes.cs" />
     <Compile Remove="Migrations\20200505130604_PurchaseTransactionNotes.Designer.cs" />
+    <Compile Remove="Migrations\20200511124441_StoreName.cs" />
+    <Compile Remove="Migrations\20200511124441_StoreName.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -35,13 +35,28 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactionsAsync()
+        //public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactionsAsync()
+        public async Task<IEnumerable<object>> GetAllPurchaseTransactionsAsync()
         {
+            //return await context.Purchases
+            //    .Include(s => s.Store)
+            //    .Select(s => s)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
             return await context.Purchases
-                .Include(s => s.Store)
-                .Select(s => s)
-                .AsNoTracking()
-                .ToListAsync();
+                    .Include(s => s.Store)
+                    .Include(l => l.LineItems)
+                    .Select(r => new
+                    {
+                        r.Id,
+                        r.Store.Name,
+                        r.PurchaseDate,
+                        r.TotalPrice
+                        // Total number of LineItems
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
         }
 
         public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)

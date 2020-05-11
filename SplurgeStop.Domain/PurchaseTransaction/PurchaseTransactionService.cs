@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.StoreProfile;
 using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -18,14 +17,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
-
-        // TODO:
-        // Create(Guid/PurchaseTransaction)
-        // SetStore(Guid, Store)
-        // UpdateNotes(Guid, string)
-        // Update LineItems(Guid, LineItem)
-        // Publish?? (Guid) - if valid
-        // UpdateDate(Guid, date)
 
         public Task Handle(object command)
         {
@@ -65,7 +56,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             }
         }
 
-        public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactions()
+        public async Task<IEnumerable<object>> GetAllPurchaseTransactions()
         {
             return await repository.GetAllPurchaseTransactionsAsync();
         }

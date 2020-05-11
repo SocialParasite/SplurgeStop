@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GuidHelpers;
 using SplurgeStop.Domain.StoreProfile;
 
@@ -30,9 +31,10 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
-        // TotalPrice Sum(LineItem.Price)
+        public decimal TotalPrice => LineItems.Sum(i => i.Price.Amount);
+
         public void AddLineItem(LineItem lineItem)
-        {
+        { 
             if (LineItems is null)
                 LineItems = new List<LineItem>();
 

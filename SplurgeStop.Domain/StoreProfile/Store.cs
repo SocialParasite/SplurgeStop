@@ -12,6 +12,7 @@ namespace SplurgeStop.Domain.StoreProfile
             Id = new StoreId(SequentialGuid.NewSequentialGuid());
         }
         public StoreId Id { get; }
+        public string Name { get; set; }
         // store name, K-Citymarket Länsikeskus
         // chain, Kesko
         // store type, Citymarket
