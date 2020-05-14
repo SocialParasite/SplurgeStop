@@ -31,31 +31,43 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
-        public decimal TotalPrice => LineItems.Sum(i => i.Price.Amount);
+        public IEnumerable<PurchaseTotalSum> TotalPrice => GetTotalSums();
+
+        public IEnumerable<PurchaseTotalSum> GetTotalSums()
+        {
+            return LineItems.GroupBy(i => i.Price.CurrencyCode)
+                .Select(g => new PurchaseTotalSum
+                {
+                    CurrencyCode = g.Key,
+                    TotalSum = g.Sum(x => x.Price.Amount)
+                });
+        }
 
         public void AddLineItem(LineItem lineItem)
-        { 
+        {
             if (LineItems is null)
                 LineItems = new List<LineItem>();
 
             LineItems.Add(lineItem);
         }
 
-        public void SetTransactionDate(DateTime purchaseDate)
-        {
-            PurchaseDate = new PurchaseDate(purchaseDate);
-        }
-
         public void SetStore(Store store)
-        {
-            Store = store ?? new Store();
-        }
+            => Apply(new Events.PurchaseTransactionStoreChanged
+            {
+                Id = Id,
+                Store = store
+            });
+
+        public void UpdatePurchaseTransactionDate(PurchaseDate date) 
+            => Apply(new Events.PurchaseTransactionDateChanged
+            {
+                Id = Id,
+                TransactionDate = date.Value
+            });
 
         private void Apply(object @event)
         {
             When(@event);
-            //EnsureValidState();
-            //_changes.Add(@event);
         }
 
         private void When(object @event)
