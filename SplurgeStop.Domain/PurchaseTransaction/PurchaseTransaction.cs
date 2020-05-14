@@ -33,7 +33,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public IEnumerable<PurchaseTotalSum> TotalPrice => GetTotalSums();
 
-        public IEnumerable<PurchaseTotalSum> GetTotalSums()
+        private IEnumerable<PurchaseTotalSum> GetTotalSums()
         {
             return LineItems.GroupBy(i => i.Price.CurrencyCode)
                 .Select(g => new PurchaseTotalSum
@@ -43,7 +43,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 });
         }
 
-        public void UpdateLineItem(LineItem lineItem)
+        internal void UpdateLineItem(LineItem lineItem)
         {
             Apply(new Events.PurchaseTransactionLineItemChanged
             {
@@ -52,7 +52,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             });
         }
 
-        public void UpdateStore(Store store)
+        internal void UpdateStore(Store store)
         {
             Apply(new Events.PurchaseTransactionStoreChanged
             {
@@ -61,7 +61,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             });
         }
 
-        public void UpdatePurchaseTransactionDate(PurchaseDate date)
+        internal void UpdatePurchaseTransactionDate(PurchaseDate date)
         {
             Apply(new Events.PurchaseTransactionDateChanged
             {
