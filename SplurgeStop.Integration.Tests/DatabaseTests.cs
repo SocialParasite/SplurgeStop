@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.HelperMethods;
@@ -84,7 +86,6 @@ namespace SplurgeStop.Integration.Tests
             Assert.True(await repository.ExistsAsync(transactionId));
 
             var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
-            //await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
 
@@ -96,12 +97,23 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
-        public async Task Update_Store()
+        public async Task Update_Store_name()
         {
-            // Create store
-            // Update eg. name
-            // Assert
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
 
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(transactionId));
+
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+            Assert.NotNull(sut.Store);
+            Assert.Equal("Test market", sut.Store.Name);
+
+            await UpdateStoreName(sut.Id, "Mega Market", fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal("Mega Market", sut.Store.Name);
         }
 
         [Fact]
@@ -124,9 +136,9 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
-        public async Task Sum_of_line_items()
+        public async Task Total_price_of_line_items()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
@@ -141,7 +153,36 @@ namespace SplurgeStop.Integration.Tests
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(2, sut.LineItems.Count);
-            Assert.Equal(3.77m, sut.TotalPrice);
+            var result = sut.TotalPrice; 
+
+            Assert.Equal(3.77m, result.FirstOrDefault().TotalSum);
+        }
+
+        [Fact]
+        public async Task Total_prices_of_line_items_with_many_currencies()
+        {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(transactionId));
+
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+            Assert.Single(sut.LineItems);
+
+            var secondLineItem = new LineItem() { Price = new Price { Amount = 2.54m, CurrencyCode = "EUR" } };
+            await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
+
+            var thirdLineItem = new LineItem() { Price = new Price { Amount = 12.54m, CurrencyCode = "USD" } };
+            await UpdateLineItems(sut.Id, thirdLineItem, fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(3, sut.LineItems.Count);
+            var result = sut.TotalPrice;
+
+            Assert.Equal(3.77m, result.FirstOrDefault(c => c.CurrencyCode.Value == "EUR").TotalSum);
+            Assert.Equal(12.54m, result.FirstOrDefault(c => c.CurrencyCode.Value == "USD").TotalSum);
         }
 
         [Fact]
