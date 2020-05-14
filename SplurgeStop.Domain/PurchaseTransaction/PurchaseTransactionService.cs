@@ -26,9 +26,9 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 SetPurchaseTransactionDate cmd
                 => HandleUpdate(cmd.Id, c => c.UpdatePurchaseTransactionDate(cmd.TransactionDate)),
                 SetPurchaseTransactionStore cmd
-                    => HandleUpdate(cmd.Id, c => c.SetStore(cmd.Store)),
+                    => HandleUpdate(cmd.Id, c => c.UpdateStore(cmd.Store)),
                 SetPurchaseTransactionLineItem cmd
-                    => HandleUpdate(cmd.Id, c => c.AddLineItem(cmd.LineItem)),
+                    => HandleUpdate(cmd.Id, c => c.UpdateLineItem(cmd.LineItem)),
                 _ => Task.CompletedTask
             };
         }

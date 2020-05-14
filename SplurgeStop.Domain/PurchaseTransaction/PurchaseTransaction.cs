@@ -43,27 +43,32 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 });
         }
 
-        public void AddLineItem(LineItem lineItem)
+        public void UpdateLineItem(LineItem lineItem)
         {
-            if (LineItems is null)
-                LineItems = new List<LineItem>();
-
-            LineItems.Add(lineItem);
+            Apply(new Events.PurchaseTransactionLineItemChanged
+            {
+                Id = Id,
+                LineItem = lineItem
+            });
         }
 
-        public void SetStore(Store store)
-            => Apply(new Events.PurchaseTransactionStoreChanged
+        public void UpdateStore(Store store)
+        {
+            Apply(new Events.PurchaseTransactionStoreChanged
             {
                 Id = Id,
                 Store = store
             });
+        }
 
-        public void UpdatePurchaseTransactionDate(PurchaseDate date) 
-            => Apply(new Events.PurchaseTransactionDateChanged
+        public void UpdatePurchaseTransactionDate(PurchaseDate date)
+        {
+            Apply(new Events.PurchaseTransactionDateChanged
             {
                 Id = Id,
                 TransactionDate = date.Value
             });
+        }
 
         private void Apply(object @event)
         {
@@ -87,7 +92,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 case Events.PurchaseTransactionStoreChanged e:
                     Store = e.Store;
                     break;
-                case Events.PurchaseTransactionLineItemsChanged e:
+                case Events.PurchaseTransactionLineItemChanged e:
                     LineItems.Add(e.LineItem); // TODO: 
                     break;
             }
