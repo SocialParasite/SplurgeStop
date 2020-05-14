@@ -17,6 +17,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         // Store to LineItems table as two fields (Amount and CurrencyCode)
         public Price Price { get; set; }
+
         //public int Quantitity { get; set; } // change type? Could be g, l, kg, pieces
         //public string Notes { get; set; }
 
