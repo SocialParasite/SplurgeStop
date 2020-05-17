@@ -36,16 +36,9 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        //public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactionsAsync()
         public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactionsAsync()
         {
-            //return await context.Purchases
-            //    .Include(s => s.Store)
-            //    .Select(s => s)
-            //    .AsNoTracking()
-            //    .ToListAsync();
-
-            var test = await context.Purchases
+            return await context.Purchases
                     .Include(s => s.Store)
                     .Include(l => l.LineItems)
                     .Select(r => new PurchaseTransactionStripped
@@ -58,8 +51,6 @@ namespace SplurgeStop.Data.EF.Repositories
                     })
                     .AsNoTracking()
                     .ToListAsync();
-
-            return test;
         }
 
         public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)
