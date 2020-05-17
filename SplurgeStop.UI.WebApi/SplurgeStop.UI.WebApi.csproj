@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SplurgeStop.Data.EF\SplurgeStop.Data.EF.csproj" />
     <ProjectReference Include="..\SplurgeStop.Domain\SplurgeStop.Domain.csproj" />
   </ItemGroup>
 
