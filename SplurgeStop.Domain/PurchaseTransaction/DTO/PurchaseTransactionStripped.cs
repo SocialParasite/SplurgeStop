@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using SplurgeStop.Domain.PurchaseTransaction;
 
 namespace SplurgeStop.Domain.PurchaseTransaction.DTO
 {

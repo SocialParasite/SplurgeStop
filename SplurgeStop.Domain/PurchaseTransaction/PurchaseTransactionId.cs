@@ -21,13 +21,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             yield return Value;
         }
 
-        //public static implicit operator SequentialGuid(TransactionId id)
-        //    => new SequentialGuid(id.Value);
-
         public static implicit operator Guid(PurchaseTransactionId self) => self.Value;
-
-        //public static implicit operator TransactionId(SequentialGuid id)
-        //    => new TransactionId(id);
 
         public static implicit operator PurchaseTransactionId(Guid value)
             => new PurchaseTransactionId(new SequentialGuid(value));
