@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { Header } from './Header';
+import { HomePage } from './HomePage';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import { fontFamily, fontSize, gray2 } from './Styles';
+import { configureStore } from './Store';
 
-function App() {
+const store = configureStore();
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Provider store={store}>
+      <BrowserRouter>
+        <div
+          css={css`
+            font-family: ${fontFamily};
+            font-size: ${fontSize};
+            color: ${gray2};
+          `}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Header />
+          <Switch>
+            <Redirect from="/home" to="/" />
+            <Route exact path="/" component={HomePage} />
+            <Route path="/search" component={HomePage} />
+            <Route path="/ask">
+              <Suspense
+                fallback={
+                  <div
+                    css={css`
+                      margin-top: 100px;
+                      text-align: center;
+                    `}
+                  >
+                    Loading...
+                  </div>
+                }
+              ></Suspense>
+            </Route>
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </Provider>
   );
-}
+};
 
 export default App;
