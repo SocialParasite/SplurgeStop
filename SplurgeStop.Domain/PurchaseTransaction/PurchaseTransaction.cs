@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GuidHelpers;
@@ -93,7 +92,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     Store = e.Store;
                     break;
                 case Events.PurchaseTransactionLineItemChanged e:
-                    LineItems.Add(e.LineItem); // TODO: 
+                    LineItems.Add(e.LineItem);
                     break;
             }
         }

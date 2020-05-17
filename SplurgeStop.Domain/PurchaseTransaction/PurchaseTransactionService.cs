@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -56,14 +57,14 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             }
         }
 
-        public async Task<IEnumerable<object>> GetAllPurchaseTransactions()
+        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactions()
         {
             return await repository.GetAllPurchaseTransactionsAsync();
         }
 
         public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
         {
-            return await repository.GetAllPurchaseTransactionAsync(id);
+            return await repository.GetPurchaseTransactionFullAsync(id);
         }
     }
 }

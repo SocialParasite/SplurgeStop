@@ -5,6 +5,7 @@ using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
 using System.Linq;
 using System.Collections.Generic;
+using SplurgeStop.Domain.PurchaseTransaction.DTO;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -27,7 +28,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await context.Purchases.FindAsync(id) != null; 
         }
 
-        public async Task<PurchaseTransaction> GetAllPurchaseTransactionAsync(PurchaseTransactionId id)
+        public async Task<PurchaseTransaction> GetPurchaseTransactionFullAsync(PurchaseTransactionId id)
         {
             return await context.Purchases
                 .Include(p => p.Store)
@@ -36,7 +37,7 @@ namespace SplurgeStop.Data.EF.Repositories
         }
 
         //public async Task<IEnumerable<PurchaseTransaction>> GetAllPurchaseTransactionsAsync()
-        public async Task<IEnumerable<object>> GetAllPurchaseTransactionsAsync()
+        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactionsAsync()
         {
             //return await context.Purchases
             //    .Include(s => s.Store)
@@ -44,19 +45,21 @@ namespace SplurgeStop.Data.EF.Repositories
             //    .AsNoTracking()
             //    .ToListAsync();
 
-            return await context.Purchases
+            var test = await context.Purchases
                     .Include(s => s.Store)
                     .Include(l => l.LineItems)
-                    .Select(r => new
+                    .Select(r => new PurchaseTransactionStripped
                     {
-                        r.Id,
-                        r.Store.Name,
-                        r.PurchaseDate,
-                        r.TotalPrice
-                        // Total number of LineItems
+                        Id = r.Id,
+                        StoreName = r.Store.Name,
+                        PurchaseDate = r.PurchaseDate.Value,
+                        TotalPrice = r.TotalPrice.ElementAt(0).TotalSum,
+                        ItemCount = r.LineItems.Count()
                     })
                     .AsNoTracking()
                     .ToListAsync();
+
+            return test;
         }
 
         public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)

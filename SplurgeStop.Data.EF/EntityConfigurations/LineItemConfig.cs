@@ -22,15 +22,15 @@ namespace SplurgeStop.Data.EF
                      price => new Price
                      {
                          Amount = GetAmount(price),
-                         CurrencyCode = GetCurrencyCode(price) 
+                         CurrencyCode = GetCurrencyCode(price)
                      });
         }
 
         decimal GetAmount(string price) 
-            => decimal.Parse(price.Substring(0, Int32.Parse(ExtensionMethods.GetUntilOrEmpty("|"))).Trim());
+            => decimal.Parse(price.GetUntilOrEmpty("|"));
 
-        string GetCurrencyCode(string price) 
-            => price.Substring(Int32.Parse(ExtensionMethods.GetUntilOrEmpty("|") + 1));
+        string GetCurrencyCode(string price)
+            => price.Substring(price.LastIndexOf('|') + 1).Trim();
     }
 
     public static class ExtensionMethods
