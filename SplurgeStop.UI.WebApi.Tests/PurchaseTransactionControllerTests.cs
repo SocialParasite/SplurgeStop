@@ -9,6 +9,7 @@ using SplurgeStop.Domain;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 
@@ -16,8 +17,7 @@ namespace SplurgeStop.UI.WebApi.Tests
 {
     public sealed class PurchaseTransactionControllerTests
     {
-        [Fact]
-        public async Task Get_All_PurchaseTransactions()
+        private static List<PurchaseTransactionStripped> MockPurchaseTransactions()
         {
             var mockPurchaseTransactions = new List<PurchaseTransactionStripped>();
 
@@ -33,6 +33,14 @@ namespace SplurgeStop.UI.WebApi.Tests
                 });
             }
 
+            return mockPurchaseTransactions;
+        }
+
+        [Fact]
+        public async Task Get_All_PurchaseTransactions()
+        {
+            List<PurchaseTransactionStripped> mockPurchaseTransactions = MockPurchaseTransactions();
+
             var mockRepository = new Mock<IPurchaseTransactionRepository>();
             mockRepository.Setup(repo => repo.GetAllPurchaseTransactionsAsync())
                 .Returns(() => Task.FromResult(mockPurchaseTransactions.AsEnumerable()));
@@ -46,6 +54,44 @@ namespace SplurgeStop.UI.WebApi.Tests
 
             Assert.Equal(10, result.Count());
             mockRepository.Verify(mock => mock.GetAllPurchaseTransactionsAsync(), Times.Once());
+        }
+
+
+        [Fact]
+        public async Task Valid_Id_Returns_PurchaseTransaction()
+        {
+            var mockRepository = new Mock<IPurchaseTransactionRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockPurchaseTransaction = new Mock<PurchaseTransaction>();
+            var id = Guid.NewGuid();
+
+            var mockPurchaseTransactionService = new Mock<IPurchaseTransactionService>();
+            mockPurchaseTransactionService.Setup(s => s.GetDetailedPurchaseTransaction(id))
+                .Returns(() => Task.FromResult(mockPurchaseTransaction.Object));
+            
+            var purchaseTransactionController = new PurchaseTransactionController(mockPurchaseTransactionService.Object);
+            var result = await purchaseTransactionController.GetPurchaseTransaction(id);
+
+            mockPurchaseTransactionService.Verify(mock => mock.GetDetailedPurchaseTransaction(id), Times.Once());
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Invalid_Id_Returns_Null()
+        {
+            var mockRepository = new Mock<IPurchaseTransactionRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockPurchaseTransaction = new Mock<PurchaseTransaction>();
+            var id = Guid.NewGuid();
+
+            var mockPurchaseTransactionService = new Mock<IPurchaseTransactionService>();
+            mockPurchaseTransactionService.Setup(s => s.GetDetailedPurchaseTransaction(Guid.NewGuid()))
+                .Returns(() => Task.FromResult(mockPurchaseTransaction.Object));
+
+            var purchaseTransactionController = new PurchaseTransactionController(mockPurchaseTransactionService.Object);
+
+            var result = await purchaseTransactionController.GetPurchaseTransaction(id);
+            Assert.Null(result);
         }
     }
 }
