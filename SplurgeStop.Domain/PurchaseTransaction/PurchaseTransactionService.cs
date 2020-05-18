@@ -7,7 +7,7 @@ using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
-    public sealed class PurchaseTransactionService
+    public sealed class PurchaseTransactionService : IPurchaseTransactionService
     {
         private readonly IPurchaseTransactionRepository repository;
         private readonly IUnitOfWork unitOfWork;

@@ -13,9 +13,9 @@ namespace SplurgeStop.UI.WebApi.Controllers
     [ApiController]
     public class PurchaseTransactionController : ControllerBase
     {
-        private readonly PurchaseTransactionService service;
+        private readonly IPurchaseTransactionService service;
 
-        public PurchaseTransactionController(PurchaseTransactionService service)
+        public PurchaseTransactionController(IPurchaseTransactionService service)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
         }

@@ -30,7 +30,7 @@ namespace SplurgeStop.UI.WebApi
 
             services.AddTransient<IUnitOfWork, EfCoreUnitOfWork>();
             services.AddTransient<IPurchaseTransactionRepository, PurchaseTransactionRepository>();
-            services.AddTransient<PurchaseTransactionService>();
+            services.AddTransient<IPurchaseTransactionService, PurchaseTransactionService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder.AllowAnyMethod()
