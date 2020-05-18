@@ -27,28 +27,9 @@ namespace SplurgeStop.Data.EF
         }
 
         decimal GetAmount(string price) 
-            => decimal.Parse(price.GetUntilOrEmpty("|"));
+            => decimal.Parse(price.Substring(0, price.IndexOf('|', StringComparison.Ordinal)));
 
         string GetCurrencyCode(string price)
-            => price.Substring(price.LastIndexOf('|') + 1).Trim();
+            => price.Substring(price.LastIndexOf("|", StringComparison.Ordinal) + 1).Trim();
     }
-
-    public static class ExtensionMethods
-    {
-        public static string GetUntilOrEmpty(this string text, string stopAt = "-")
-        {
-            if (!String.IsNullOrWhiteSpace(text))
-            {
-                int charLocation = text.IndexOf(stopAt, StringComparison.Ordinal);
-
-                if (charLocation > 0)
-                {
-                    return text.Substring(0, charLocation);
-                }
-            }
-
-            return String.Empty;
-        }
-    }
-
 }
