@@ -46,8 +46,8 @@ namespace SplurgeStop.Data.EF.Repositories
                         Id = r.Id,
                         StoreName = r.Store.Name,
                         PurchaseDate = r.PurchaseDate.Value,
-                        TotalPrice = r.TotalPrice.ElementAt(0).TotalSum,
-                        ItemCount = r.LineItems.Count()
+                        TotalPrice = r.TotalPrice,
+                        ItemCount = r.LineItems.Count
                     })
                     .AsNoTracking()
                     .ToListAsync();

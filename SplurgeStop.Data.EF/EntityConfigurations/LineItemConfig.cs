@@ -15,21 +15,22 @@ namespace SplurgeStop.Data.EF
 
             builder.Property(x => x.Price)
                 .HasColumnName("Price")
-                .HasMaxLength(16)
-                .HasConversion(
-                    priceWithUnit
-                        => new string($"{priceWithUnit.Amount} | {priceWithUnit.CurrencyCode}"),
-                     price => new Price
-                     {
-                         Amount = GetAmount(price),
-                         CurrencyCode = GetCurrencyCode(price)
-                     });
+                .HasMaxLength(32)
+                .HasConversion(priceDetails
+                    => new string($"{priceDetails.Amount};" +
+                                  $"{priceDetails.Booking};" +
+                                  $"{priceDetails.Currency.CurrencyCode};" +
+                                  $"{priceDetails.Currency.CurrencySymbol};" +
+                                  $"{priceDetails.Currency.PositionRelativeToPrice}"),
+                    price
+                        => new Price(decimal.Parse(GetSection(price, 0)),
+                                     (Booking)Enum.Parse(typeof(Booking), GetSection(price, 1)),
+                                     GetSection(price, 2),
+                                     GetSection(price, 3),
+                                     (CurrencySymbolPosition)Enum.Parse(typeof(CurrencySymbolPosition), GetSection(price, 4))));
         }
 
-        decimal GetAmount(string price) 
-            => decimal.Parse(price.Substring(0, price.IndexOf('|', StringComparison.Ordinal)));
-
-        string GetCurrencyCode(string price)
-            => price.Substring(price.LastIndexOf("|", StringComparison.Ordinal) + 1).Trim();
+        string GetSection(string text, int pos)
+            => text.Split(';')[pos];
     }
 }

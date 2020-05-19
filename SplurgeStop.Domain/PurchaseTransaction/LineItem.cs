@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GuidHelpers;
+﻿using GuidHelpers;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
@@ -15,22 +12,9 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItemId Id { get; }
 
-        // Store to LineItems table as two fields (Amount and CurrencyCode)
-        public Price Price { get; set; }
+        public Price Price { get; set; }        
 
         //public int Quantitity { get; set; } // change type? Could be g, l, kg, pieces
         //public string Notes { get; set; }
-
-        //public PurchaseTransaction PurchaseTransaction { get; set; }
-        // Product
-        // price
-        // notes
-        // quantity
-
-        //public LineItem(Product product, Price price)
-        //{
-
-        //}
-
     }
 }

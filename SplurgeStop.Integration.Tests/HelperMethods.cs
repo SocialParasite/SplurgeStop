@@ -11,13 +11,6 @@ namespace SplurgeStop.Integration.Tests
 {
     public static class HelperMethods
     {
-        // idea
-        public static PurchaseTransaction WitMissing(this PurchaseTransaction transaction, string propertyName)
-        {
-            return new PurchaseTransaction();
-        }
-
-
         public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(SplurgeStopDbContext context,
             decimal price = 1.00m)
         {
@@ -50,7 +43,7 @@ namespace SplurgeStop.Integration.Tests
             var updateLineItemCommand = new Commands.SetPurchaseTransactionLineItem();
             updateLineItemCommand.Id = transaction.Id;
             updateLineItemCommand.LineItem = new LineItem();
-            updateLineItemCommand.LineItem.Price = new Price() { Amount = price, CurrencyCode = "EUR" };
+            updateLineItemCommand.LineItem.Price = new Price(price, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end);
             await transactionController.Put(updateLineItemCommand);
 
             return command.Transaction.Id;

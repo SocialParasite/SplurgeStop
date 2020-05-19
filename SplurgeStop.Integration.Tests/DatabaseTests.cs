@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
-using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.HelperMethods;
@@ -147,7 +145,7 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
-            var secondLineItem = new LineItem() { Price = new Price { Amount = 2.54m, CurrencyCode = "EUR" } };
+            var secondLineItem = new LineItem() { Price = new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end) };
             await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
@@ -155,34 +153,7 @@ namespace SplurgeStop.Integration.Tests
             Assert.Equal(2, sut.LineItems.Count);
             var result = sut.TotalPrice; 
 
-            Assert.Equal(3.77m, result.FirstOrDefault().TotalSum);
-        }
-
-        [Fact]
-        public async Task Total_prices_of_line_items_with_many_currencies()
-        {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
-
-            var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.ExistsAsync(transactionId));
-
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
-
-            Assert.Single(sut.LineItems);
-
-            var secondLineItem = new LineItem() { Price = new Price { Amount = 2.54m, CurrencyCode = "EUR" } };
-            await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
-
-            var thirdLineItem = new LineItem() { Price = new Price { Amount = 12.54m, CurrencyCode = "USD" } };
-            await UpdateLineItems(sut.Id, thirdLineItem, fixture.context);
-
-            await fixture.context.Entry(sut).ReloadAsync();
-
-            Assert.Equal(3, sut.LineItems.Count);
-            var result = sut.TotalPrice;
-
-            Assert.Equal(3.77m, result.FirstOrDefault(c => c.CurrencyCode.Value == "EUR").TotalSum);
-            Assert.Equal(12.54m, result.FirstOrDefault(c => c.CurrencyCode.Value == "USD").TotalSum);
+            Assert.Equal(3.77m, result);
         }
 
         [Fact]

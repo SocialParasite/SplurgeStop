@@ -2,7 +2,7 @@
 {
     public struct PurchaseTotalSum
     {
-        public CurrencyCode CurrencyCode { get; set; }
+        public Currency Currency { get; set; }
         public decimal TotalSum { get; set; }
     }
 }

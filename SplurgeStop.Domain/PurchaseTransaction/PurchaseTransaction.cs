@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GuidHelpers;
@@ -30,16 +31,14 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
-        public IEnumerable<PurchaseTotalSum> TotalPrice => GetTotalSums();
+        public decimal TotalPrice => GetTotalSum();
 
-        private IEnumerable<PurchaseTotalSum> GetTotalSums()
+        private decimal GetTotalSum()
         {
-            return LineItems.GroupBy(i => i.Price.CurrencyCode)
-                .Select(g => new PurchaseTotalSum
-                {
-                    CurrencyCode = g.Key,
-                    TotalSum = g.Sum(x => x.Price.Amount)
-                });
+            var credit = LineItems.Where(i => i.Price.Booking == Booking.Credit).Sum(i => i.Price.Amount);
+            var debit = LineItems.Where(i => i.Price.Booking == Booking.Debit).Sum(i => i.Price.Amount);
+            
+            return credit - debit;
         }
 
         internal void UpdateLineItem(LineItem lineItem)
