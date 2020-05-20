@@ -21,10 +21,4 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             PositionRelativeToPrice = position;
         }
     }
-
-    public enum CurrencySymbolPosition
-    {
-        front,
-        end
-    }
 }
