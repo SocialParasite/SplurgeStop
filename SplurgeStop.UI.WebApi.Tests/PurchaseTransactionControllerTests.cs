@@ -13,6 +13,7 @@ using Xunit;
 
 namespace SplurgeStop.UI.WebApi.Tests
 {
+    [Trait("Unit tests", "WebApi/PurchaseTransactionController")]
     public sealed class PurchaseTransactionControllerTests
     {
         private static List<PurchaseTransactionStripped> MockPurchaseTransactions()

@@ -7,7 +7,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
     {
         protected Money() { }
 
-        protected Money(decimal amount, Currency currency)
+        public Money(decimal amount, Currency currency)
         {
             if (amount < 0)
                 throw new ArgumentException("Price cannot be negative", nameof(amount));
@@ -19,18 +19,18 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             Currency = currency;
         }
 
-        protected Money(decimal amount, string currencyCode, string currencySymbol, CurrencySymbolPosition currencySymbolPosition)
-            : this (amount, new Currency(currencyCode, currencySymbol, currencySymbolPosition))
-            {
+        public Money(decimal amount, string currencyCode, string currencySymbol, CurrencySymbolPosition currencySymbolPosition)
+            : this(amount, new Currency(currencyCode, currencySymbol, currencySymbolPosition))
+        {
         }
-
 
         public decimal Amount { get; internal set; }
         public Currency Currency { get; internal set; }
 
         public Money Add(Money summand)
         {
-            if (Currency.CurrencyCode != summand.Currency.CurrencyCode)
+            if (Currency.CurrencyCode != summand.Currency.CurrencyCode
+                && Currency.CurrencySymbol != summand.Currency.CurrencySymbol)
                 throw new ArgumentException("Cannot sum amounts with different currencies");
 
             return new Money(Amount + summand.Amount, Currency.CurrencyCode, Currency.CurrencySymbol, Currency.PositionRelativeToPrice);
@@ -38,16 +38,19 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public Money Subtract(Money subtrahend)
         {
-            if (Currency != subtrahend.Currency)
+            if (Currency.CurrencyCode != subtrahend.Currency.CurrencyCode
+                && Currency.CurrencySymbol != subtrahend.Currency.CurrencySymbol)
                 throw new ArgumentException("Cannot subtract amounts with different currencies");
 
-            return new Money(Amount - subtrahend.Amount, Currency.CurrencyCode, Currency.CurrencySymbol, Currency.PositionRelativeToPrice);
+            var newAmount = Amount >= subtrahend.Amount ? Amount - subtrahend.Amount : subtrahend.Amount - Amount;
+
+            return new Money(newAmount, Currency.CurrencyCode, Currency.CurrencySymbol, Currency.PositionRelativeToPrice);
         }
 
-        public static Money operator +(Money summand1, Money summand2) 
+        public static Money operator +(Money summand1, Money summand2)
             => summand1.Add(summand2);
 
-        public static Money operator -(Money minuend, Money subtrahend) 
+        public static Money operator -(Money minuend, Money subtrahend)
             => minuend.Subtract(subtrahend);
 
         public override string ToString()
@@ -59,7 +62,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Amount;
+            yield return Amount + Currency.CurrencyCode + Currency.CurrencySymbol;
         }
     }
 }
