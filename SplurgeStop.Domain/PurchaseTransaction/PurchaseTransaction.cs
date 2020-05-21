@@ -31,14 +31,15 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
-        public decimal TotalPrice => GetTotalSum();
+        public string TotalPrice => GetTotalSum();
 
-        private decimal GetTotalSum()
+        private string GetTotalSum()
         {
             var credit = LineItems.Where(i => i.Price.Booking == Booking.Credit).Sum(i => i.Price.Amount);
             var debit = LineItems.Where(i => i.Price.Booking == Booking.Debit).Sum(i => i.Price.Amount);
-            
-            return credit - debit;
+            var currency = LineItems.Select(i => i.Price.Currency).First();
+
+            return new Money((credit - debit), currency).ToString();
         }
 
         internal void UpdateLineItem(LineItem lineItem)

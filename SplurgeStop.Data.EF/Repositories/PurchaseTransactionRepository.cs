@@ -32,6 +32,7 @@ namespace SplurgeStop.Data.EF.Repositories
         {
             return await context.Purchases
                 .Include(p => p.Store)
+                .Include(p => p.LineItems)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }

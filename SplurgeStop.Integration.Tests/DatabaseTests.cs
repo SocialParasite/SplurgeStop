@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
@@ -151,7 +152,7 @@ namespace SplurgeStop.Integration.Tests
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(2, sut.LineItems.Count);
-            var result = sut.TotalPrice; 
+            var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal))); 
 
             Assert.Equal(3.77m, result);
         }
