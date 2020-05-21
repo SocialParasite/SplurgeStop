@@ -1,30 +1,60 @@
 import { http } from './../http';
 
 export interface PurchaseTransactionData {
-  purchaseTransactionId: string;
+  id: string;
   storeName: string;
   purchaseDate: Date;
-  totalPrice: number;
+  totalPrice: string;
   itemCount: number;
 }
 
 export interface PurchaseTransactionDataFromServer {
-  purchaseTransactionId: string;
+  id: string;
   storeName: string;
   purchaseDate: Date;
-  totalPrice: number;
+  totalPrice: string;
   itemCount: number;
+}
+
+export interface DetailedPurchaseTransactionData {
+  id: { [key: string]: any[] };
+  purchaseDate: { [key: string]: any[] };
+  store: { [key: string]: any[] };
+  lineItems: { [key: string]: any[] };
+  notes: string;
+  totalPrice: string;
+}
+
+export interface DetailedPurchaseTransactionDataFromServer {
+  id: { [key: string]: any[] };
+  purchaseDate: { [key: string]: any[] };
+  store: { [key: string]: any[] };
+  lineItems: { [key: string]: any[] };
+  notes: string;
+  totalPrice: string;
 }
 
 export const mapPurchaseTransactionFromServer = (
   transaction: PurchaseTransactionDataFromServer,
 ): PurchaseTransactionData => ({
   ...transaction,
-  purchaseTransactionId: transaction.purchaseTransactionId,
+  id: transaction.id,
   storeName: transaction.storeName,
   purchaseDate: new Date(transaction.purchaseDate),
   totalPrice: transaction.totalPrice,
   itemCount: transaction.itemCount,
+});
+
+export const mapDetailedPurchaseTransactionFromServer = (
+  transaction: DetailedPurchaseTransactionDataFromServer,
+): DetailedPurchaseTransactionData => ({
+  ...transaction,
+  id: transaction.id,
+  purchaseDate: transaction.purchaseDate,
+  store: transaction.store,
+  lineItems: transaction.lineItems,
+  totalPrice: transaction.totalPrice,
+  notes: transaction.notes,
 });
 
 export const getPurchaseTransactions = async (): Promise<
@@ -41,5 +71,27 @@ export const getPurchaseTransactions = async (): Promise<
     }
   } catch (ex) {
     return [];
+  }
+};
+
+export const getPurchaseTransaction = async (
+  id: string,
+): Promise<DetailedPurchaseTransactionData | null> => {
+  try {
+    const result = await http<
+      undefined,
+      DetailedPurchaseTransactionDataFromServer
+    >({
+      path: `/PurchaseTransaction/${id}`,
+    });
+    if (result.ok && result.parsedBody) {
+      console.log(result.body);
+      return mapDetailedPurchaseTransactionFromServer(result.parsedBody);
+    } else {
+      return null;
+    }
+  } catch (ex) {
+    console.error(ex);
+    return null;
   }
 };

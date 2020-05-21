@@ -8,6 +8,7 @@ import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransacti
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray2 } from './Styles';
 import { configureStore } from './Store';
+import { PurchaseTransactionList } from './PurchaseTransaction/PurchaseTransactionList';
 
 const store = configureStore();
 
@@ -26,21 +27,6 @@ const App: React.FC = () => {
           <Switch>
             <Redirect from="/home" to="/" />
             <Route exact path="/" component={HomePage} />
-            {/* <Route path="/search" component={SearchPage} /> */}
-            <Route path="/PurchaseTransaction">
-              <Suspense
-                fallback={
-                  <div
-                    css={css`
-                      margin-top: 100px;
-                      text-align: center;
-                    `}
-                  >
-                    Loading...
-                  </div>
-                }
-              ></Suspense>
-            </Route>
             <Route
               path="/PurchaseTransaction/:id"
               component={PurchaseTransactionPage}
