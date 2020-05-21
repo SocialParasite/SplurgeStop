@@ -5,8 +5,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 {
     public class Money : ValueObject
     {
-        protected Money() { }
-
         public Money(decimal amount, Currency currency)
         {
             if (amount < 0)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -155,6 +156,35 @@ namespace SplurgeStop.Integration.Tests
             var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal))); 
 
             Assert.Equal(3.77m, result);
+        }
+
+        [Fact]
+        public async Task Total_price_of_line_items_with_debit_item()
+        {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(transactionId));
+
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+            Assert.Single(sut.LineItems);
+
+            var secondLineItem = new LineItem() { Price = new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end) };
+            await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
+
+            var debitLineItem = new LineItem() { Price = new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end) };
+            await UpdateLineItems(sut.Id, debitLineItem, fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(3, sut.LineItems.Count);
+            Assert.Equal(2, sut.LineItems.Count(i => i.Price.Booking == Booking.Credit));
+            Assert.Equal(1, sut.LineItems.Count(i => i.Price.Booking == Booking.Debit));
+            
+            var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal)));
+
+            Assert.Equal(2.23m, result);
         }
 
         [Fact]
