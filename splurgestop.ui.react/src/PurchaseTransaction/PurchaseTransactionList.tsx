@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 import { css, jsx } from '@emotion/core';
 import { PurchaseTransactionData } from './PurchaseTransactionData';
 import { PurchaseTransaction } from './PurchaseTransaction';
+import { Table } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
   data: PurchaseTransactionData[];
@@ -11,19 +13,22 @@ interface Props {
 
 export const PurchaseTransactionList: FC<Props> = ({ data, renderItem }) => {
   return (
-    <table>
-      <tr
-        css={css`
-          text-align: left;
-        `}
-      >
-        <th>Purchase date</th>
-        <th>Store</th>
-        <th>Total spent</th>
-        <th>Item count</th>
-      </tr>
+    <Table bordered hover size="sm">
+      <thead>
+        <tr
+          css={css`
+            background: burlywood;
+            text-align: left;
+          `}
+        >
+          <th>Purchase date</th>
+          <th>Store</th>
+          <th>Total spent</th>
+          <th>Item count</th>
+        </tr>
+      </thead>
       {data.map((transaction) => (
-        <tbody key={transaction.purchaseTransactionId}>
+        <tbody key={transaction.id}>
           {renderItem ? (
             renderItem(transaction)
           ) : (
@@ -31,6 +36,6 @@ export const PurchaseTransactionList: FC<Props> = ({ data, renderItem }) => {
           )}
         </tbody>
       ))}
-    </table>
+    </Table>
   );
 };

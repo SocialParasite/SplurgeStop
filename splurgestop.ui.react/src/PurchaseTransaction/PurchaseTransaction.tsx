@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { PurchaseTransactionData } from './PurchaseTransactionData';
@@ -13,7 +14,16 @@ export const PurchaseTransaction: FC<Props> = ({ data }) => (
       text-align: right;
     `}
   >
-    <td>{data.purchaseDate.toLocaleDateString()}</td>
+    <td>
+      <Link
+        css={css`
+          text-decoration: none;
+        `}
+        to={`PurchaseTransaction/${data.id}`}
+      >
+        {data.purchaseDate.toLocaleDateString()}
+      </Link>
+    </td>
     <td>{data.storeName}</td>
     <td>{data.totalPrice}</td>
     <td>{data.itemCount}</td>

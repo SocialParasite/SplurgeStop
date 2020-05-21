@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { Header } from './Header';
 import { HomePage } from './HomePage';
+import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransactionPage';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray2 } from './Styles';
@@ -25,8 +26,8 @@ const App: React.FC = () => {
           <Switch>
             <Redirect from="/home" to="/" />
             <Route exact path="/" component={HomePage} />
-            <Route path="/search" component={HomePage} />
-            <Route path="/ask">
+            {/* <Route path="/search" component={SearchPage} /> */}
+            <Route path="/PurchaseTransaction">
               <Suspense
                 fallback={
                   <div
@@ -40,6 +41,10 @@ const App: React.FC = () => {
                 }
               ></Suspense>
             </Route>
+            <Route
+              path="/PurchaseTransaction/:id"
+              component={PurchaseTransactionPage}
+            />
           </Switch>
         </div>
       </BrowserRouter>
