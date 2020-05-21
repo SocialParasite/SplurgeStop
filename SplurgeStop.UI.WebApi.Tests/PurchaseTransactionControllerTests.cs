@@ -28,7 +28,7 @@ namespace SplurgeStop.UI.WebApi.Tests
                     ItemCount = i,
                     PurchaseDate = DateTime.Now.AddDays(-i),
                     StoreName = $"Store-{i}",
-                    TotalPrice = (decimal)12.34 * i,
+                    TotalPrice = $"{(decimal)12.34 * i} €",
                 });
             }
 
