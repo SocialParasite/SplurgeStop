@@ -1,4 +1,3 @@
-import React from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
@@ -20,7 +19,7 @@ export const Header = () => (
     `}
   >
     <a
-      href="./"
+      href="/"
       css={css`
         font-size: 24px;
         font-weight: bold;

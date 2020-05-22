@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { Header } from './Header';
@@ -8,7 +8,6 @@ import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransacti
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray2 } from './Styles';
 import { configureStore } from './Store';
-import { PurchaseTransactionList } from './PurchaseTransaction/PurchaseTransactionList';
 
 const store = configureStore();
 

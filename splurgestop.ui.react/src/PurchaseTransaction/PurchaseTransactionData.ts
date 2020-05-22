@@ -20,7 +20,20 @@ export interface DetailedPurchaseTransactionData {
   id: { [key: string]: any[] };
   purchaseDate: { [key: string]: any[] };
   store: { [key: string]: any[] };
-  lineItems: { [key: string]: any[] };
+  lineItems: [
+    {
+      id: string;
+      price: {
+        booking: number;
+        amount: number;
+        currency: {
+          currencyCode: string;
+          currencySymbol: string;
+          positionRelativeToSource: number;
+        };
+      };
+    },
+  ];
   notes: string;
   totalPrice: string;
 }
@@ -29,7 +42,20 @@ export interface DetailedPurchaseTransactionDataFromServer {
   id: { [key: string]: any[] };
   purchaseDate: { [key: string]: any[] };
   store: { [key: string]: any[] };
-  lineItems: { [key: string]: any[] };
+  lineItems: [
+    {
+      id: string;
+      price: {
+        booking: number;
+        amount: number;
+        currency: {
+          currencyCode: string;
+          currencySymbol: string;
+          positionRelativeToSource: number;
+        };
+      };
+    },
+  ];
   notes: string;
   totalPrice: string;
 }
@@ -85,7 +111,6 @@ export const getPurchaseTransaction = async (
       path: `/PurchaseTransaction/${id}`,
     });
     if (result.ok && result.parsedBody) {
-      console.log(result.body);
       return mapDetailedPurchaseTransactionFromServer(result.parsedBody);
     } else {
       return null;

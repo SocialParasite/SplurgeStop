@@ -4,11 +4,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import {
   DetailedPurchaseTransactionData,
   getPurchaseTransaction,
-  mapDetailedPurchaseTransactionFromServer,
-  DetailedPurchaseTransactionDataFromServer,
 } from './PurchaseTransactionData';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { Table } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface RouteParams {
   id: string;
@@ -43,16 +41,51 @@ export const PurchaseTransactionPage: FC<RouteComponentProps<RouteParams>> = ({
             </div>
             <div>
               <div>
-                <p>
-                  {purchaseTransaction.purchaseDate.value}
-                  {/* {new Date(String(purchaseTransaction.purchaseDate.value))} */}
-                </p>
+                <p>{purchaseTransaction.purchaseDate.value}</p>
               </div>
               <div>{purchaseTransaction.totalPrice} </div>
               <div>
                 <p>{purchaseTransaction.notes}</p>
               </div>
-              <div>{purchaseTransaction.id.value}</div>
+              <div>
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {purchaseTransaction.lineItems.map((item, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>
+                            {console.log(
+                              item.price.currency.positionRelativeToSource,
+                            )}
+                            Product name goes here...
+                          </td>
+                          <td>
+                            {item.price.currency.positionRelativeToSource === 0
+                              ? String(
+                                  item.price.amount +
+                                    ' ' +
+                                    item.price.currency.currencySymbol,
+                                )
+                              : String(
+                                  item.price.currency.currencySymbol +
+                                    ' ' +
+                                    item.price.amount,
+                                )}
+                          </td>
+                          <td>{item.price.currency.currencyCode}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </div>
             </div>
           </Fragment>
         )}
