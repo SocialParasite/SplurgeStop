@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GuidHelpers;
+﻿using GuidHelpers;
 
 namespace SplurgeStop.Domain.StoreProfile
 {
@@ -11,6 +8,7 @@ namespace SplurgeStop.Domain.StoreProfile
         {
             Id = new StoreId(SequentialGuid.NewSequentialGuid());
         }
+
         public StoreId Id { get; }
         public string Name { get; set; }
         // store name, K-Citymarket Länsikeskus

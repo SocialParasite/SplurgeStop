@@ -12,9 +12,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItemId Id { get; }
 
-        public Price Price { get; set; }        
+        public Price Price { get; set; }      
 
-        //public int Quantitity { get; set; } // change type? Could be g, l, kg, pieces
+        //public int Quantitity { get; set; } // this will always be pieces; other "measurements" in Product 
+        //(change type? Could be g, l, kg, pieces)
+
         //public string Notes { get; set; }
     }
 }
