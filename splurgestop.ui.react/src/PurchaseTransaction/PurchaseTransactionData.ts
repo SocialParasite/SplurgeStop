@@ -29,7 +29,7 @@ export interface DetailedPurchaseTransactionData {
         currency: {
           currencyCode: string;
           currencySymbol: string;
-          positionRelativeToSource: number;
+          positionRelativeToSource: string;
         };
       };
     },
@@ -51,7 +51,7 @@ export interface DetailedPurchaseTransactionDataFromServer {
         currency: {
           currencyCode: string;
           currencySymbol: string;
-          positionRelativeToSource: number;
+          positionRelativeToSource: string;
         };
       };
     },

@@ -67,7 +67,8 @@ export const PurchaseTransactionPage: FC<RouteComponentProps<RouteParams>> = ({
                             Product name goes here...
                           </td>
                           <td>
-                            {item.price.currency.positionRelativeToSource === 0
+                            {item.price.currency.positionRelativeToSource ===
+                            'end'
                               ? String(
                                   item.price.amount +
                                     ' ' +
