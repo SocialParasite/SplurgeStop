@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const PurchaseTransaction: FC<Props> = ({ data }) => (
-  <Fragment>
+  <Fragment key={data.id}>
     <td>
       <Link
         css={css`

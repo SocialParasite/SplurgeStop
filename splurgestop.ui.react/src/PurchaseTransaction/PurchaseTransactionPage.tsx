@@ -60,14 +60,9 @@ export const PurchaseTransactionPage: FC<RouteComponentProps<RouteParams>> = ({
                     {purchaseTransaction.lineItems.map((item, i) => {
                       return (
                         <tr key={i}>
+                          <td>Product name goes here...</td>
                           <td>
-                            {console.log(
-                              item.price.currency.positionRelativeToSource,
-                            )}
-                            Product name goes here...
-                          </td>
-                          <td>
-                            {item.price.currency.positionRelativeToSource ===
+                            {item.price.currency.positionRelativeToPrice ===
                             'end'
                               ? String(
                                   item.price.amount +
