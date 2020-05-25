@@ -32,7 +32,13 @@ export const PurchaseTransactionList: FC<Props> = ({ data, renderItem }) => {
           {renderItem ? (
             renderItem(transaction)
           ) : (
-            <PurchaseTransaction data={transaction} />
+            <tr
+              css={css`
+                text-align: right;
+              `}
+            >
+              <PurchaseTransaction data={transaction} />
+            </tr>
           )}
         </tbody>
       ))}

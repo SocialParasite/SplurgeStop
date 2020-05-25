@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -9,11 +9,7 @@ interface Props {
 }
 
 export const PurchaseTransaction: FC<Props> = ({ data }) => (
-  <tr
-    css={css`
-      text-align: right;
-    `}
-  >
+  <Fragment>
     <td>
       <Link
         css={css`
@@ -27,5 +23,5 @@ export const PurchaseTransaction: FC<Props> = ({ data }) => (
     <td>{data.storeName}</td>
     <td>{data.totalPrice}</td>
     <td>{data.itemCount}</td>
-  </tr>
+  </Fragment>
 );
