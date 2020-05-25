@@ -12,7 +12,8 @@ namespace SplurgeStop.Integration.Tests
     public static class HelperMethods
     {
         public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(SplurgeStopDbContext context,
-            decimal price = 1.00m)
+            decimal price = 1.00m,
+            LineItem lineItem = null)
         {
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
@@ -44,6 +45,7 @@ namespace SplurgeStop.Integration.Tests
             updateLineItemCommand.Id = transaction.Id;
             updateLineItemCommand.LineItem = LineItemBuilder
                 .LineItem(new Price(price, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithNotes(lineItem?.Notes)
                 .Build();
             await transactionController.Put(updateLineItemCommand);
 

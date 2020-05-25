@@ -195,7 +195,21 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
-        public async Task Update_existing_lineItem() { }
+        public async Task Add_lineItem_with_notes() 
+        {
+            var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithNotes("My Notes!")
+                .Build();
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context,1m, lineItem);
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.True(await repository.ExistsAsync(transactionId));
+            Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault().Notes);
+        }
 
         [Fact]
         public void Invalid_lineItem() 
@@ -203,7 +217,6 @@ namespace SplurgeStop.Integration.Tests
             Assert.Throws<ArgumentNullException>(()
                 => LineItemBuilder.LineItem(null).Build());
         }
-
 
         [Fact]
         public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
