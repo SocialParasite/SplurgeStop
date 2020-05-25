@@ -41,7 +41,14 @@ export const PurchaseTransactionPage: FC<RouteComponentProps<RouteParams>> = ({
             </div>
             <div>
               <div>
-                <p>{purchaseTransaction.purchaseDate.value}</p>
+                <p>
+                  {new Date(
+                    String(purchaseTransaction.purchaseDate.value.slice(0, 10)),
+                  )
+                    .toLocaleDateString()
+                    .split('/')
+                    .join('.')}
+                </p>
               </div>
               <div>{purchaseTransaction.totalPrice} </div>
               <div>
