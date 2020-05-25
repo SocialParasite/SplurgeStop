@@ -19,6 +19,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         //public int Quantitity { get; set; } // this will always be pieces; other "measurements" in Product 
         //(change type? Could be g, l, kg, pieces)
 
+        public void UpdateLineItemPrice(Price newPrice)
+        {
+            Price = newPrice ?? throw new ArgumentException("Price is required.");
+        }
+
         public string Notes { get; set; }
     }
 

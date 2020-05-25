@@ -213,6 +213,32 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
+        public async Task Update_LineItem_price()
+        {
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 22.33m);
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(transactionId));
+
+            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+            Assert.NotNull(sut.LineItems);
+            Assert.Single(sut.LineItems);
+            Assert.Equal(22.33m, sut.LineItems.FirstOrDefault().Price.Amount);
+
+            var updatedLineItem = sut.LineItems.FirstOrDefault();
+            
+            updatedLineItem.UpdateLineItemPrice(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end));
+
+            await UpdateLineItems(sut.Id, updatedLineItem, fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Single(sut.LineItems);
+            Assert.Equal(33.44m, sut.LineItems.FirstOrDefault().Price.Amount);
+        }
+
+        [Fact]
         public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
         {
             var repository = new PurchaseTransactionRepository(fixture.context);
