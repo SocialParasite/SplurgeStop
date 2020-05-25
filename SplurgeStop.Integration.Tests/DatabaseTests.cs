@@ -150,9 +150,10 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
-            var lineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+            var secondLineItem = LineItemBuilder
+                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .Build();
-            var secondLineItem = lineItem;
+
             await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
@@ -209,13 +210,6 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.True(await repository.ExistsAsync(transactionId));
             Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault().Notes);
-        }
-
-        [Fact]
-        public void Invalid_lineItem() 
-        {
-            Assert.Throws<ArgumentNullException>(()
-                => LineItemBuilder.LineItem(null).Build());
         }
 
         [Fact]

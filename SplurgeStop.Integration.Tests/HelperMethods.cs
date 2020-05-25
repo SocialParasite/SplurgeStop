@@ -78,7 +78,6 @@ namespace SplurgeStop.Integration.Tests
             var updateCommand = new Commands.SetPurchaseTransactionLineItem();
             updateCommand.Id = id;
             updateCommand.LineItem = lineItem;
-            updateCommand.LineItem.Price = lineItem.Price;
 
             await transactionController.Put(updateCommand);
         }

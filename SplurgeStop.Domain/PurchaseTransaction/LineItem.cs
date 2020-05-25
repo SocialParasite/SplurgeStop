@@ -14,7 +14,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItemId Id { get; }
 
-        public Price Price { get; set; }
+        public Price Price { get; internal set; }
 
         //public int Quantitity { get; set; } // this will always be pieces; other "measurements" in Product 
         //(change type? Could be g, l, kg, pieces)
@@ -42,7 +42,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             LineItem lineItem = new LineItem();
             lineItem.Price = Price ?? throw new ArgumentNullException("Price is required.");
-            lineItem.Notes = Notes ?? String.Empty;
+            lineItem.Notes = Notes ?? string.Empty;
 
             return lineItem;
         }
