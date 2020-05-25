@@ -127,7 +127,11 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
-            await UpdateLineItems(sut.Id, new LineItem(), fixture.context);
+            var lineItem = LineItemBuilder
+                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .Build();
+
+            await UpdateLineItems(sut.Id, lineItem, fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
 
@@ -146,13 +150,15 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
-            var secondLineItem = new LineItem() { Price = new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end) };
+            var lineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .Build();
+            var secondLineItem = lineItem;
             await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(2, sut.LineItems.Count);
-            var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal))); 
+            var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal)));
 
             Assert.Equal(3.77m, result);
         }
@@ -169,10 +175,12 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
-            var secondLineItem = new LineItem() { Price = new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end) };
+            var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .Build();
             await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
 
-            var debitLineItem = new LineItem() { Price = new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end) };
+            var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end))
+                .Build();
             await UpdateLineItems(sut.Id, debitLineItem, fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
@@ -180,7 +188,7 @@ namespace SplurgeStop.Integration.Tests
             Assert.Equal(3, sut.LineItems.Count);
             Assert.Equal(2, sut.LineItems.Count(i => i.Price.Booking == Booking.Credit));
             Assert.Equal(1, sut.LineItems.Count(i => i.Price.Booking == Booking.Debit));
-            
+
             var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal)));
 
             Assert.Equal(2.23m, result);
@@ -188,6 +196,14 @@ namespace SplurgeStop.Integration.Tests
 
         [Fact]
         public async Task Update_existing_lineItem() { }
+
+        [Fact]
+        public void Invalid_lineItem() 
+        {
+            Assert.Throws<ArgumentNullException>(()
+                => LineItemBuilder.LineItem(null).Build());
+        }
+
 
         [Fact]
         public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
