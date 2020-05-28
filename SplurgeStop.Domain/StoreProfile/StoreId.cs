@@ -21,6 +21,8 @@ namespace SplurgeStop.Domain.StoreProfile
             yield return Value;
         }
 
+        public static implicit operator Guid(StoreId self) => self.Value;
+
         public static implicit operator StoreId(Guid value)
             => new StoreId(new SequentialGuid(value));
     }
