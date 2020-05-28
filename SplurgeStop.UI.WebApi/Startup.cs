@@ -10,6 +10,7 @@ using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.UI.WebApi
 {
@@ -32,6 +33,8 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<IUnitOfWork, EfCoreUnitOfWork>();
             services.AddTransient<IPurchaseTransactionRepository, PurchaseTransactionRepository>();
             services.AddTransient<IPurchaseTransactionService, PurchaseTransactionService>();
+            services.AddTransient<IStoreRepository, StoreRepository>();
+            services.AddTransient<IStoreService, StoreService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder.AllowAnyMethod()
