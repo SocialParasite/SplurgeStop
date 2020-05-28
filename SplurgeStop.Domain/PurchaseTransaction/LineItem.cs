@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Data;
 using GuidHelpers;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
     public class LineItem
     {
-
-        internal LineItem()
+        internal LineItem(LineItemId id)
         {
-            Id = new LineItemId(SequentialGuid.NewSequentialGuid());
+            Id = id;
         }
 
         public LineItemId Id { get; }
@@ -45,7 +43,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItem Build()
         {
-            LineItem lineItem = new LineItem();
+            LineItem lineItem = new LineItem(new LineItemId(SequentialGuid.NewSequentialGuid()));
             lineItem.UpdateLineItemPrice(Price);
             lineItem.Notes = Notes ?? string.Empty;
 
