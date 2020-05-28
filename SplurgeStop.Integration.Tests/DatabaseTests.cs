@@ -10,6 +10,7 @@ using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.HelperMethods;
 using transaction = SplurgeStop.Domain.PurchaseTransaction;
+using store = SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -43,6 +44,8 @@ namespace SplurgeStop.Integration.Tests
             this.fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
         }
 
+
+        // PURCHASETRANSACTION
         [Fact]
         public async Task Purchase_transaction_inserted_to_database()
         {
@@ -54,6 +57,24 @@ namespace SplurgeStop.Integration.Tests
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.True(await repository.ExistsAsync(transactionId));
+        }
+
+        [Fact]
+        public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
+        {
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
+            var service = new PurchaseTransactionService(repository, unitOfWork);
+            var transaction = new PurchaseTransaction();
+
+            var transactionController = new PurchaseTransactionController(service);
+            var command = new transaction.Commands.Create();
+            command.Transaction = transaction;
+
+            await transactionController.Post(command);
+            var sut = await fixture.context.Entry(transaction).GetDatabaseValuesAsync();
+
+            Assert.Null(sut);
         }
 
         [Fact]
@@ -96,52 +117,9 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
         }
-
-        //[Fact]
-        //public async Task Update_Store_name()
-        //{
-        //    PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
-
-        //    var repository = new PurchaseTransactionRepository(fixture.context);
-        //    Assert.True(await repository.ExistsAsync(transactionId));
-
-        //    var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
-
-        //    var storeId = sut.Store.Id;
-
-        //    Assert.NotNull(sut.Store);
-        //    Assert.Equal("Test market", sut.Store.Name);
-
-        //    await UpdateStoreName(sut.Store.Id, "Mega Market", fixture.context);
-
-        //    await fixture.context.Entry(sut).ReloadAsync();
-
-        //    Assert.Equal("Mega Market", sut.Store.Name);
-        //    Assert.Equal(storeId, sut.Store.Id);
-        //}
-        [Fact]
-        public async Task Update_Store_name()
-        {
-            Store store = await CreateValidStore(fixture.context);
-
-            var repository = new StoreRepository(fixture.context);
-            Assert.True(await repository.ExistsAsync(store.Id));
-
-            var sut = await repository.LoadFullStoreAsync(store.Id);
-
-            var storeId = sut.Id;
-
-            Assert.NotNull(sut);
-            Assert.Equal("Test market", sut.Name);
-
-            await UpdateStoreName(sut.Id, "Mega Market", fixture.context);
-
-            await fixture.context.Entry(sut).ReloadAsync();
-
-            Assert.Equal("Mega Market", sut.Name);
-            Assert.Equal(storeId, sut.Id);
-        }
-
+        
+        // PURCHASETRANSACTION
+        // LineItems
         [Fact]
         public async Task Add_transaction_lineItem()
         {
@@ -265,22 +243,59 @@ namespace SplurgeStop.Integration.Tests
             Assert.Equal(33.44m, sut.LineItems.FirstOrDefault().Price.Amount);
         }
 
+        // STORE
         [Fact]
-        public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
+        public async Task Store_inserted_to_database()
         {
-            var repository = new PurchaseTransactionRepository(fixture.context);
-            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-            var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new PurchaseTransaction();
-         
-            var transactionController = new PurchaseTransactionController(service);
-            var command = new transaction.Commands.Create();
-            command.Transaction = transaction;
+            Store store = await CreateValidStore(fixture.context);
 
-            await transactionController.Post(command);
-            var sut = await fixture.context.Entry(transaction).GetDatabaseValuesAsync();
+            var repository = new StoreRepository(fixture.context);
+            var sut = await repository.LoadStoreAsync(store.Id);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.True(await repository.ExistsAsync(store.Id));
+        }
+
+        [Fact]
+        public async Task Invalid_Store_Cannot_Be_Persisted_To_Database()
+        {
+            var repository = new StoreRepository(fixture.context);
+            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
+            var service = new StoreService(repository, unitOfWork);
+            var newStore = new Store();
+
+            var storeController = new StoreController(service);
+            var command = new store.Commands.Create();
+            command.Store = newStore;
+
+            await storeController.Post(command);
+            var sut = await fixture.context.Entry(newStore).GetDatabaseValuesAsync();
 
             Assert.Null(sut);
+        }
+
+        [Fact]
+        public async Task Update_Store_name()
+        {
+            Store store = await CreateValidStore(fixture.context);
+
+            var repository = new StoreRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(store.Id));
+
+            var sut = await repository.LoadFullStoreAsync(store.Id);
+
+            var storeId = sut.Id;
+
+            Assert.NotNull(sut);
+            Assert.Equal("Test market", sut.Name);
+
+            await UpdateStoreName(sut.Id, "Mega Market", fixture.context);
+
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal("Mega Market", sut.Name);
+            Assert.Equal(storeId, sut.Id);
         }
     }
 }
