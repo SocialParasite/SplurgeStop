@@ -21,6 +21,18 @@ namespace SplurgeStop.UI.WebApi.Controllers
             this.service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<Store>> GetStores()
+        {
+            return await service.GetAllStores();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<Store> GetStore(Guid id)
+        {
+            return await service.GetDetailedStore(id);
+        }
+
         [HttpPost]
         public Task<IActionResult> Post(Commands.Create request)
         {
