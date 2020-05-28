@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.HelperMethods;
+using transaction = SplurgeStop.Domain.PurchaseTransaction;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -67,7 +69,7 @@ namespace SplurgeStop.Integration.Tests
             var transaction = new PurchaseTransaction();
             
             var transactionController = new PurchaseTransactionController(service);
-            var command = new Commands.Create();
+            var command = new transaction.Commands.Create();
             command.Transaction = transaction;
 
             await transactionController.Post(command);
@@ -95,24 +97,49 @@ namespace SplurgeStop.Integration.Tests
             Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
         }
 
+        //[Fact]
+        //public async Task Update_Store_name()
+        //{
+        //    PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+
+        //    var repository = new PurchaseTransactionRepository(fixture.context);
+        //    Assert.True(await repository.ExistsAsync(transactionId));
+
+        //    var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+
+        //    var storeId = sut.Store.Id;
+
+        //    Assert.NotNull(sut.Store);
+        //    Assert.Equal("Test market", sut.Store.Name);
+
+        //    await UpdateStoreName(sut.Store.Id, "Mega Market", fixture.context);
+
+        //    await fixture.context.Entry(sut).ReloadAsync();
+
+        //    Assert.Equal("Mega Market", sut.Store.Name);
+        //    Assert.Equal(storeId, sut.Store.Id);
+        //}
         [Fact]
         public async Task Update_Store_name()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+            Store store = await CreateValidStore(fixture.context);
 
-            var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.ExistsAsync(transactionId));
+            var repository = new StoreRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(store.Id));
 
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            var sut = await repository.LoadFullStoreAsync(store.Id);
 
-            Assert.NotNull(sut.Store);
-            Assert.Equal("Test market", sut.Store.Name);
+            var storeId = sut.Id;
+
+            Assert.NotNull(sut);
+            Assert.Equal("Test market", sut.Name);
 
             await UpdateStoreName(sut.Id, "Mega Market", fixture.context);
 
             await fixture.context.Entry(sut).ReloadAsync();
 
-            Assert.Equal("Mega Market", sut.Store.Name);
+            Assert.Equal("Mega Market", sut.Name);
+            Assert.Equal(storeId, sut.Id);
         }
 
         [Fact]
@@ -247,7 +274,7 @@ namespace SplurgeStop.Integration.Tests
             var transaction = new PurchaseTransaction();
          
             var transactionController = new PurchaseTransactionController(service);
-            var command = new Commands.Create();
+            var command = new transaction.Commands.Create();
             command.Transaction = transaction;
 
             await transactionController.Post(command);
