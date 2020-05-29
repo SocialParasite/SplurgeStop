@@ -247,38 +247,18 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Store_inserted_to_database()
         {
-            Store store = await CreateValidStore(fixture.context);
+            Store store = await CreateValidStore();
 
             var repository = new StoreRepository(fixture.context);
             var sut = await repository.LoadStoreAsync(store.Id);
 
-            await fixture.context.Entry(sut).ReloadAsync();
-
-            Assert.True(await repository.ExistsAsync(store.Id));
-        }
-
-        [Fact]
-        public async Task Invalid_Store_Cannot_Be_Persisted_To_Database()
-        {
-            var repository = new StoreRepository(fixture.context);
-            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-            var service = new StoreService(repository, unitOfWork);
-            var newStore = new Store();
-
-            var storeController = new StoreController(service);
-            var command = new store.Commands.Create();
-            command.Store = newStore;
-
-            await storeController.Post(command);
-            var sut = await fixture.context.Entry(newStore).GetDatabaseValuesAsync();
-
-            Assert.Null(sut);
+            Assert.True(await repository.ExistsAsync(sut.Id));
         }
 
         [Fact]
         public async Task Update_Store_name()
         {
-            Store store = await CreateValidStore(fixture.context);
+            Store store = await CreateValidStore();
 
             var repository = new StoreRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(store.Id));
@@ -290,7 +270,7 @@ namespace SplurgeStop.Integration.Tests
             Assert.NotNull(sut);
             Assert.Equal("Test market", sut.Name);
 
-            await UpdateStoreName(sut.Id, "Mega Market", fixture.context);
+            await UpdateStoreName(sut.Id, "Mega Market");
 
             await fixture.context.Entry(sut).ReloadAsync();
 

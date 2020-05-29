@@ -40,10 +40,14 @@ namespace SplurgeStop.Domain.StoreProfile
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Store.Id))
-                throw new InvalidOperationException($"Entity with id {cmd.Store.Id} already exists");
+            if (await repository.ExistsAsync(cmd.Id))
+                throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            await repository.AddStoreAsync(cmd.Store);
+            var newStore = Store.Create(cmd.Id);
+            await repository.AddStoreAsync(newStore);
+
+                await unitOfWork.Commit();
+
         }
 
         private async Task HandleUpdate(Guid storeId, Action<Store> operation)

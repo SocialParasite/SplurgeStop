@@ -4,9 +4,13 @@ namespace SplurgeStop.Domain.StoreProfile
 {
     public static class Commands
     {
+        //public class Create
+        //{
+        //    public Store Store { get; set; }
+        //}
         public class Create
         {
-            public Store Store { get; set; }
+            public Guid? Id { get; set; }
         }
 
         public class SetStoreName

@@ -8,7 +8,7 @@ namespace SplurgeStop.Domain.StoreProfile
     {
         public Guid Value { get; protected set; }
 
-        internal StoreId(Guid id)
+        public StoreId(Guid id)
         {
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GuidHelpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Common;
+using static SplurgeStop.Domain.StoreProfile.Events;
 
 namespace SplurgeStop.UI.WebApi.Controllers
 {
@@ -34,11 +36,15 @@ namespace SplurgeStop.UI.WebApi.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Post(Commands.Create request)
+        public async Task<ActionResult<StoreCreated>> Post(Commands.Create request)
         {
             try
             {
-                return RequestHandler.HandleCommand(request, service.Handle);
+                request.Id = new StoreId(SequentialGuid.NewSequentialGuid());
+
+                await RequestHandler.HandleCommand(request, service.Handle);
+
+                return new StoreCreated { Id = (Guid)request.Id };
             }
             catch (Exception e)
             {
