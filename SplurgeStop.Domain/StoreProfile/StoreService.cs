@@ -45,9 +45,11 @@ namespace SplurgeStop.Domain.StoreProfile
 
             var newStore = Store.Create(cmd.Id);
             await repository.AddStoreAsync(newStore);
-
+            
+            if (newStore.EnsureValidState())
+            {
                 await unitOfWork.Commit();
-
+            }
         }
 
         private async Task HandleUpdate(Guid storeId, Action<Store> operation)

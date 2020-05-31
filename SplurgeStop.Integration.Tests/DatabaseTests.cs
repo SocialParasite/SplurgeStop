@@ -6,10 +6,8 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.StoreProfile;
-using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.HelperMethods;
-using transaction = SplurgeStop.Domain.PurchaseTransaction;
 using store = SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Integration.Tests
@@ -49,60 +47,21 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Purchase_transaction_inserted_to_database()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var sut = await repository.LoadPurchaseTransactionAsync(transactionId);
-            
-            await fixture.context.Entry(sut).ReloadAsync();
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
-        }
-
-        [Fact]
-        public async Task Invalid_Purchase_Transaction_Cannot_Be_Persisted_To_Database()
-        {
-            var repository = new PurchaseTransactionRepository(fixture.context);
-            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-            var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new PurchaseTransaction();
-
-            var transactionController = new PurchaseTransactionController(service);
-            var command = new transaction.Commands.Create();
-            command.Transaction = transaction;
-
-            await transactionController.Post(command);
-            var sut = await fixture.context.Entry(transaction).GetDatabaseValuesAsync();
-
-            Assert.Null(sut);
-        }
-
-        [Fact]
-        public async Task Purchase_transaction_already_exists()
-        {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
-
-            var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.ExistsAsync(transactionId));
-
-            var unitOfWork = new EfCoreUnitOfWork(fixture.context);
-            var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new PurchaseTransaction();
-            
-            var transactionController = new PurchaseTransactionController(service);
-            var command = new transaction.Commands.Create();
-            command.Transaction = transaction;
-
-            await transactionController.Post(command);
-
-            await Assert.ThrowsAsync<InvalidOperationException>(async ()
-                => await transactionController.Post(command));
+            Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
+            Assert.NotNull(sut.Store);
+            Assert.Single(sut.LineItems);
         }
 
         [Fact]
         public async Task Update_transaction_date()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
@@ -111,7 +70,7 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
 
-            await UpdatePurchaseDate(sut.Id, DateTime.Now.AddDays(-1), fixture.context);
+            await UpdatePurchaseDate(sut.Id, DateTime.Now.AddDays(-1));
 
             await fixture.context.Entry(sut).ReloadAsync();
 
@@ -123,12 +82,12 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Add_transaction_lineItem()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
@@ -136,9 +95,9 @@ namespace SplurgeStop.Integration.Tests
                 .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .Build();
 
-            await UpdateLineItems(sut.Id, lineItem, fixture.context);
+            await UpdateLineItem(sut.Id, lineItem);
 
-            await fixture.context.Entry(sut).ReloadAsync();
+            sut = await ReloadPurchaseTransaction(sut.Id);
 
             Assert.Equal(2, sut.LineItems.Count);
         }
@@ -146,12 +105,12 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Total_price_of_line_items()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1.23m);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
@@ -159,9 +118,9 @@ namespace SplurgeStop.Integration.Tests
                 .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .Build();
 
-            await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
+            await UpdateLineItem(sut.Id, secondLineItem);
 
-            await fixture.context.Entry(sut).ReloadAsync();
+            sut = await ReloadPurchaseTransaction(sut.Id);
 
             Assert.Equal(2, sut.LineItems.Count);
             var result = decimal.Parse(sut.TotalPrice.Substring(0, sut.TotalPrice.IndexOf(' ', StringComparison.Ordinal)));
@@ -172,24 +131,24 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Total_price_of_line_items_with_debit_item()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 1.23m);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1.23m);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
             var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .Build();
-            await UpdateLineItems(sut.Id, secondLineItem, fixture.context);
+            await UpdateLineItem(sut.Id, secondLineItem);
 
             var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end))
                 .Build();
-            await UpdateLineItems(sut.Id, debitLineItem, fixture.context);
+            await UpdateLineItem(sut.Id, debitLineItem);
 
-            await fixture.context.Entry(sut).ReloadAsync();
+            sut = await ReloadPurchaseTransaction(sut.Id);
 
             Assert.Equal(3, sut.LineItems.Count);
             Assert.Equal(2, sut.LineItems.Count(i => i.Price.Booking == Booking.Credit));
@@ -206,12 +165,10 @@ namespace SplurgeStop.Integration.Tests
             var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .WithNotes("My Notes!")
                 .Build();
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context,1m, lineItem);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1m, lineItem);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
-
-            await fixture.context.Entry(sut).ReloadAsync();
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
             Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault().Notes);
@@ -220,24 +177,25 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Update_LineItem_price()
         {
-            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(fixture.context, 22.33m);
+            PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(22.33m);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            Assert.True(await repository.ExistsAsync(transactionId));
-
-            var sut = await repository.LoadFullPurchaseTransactionAsync(transactionId);
+            
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.NotNull(sut.LineItems);
             Assert.Single(sut.LineItems);
             Assert.Equal(22.33m, sut.LineItems.FirstOrDefault().Price.Amount);
 
-            var updatedLineItem = sut.LineItems.FirstOrDefault();
-            
-            updatedLineItem.UpdateLineItemPrice(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end));
+            var lineItemId = sut.LineItems.FirstOrDefault().Id;
 
-            await UpdateLineItems(sut.Id, updatedLineItem, fixture.context);
+            var updatedLineItem = LineItemBuilder
+                .LineItem(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end), lineItemId)
+                .Build();
 
-            await fixture.context.Entry(sut).ReloadAsync();
+            await UpdateLineItem(transactionId, updatedLineItem);
+
+            sut = await ReloadPurchaseTransaction(sut.Id);
 
             Assert.Single(sut.LineItems);
             Assert.Equal(33.44m, sut.LineItems.FirstOrDefault().Price.Amount);

@@ -27,12 +27,13 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
     public class LineItemBuilder
     {
+        public LineItemId Id { get; set; }
         public Price Price { get; private set; }
         public string Notes { get; private set; }
 
-        public static LineItemBuilder LineItem(Price price)
+        public static LineItemBuilder LineItem(Price price, LineItemId id = null)
         {
-            return new LineItemBuilder { Price = price };
+            return new LineItemBuilder { Price = price, Id = id };
         }
 
         public LineItemBuilder WithNotes(string notes)
@@ -43,7 +44,17 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItem Build()
         {
-            LineItem lineItem = new LineItem(new LineItemId(SequentialGuid.NewSequentialGuid()));
+            LineItem lineItem;
+
+            if (Id is null)
+            {
+                lineItem = new LineItem(new LineItemId(SequentialGuid.NewSequentialGuid()));
+            }
+            else
+            {
+                lineItem = new LineItem(Id);
+            }
+
             lineItem.UpdateLineItemPrice(Price);
             lineItem.Notes = Notes ?? string.Empty;
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.StoreProfile;
 using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -25,21 +27,66 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             {
                 Create cmd => HandleCreate(cmd),
                 SetPurchaseTransactionDate cmd
-                => HandleUpdate(cmd.Id, c => c.UpdatePurchaseTransactionDate(cmd.TransactionDate)),
+                    => HandleUpdate(cmd.Id, c => c.UpdatePurchaseTransactionDate(cmd.TransactionDate)),
                 SetPurchaseTransactionStore cmd
-                    => HandleUpdate(cmd.Id, c => c.UpdateStore(cmd.Store)),
+                    => HandleUpdateAsync(cmd.Id, async c => await UpdateStoreAsync(c, cmd.StoreId)),
                 SetPurchaseTransactionLineItem cmd
-                    => HandleUpdate(cmd.Id, c => c.UpdateLineItem(cmd.LineItem)),
+                    => HandleUpdate(cmd.Id, c
+                        => c.UpdateLineItem(LineItemBuilder
+                        .LineItem(new Price(cmd.Price, cmd.Booking, cmd.Currency, cmd.CurrencySymbol, cmd.CurrencySymbolPosition))
+                        .WithNotes(cmd.Notes)
+                        .Build())),
+                UpdateLineItem cmd
+                    => HandleUpdate(cmd.Id, async c => await UpdateLineItemAsync(cmd.Id, cmd.LineItem)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Transaction.Id))
-                throw new InvalidOperationException($"Entity with id {cmd.Transaction.Id} already exists");
+            if (await repository.ExistsAsync(cmd.Id))
+                throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            await repository.AddPurchaseTransactionAsync(cmd.Transaction);
+            var newPurchaseTransaction = PurchaseTransaction.Create(cmd.Id);
+            await repository.AddPurchaseTransactionAsync(newPurchaseTransaction);
+
+            if (newPurchaseTransaction.EnsureValidState())
+            {
+                await unitOfWork.Commit();
+            }
+        }
+
+        private async Task UpdateStoreAsync(PurchaseTransaction pt, StoreId storeId)
+        {
+            await repository.ChangeStore(pt, storeId);
+        }
+
+        private async Task UpdateLineItemAsync(PurchaseTransactionId id, LineItem lineItem)
+        {
+            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(id);
+
+            if (purchaseTransaction.LineItems.Any(l => l.Id == lineItem.Id))
+            {
+                purchaseTransaction.LineItems.Remove(purchaseTransaction.LineItems.Find(l => l.Id == lineItem.Id));
+            }
+            purchaseTransaction.LineItems.Add(lineItem);
+
+            await unitOfWork.Commit();
+        }
+
+        private async Task HandleUpdateAsync(Guid transactionId, Func<PurchaseTransaction,Task> operation)
+        {
+            var purchaseTransaction = await repository.LoadPurchaseTransactionAsync(transactionId);
+
+            if (purchaseTransaction == null)
+                throw new InvalidOperationException($"Entity with id {transactionId} cannot be found");
+
+            await operation(purchaseTransaction);
+
+            if (purchaseTransaction.EnsureValidState())
+            {
+                await unitOfWork.Commit();
+            }
         }
 
         private async Task HandleUpdate(Guid transactionId, Action<PurchaseTransaction> operation)
@@ -65,6 +112,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
         {
             return await repository.GetPurchaseTransactionFullAsync(id);
+        }
+
+        public async Task<Store> GetDetailedStore(StoreId id)
+        {
+            return await repository.GetStoreAsync(id);
         }
     }
 }

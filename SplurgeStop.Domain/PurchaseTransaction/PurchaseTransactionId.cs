@@ -8,7 +8,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
     {
         public Guid Value { get; protected set; }
 
-        internal PurchaseTransactionId(Guid id)
+        public PurchaseTransactionId(Guid id)
         {
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));

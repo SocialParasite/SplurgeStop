@@ -49,6 +49,7 @@ namespace SplurgeStop.UI.WebApi
             {
                 o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

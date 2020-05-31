@@ -10,12 +10,24 @@ namespace SplurgeStop.Domain.PurchaseTransaction
     {
         private PurchaseDate purchaseDate;
 
+        public static PurchaseTransaction Create(PurchaseTransactionId id)
+        {
+            var purchaseTransaction = new PurchaseTransaction();
+
+            purchaseTransaction.Apply(new Events.PurchaseTransactionCreated
+            {
+                Id = id
+            });
+
+            return purchaseTransaction;
+        }
+
         public PurchaseTransaction()
         {
-            Apply(new Events.PurchaseTransactionCreated
+            if (LineItems is null)
             {
-                Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid())
-            });
+                LineItems = new List<LineItem>();
+            }
         }
 
         public PurchaseTransactionId Id { get; private set; }
@@ -26,7 +38,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             private set { purchaseDate = value; }
         }
 
-        public Store Store { get; private set; }
+        public Store Store { get; set; }
         public List<LineItem> LineItems { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
@@ -98,15 +110,24 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     }
                     LineItems.Add(e.LineItem);
                     break;
+                case Events.LineItemChanged e:
+                    var test = this;
+                    if (LineItems.Any(l => l.Id == e.LineItem.Id))
+                    {
+                        LineItems.Remove(LineItems.Find(l => l.Id == e.LineItem.Id));
+                    }
+                    LineItems.Add(e.LineItem);
+                    break;
             }
         }
 
         internal bool EnsureValidState()
         {
-            return Id.Value != default
-                && PurchaseDate != default
-                && Store != null
-                && LineItems.Count >= 1;
+            return true;
+            //return Id.Value != default
+            //    && PurchaseDate != default
+            //    && Store != null
+            //    && LineItems.Count >= 1;
         }
     }
 }

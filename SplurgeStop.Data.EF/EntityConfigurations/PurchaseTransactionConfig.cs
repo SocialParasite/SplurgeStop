@@ -20,6 +20,8 @@ namespace SplurgeStop.Data.EF
             builder.Property(n => n.Notes)
                    .HasConversion(pn => pn.Value, n => n)
                    .HasMaxLength(500);
+
+            builder.HasOne(s => s.Store);
         }
     }
 }

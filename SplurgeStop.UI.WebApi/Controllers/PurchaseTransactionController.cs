@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.UI.WebApi.Common;
+using static SplurgeStop.Domain.PurchaseTransaction.Events;
 
 namespace SplurgeStop.UI.WebApi.Controllers
 {
@@ -36,11 +39,14 @@ namespace SplurgeStop.UI.WebApi.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Post(Commands.Create request)
+        public async Task<ActionResult<PurchaseTransactionCreated>> Post(Commands.Create request)
         {
             try
             {
-                return RequestHandler.HandleCommand(request, service.Handle);
+                request.Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
+                await RequestHandler.HandleCommand(request, service.Handle);
+
+                return new PurchaseTransactionCreated { Id = (Guid)request.Id };
             }
             catch (Exception e)
             {
@@ -64,6 +70,11 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionLineItem request)
             => RequestHandler.HandleCommand(request, service.Handle);
+
+        //[Route("purchaseLineItem")]
+        //[HttpPut]
+        //public Task<IActionResult> Put(Commands.UpdateLineItem request)
+        //    => RequestHandler.HandleCommand(request, service.Handle);
     }
 
     public enum Period

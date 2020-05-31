@@ -6,6 +6,7 @@ using SplurgeStop.Domain.PurchaseTransaction;
 using System.Linq;
 using System.Collections.Generic;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -25,7 +26,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<bool> ExistsAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases.FindAsync(id) != null; 
+            return await context.Purchases.FindAsync(id) != null;
         }
 
         public async Task<PurchaseTransaction> GetPurchaseTransactionFullAsync(PurchaseTransactionId id)
@@ -62,6 +63,23 @@ namespace SplurgeStop.Data.EF.Repositories
         public async Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id)
         {
             return await context.Purchases.Include(s => s.Store).FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<Store> GetStoreAsync(StoreId id)
+        {
+            return await context.Stores.FindAsync(id);
+        }
+
+        public void AttachPurchaseTransaction(PurchaseTransaction purchaseTransaction)
+        {
+            context.Purchases.Attach(purchaseTransaction);
+        }
+
+        public async Task ChangeStore(PurchaseTransaction purchaseTransaction, StoreId storeId)
+        {
+            var transaction = await context.Purchases.FindAsync(purchaseTransaction.Id);
+            transaction.Store = await GetStoreAsync(storeId);
+            await context.SaveChangesAsync();
         }
     }
 }

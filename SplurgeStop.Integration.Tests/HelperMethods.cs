@@ -12,46 +12,47 @@ namespace SplurgeStop.Integration.Tests
 {
     public static class HelperMethods
     {
-        public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(SplurgeStopDbContext context,
-            decimal price = 1.00m,
-            LineItem lineItem = null)
+        public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
+                                                                                       LineItem lineItem = null)
         {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
-            var transaction = new PurchaseTransaction();
 
             var command = new transaction.Commands.Create();
-            command.Transaction = transaction;
+            command.Id = null;
 
             // Create PurchaseTransaction
             var transactionController = new PurchaseTransactionController(service);
             var result = await transactionController.Post(command);
 
             // Add PurchaseDate
-            var updateCommand = new transaction.Commands.SetPurchaseTransactionDate();
-            updateCommand.Id = transaction.Id;
-            updateCommand.TransactionDate = DateTime.Now;
-            await transactionController.Put(updateCommand);
+            await UpdatePurchaseDate(result.Value.Id, DateTime.Now);
+
+            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(result.Value.Id);
 
             // Add Store
-            var updateStoreCommand = new transaction.Commands.SetPurchaseTransactionStore();
-            updateStoreCommand.Id = transaction.Id;
-            //updateStoreCommand.Store = new Store();
-            //updateStoreCommand.Store.Name = "Test market";
-            updateStoreCommand.Store = await CreateValidStore();
-            await transactionController.Put(updateStoreCommand);
+            var store = await CreateValidStore();
+            await UpdateStore(purchaseTransaction.Id, store);
 
             // Add one LineItem
             var updateLineItemCommand = new transaction.Commands.SetPurchaseTransactionLineItem();
-            updateLineItemCommand.Id = transaction.Id;
-            updateLineItemCommand.LineItem = LineItemBuilder
-                .LineItem(new Price(price, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
-                .WithNotes(lineItem?.Notes)
-                .Build();
+            updateLineItemCommand.Id = purchaseTransaction.Id;
+            updateLineItemCommand.Price = price;
+            updateLineItemCommand.Currency = "EUR";
+            updateLineItemCommand.CurrencySymbol = "€";
+            updateLineItemCommand.Booking = Booking.Credit;
+            updateLineItemCommand.CurrencySymbolPosition = CurrencySymbolPosition.end;
+            updateLineItemCommand.Notes = lineItem?.Notes;
+            //updateLineItemCommand.LineItem = LineItemBuilder
+            //    .LineItem(new Price(price, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+            //    .WithNotes(lineItem?.Notes)
+            //    .Build();
             await transactionController.Put(updateLineItemCommand);
 
-            return command.Transaction.Id;
+            return command.Id;
         }
 
         public async static Task<Store> CreateValidStore()
@@ -80,8 +81,10 @@ namespace SplurgeStop.Integration.Tests
             return await repository.GetStoreFullAsync(command.Id);
         }
 
-        public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date, SplurgeStopDbContext context)
+        public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)
         {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
@@ -94,10 +97,10 @@ namespace SplurgeStop.Integration.Tests
             await transactionController.Put(updateCommand);
         }
 
-        public async static Task UpdateLineItems(PurchaseTransactionId id,
-            LineItem lineItem,
-            SplurgeStopDbContext context)
+        public async static Task UpdateLineItem(PurchaseTransactionId id, LineItem lineItem)
         {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
             var repository = new PurchaseTransactionRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
@@ -105,7 +108,29 @@ namespace SplurgeStop.Integration.Tests
 
             var updateCommand = new transaction.Commands.SetPurchaseTransactionLineItem();
             updateCommand.Id = id;
-            updateCommand.LineItem = lineItem;
+            //updateCommand.LineItem = lineItem;
+            updateCommand.Price = lineItem.Price.Amount;
+            updateCommand.Currency = lineItem.Price.Currency.CurrencyCode;
+            updateCommand.CurrencySymbol = lineItem.Price.Currency.CurrencySymbol;
+            updateCommand.Booking = lineItem.Price.Booking;
+            updateCommand.CurrencySymbolPosition = lineItem.Price.Currency.PositionRelativeToPrice;
+            updateCommand.Notes = lineItem?.Notes;
+
+            await transactionController.Put(updateCommand);
+        }
+
+        public async static Task UpdateStore(PurchaseTransactionId id, Store store)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new PurchaseTransactionRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new PurchaseTransactionService(repository, unitOfWork);
+            var transactionController = new PurchaseTransactionController(service);
+
+            var updateCommand = new transaction.Commands.SetPurchaseTransactionStore();
+            updateCommand.Id = id;
+            updateCommand.StoreId = store.Id;
 
             await transactionController.Put(updateCommand);
         }
@@ -126,5 +151,13 @@ namespace SplurgeStop.Integration.Tests
             await storeController.Put(updateCommand);
         }
 
+        public async static Task<PurchaseTransaction> ReloadPurchaseTransaction(PurchaseTransactionId id)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new PurchaseTransactionRepository(context);
+
+            return await repository.GetPurchaseTransactionFullAsync(id);
+        }
     }
 }
