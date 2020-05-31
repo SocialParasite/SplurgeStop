@@ -13,6 +13,10 @@
     <Compile Remove="Migrations\20200505130604_PurchaseTransactionNotes.Designer.cs" />
     <Compile Remove="Migrations\20200511124441_StoreName.cs" />
     <Compile Remove="Migrations\20200511124441_StoreName.Designer.cs" />
+    <Compile Remove="Migrations\20200531115336_transactionNavPropToLineItem.cs" />
+    <Compile Remove="Migrations\20200531115336_transactionNavPropToLineItem.Designer.cs" />
+    <Compile Remove="Migrations\20200531145325_pt_and_lineitems.cs" />
+    <Compile Remove="Migrations\20200531145325_pt_and_lineitems.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

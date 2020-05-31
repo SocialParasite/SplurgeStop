@@ -16,7 +16,8 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task<transaction.PurchaseTransaction> GetPurchaseTransactionFullAsync(PurchaseTransactionId id);
 
         Task<Store> GetStoreAsync(StoreId id);
-        void AttachPurchaseTransaction(transaction.PurchaseTransaction purchaseTransaction);
         Task ChangeStore(transaction.PurchaseTransaction purchaseTransaction, StoreId storeId);
+
+        Task ChangeLineItem(transaction.PurchaseTransaction purchaseTransaction, LineItem lineItem);
     }
 }

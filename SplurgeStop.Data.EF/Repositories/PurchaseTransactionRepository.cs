@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
+using System.Transactions;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -70,15 +71,24 @@ namespace SplurgeStop.Data.EF.Repositories
             return await context.Stores.FindAsync(id);
         }
 
-        public void AttachPurchaseTransaction(PurchaseTransaction purchaseTransaction)
-        {
-            context.Purchases.Attach(purchaseTransaction);
-        }
-
         public async Task ChangeStore(PurchaseTransaction purchaseTransaction, StoreId storeId)
         {
             var transaction = await context.Purchases.FindAsync(purchaseTransaction.Id);
             transaction.Store = await GetStoreAsync(storeId);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task ChangeLineItem(PurchaseTransaction purchaseTransaction, LineItem lineItem)
+        {
+            var transaction = await context.Purchases
+                .Include(p => p.LineItems)
+                .FirstOrDefaultAsync(p => p.Id == purchaseTransaction.Id);
+
+            LineItem toBeRemoved = transaction.LineItems.Find(l => l.Id == lineItem.Id);
+            purchaseTransaction.LineItems.Remove(toBeRemoved);
+            await context.SaveChangesAsync();
+
+            purchaseTransaction.LineItems.Add(lineItem);
             await context.SaveChangesAsync();
         }
     }

@@ -46,10 +46,7 @@ namespace SplurgeStop.Integration.Tests
             updateLineItemCommand.Booking = Booking.Credit;
             updateLineItemCommand.CurrencySymbolPosition = CurrencySymbolPosition.end;
             updateLineItemCommand.Notes = lineItem?.Notes;
-            //updateLineItemCommand.LineItem = LineItemBuilder
-            //    .LineItem(new Price(price, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
-            //    .WithNotes(lineItem?.Notes)
-            //    .Build();
+
             await transactionController.Put(updateLineItemCommand);
 
             return command.Id;
@@ -108,7 +105,7 @@ namespace SplurgeStop.Integration.Tests
 
             var updateCommand = new transaction.Commands.SetPurchaseTransactionLineItem();
             updateCommand.Id = id;
-            //updateCommand.LineItem = lineItem;
+            updateCommand.LineItemId = lineItem.Id;
             updateCommand.Price = lineItem.Price.Amount;
             updateCommand.Currency = lineItem.Price.Currency.CurrencyCode;
             updateCommand.CurrencySymbol = lineItem.Price.Currency.CurrencySymbol;

@@ -24,7 +24,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public class SetPurchaseTransactionLineItem
         {
             public Guid Id { get; set; }
-            public Guid LineItemId { get; set; }
+            public Guid? LineItemId { get; set; }
             public decimal Price { get; set; }
             public string Currency { get; set; }
             public string CurrencySymbol { get; set; }

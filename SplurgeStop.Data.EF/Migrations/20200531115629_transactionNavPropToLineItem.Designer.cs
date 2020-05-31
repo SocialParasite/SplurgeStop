@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SplurgeStop.Data.EF;
 
 namespace SplurgeStop.Data.EF.Migrations
 {
     [DbContext(typeof(SplurgeStopDbContext))]
-    partial class SplurgeStopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200531115629_transactionNavPropToLineItem")]
+    partial class transactionNavPropToLineItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace SplurgeStop.Data.EF.Migrations
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
-                    b.Property<Guid>("PurchaseTransactionId")
+                    b.Property<Guid?>("PurchaseTransactionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -84,8 +86,7 @@ namespace SplurgeStop.Data.EF.Migrations
                     b.HasOne("SplurgeStop.Domain.PurchaseTransaction.PurchaseTransaction", "PurchaseTransaction")
                         .WithMany("LineItems")
                         .HasForeignKey("PurchaseTransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SplurgeStop.Domain.PurchaseTransaction.PurchaseTransaction", b =>

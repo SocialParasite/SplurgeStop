@@ -63,15 +63,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             });
         }
 
-        internal void UpdateStore(Store store)
-        {
-            Apply(new Events.PurchaseTransactionStoreChanged
-            {
-                Id = Id,
-                Store = store
-            });
-        }
-
         internal void UpdatePurchaseTransactionDate(PurchaseDate date)
         {
             Apply(new Events.PurchaseTransactionDateChanged
@@ -99,9 +90,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     break;
                 case Events.PurchaseTransactionDateChanged e:
                     PurchaseDate = new PurchaseDate(e.TransactionDate);
-                    break;
-                case Events.PurchaseTransactionStoreChanged e:
-                    Store = e.Store;
                     break;
                 case Events.PurchaseTransactionLineItemChanged e:
                     if (LineItems.Any(l => l.Id == e.LineItem.Id))

@@ -23,6 +23,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         }
 
         public string Notes { get; set; }
+
+        public PurchaseTransaction PurchaseTransaction { get; set; }
     }
 
     public class LineItemBuilder

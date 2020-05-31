@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
@@ -31,13 +30,14 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 SetPurchaseTransactionStore cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateStoreAsync(c, cmd.StoreId)),
                 SetPurchaseTransactionLineItem cmd
-                    => HandleUpdate(cmd.Id, c
-                        => c.UpdateLineItem(LineItemBuilder
-                        .LineItem(new Price(cmd.Price, cmd.Booking, cmd.Currency, cmd.CurrencySymbol, cmd.CurrencySymbolPosition))
+                    => HandleUpdateAsync(cmd.Id, async c
+                        => await UpdateLineItemAsync(c, cmd, LineItemBuilder
+                        .LineItem(new Price(cmd.Price, cmd.Booking, cmd.Currency, cmd.CurrencySymbol, cmd.CurrencySymbolPosition),
+                                  cmd.LineItemId)
                         .WithNotes(cmd.Notes)
                         .Build())),
-                UpdateLineItem cmd
-                    => HandleUpdate(cmd.Id, async c => await UpdateLineItemAsync(cmd.Id, cmd.LineItem)),
+                //UpdateLineItem cmd
+                //    => HandleUpdate(cmd.Id, async c => await UpdateLineItemAsync(cmd.Id, cmd.LineItem)),
                 _ => Task.CompletedTask
             };
         }
@@ -61,20 +61,19 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             await repository.ChangeStore(pt, storeId);
         }
 
-        private async Task UpdateLineItemAsync(PurchaseTransactionId id, LineItem lineItem)
+        private async Task UpdateLineItemAsync(PurchaseTransaction transaction, SetPurchaseTransactionLineItem command, LineItem lineItem)
         {
-            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(id);
-
-            if (purchaseTransaction.LineItems.Any(l => l.Id == lineItem.Id))
+            if (command.LineItemId is null)
             {
-                purchaseTransaction.LineItems.Remove(purchaseTransaction.LineItems.Find(l => l.Id == lineItem.Id));
+                transaction.UpdateLineItem(lineItem);
             }
-            purchaseTransaction.LineItems.Add(lineItem);
-
-            await unitOfWork.Commit();
+            else
+            {
+                await repository.ChangeLineItem(transaction, lineItem);
+            }
         }
 
-        private async Task HandleUpdateAsync(Guid transactionId, Func<PurchaseTransaction,Task> operation)
+        private async Task HandleUpdateAsync(Guid transactionId, Func<PurchaseTransaction, Task> operation)
         {
             var purchaseTransaction = await repository.LoadPurchaseTransactionAsync(transactionId);
 
@@ -112,11 +111,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
         {
             return await repository.GetPurchaseTransactionFullAsync(id);
-        }
-
-        public async Task<Store> GetDetailedStore(StoreId id)
-        {
-            return await repository.GetStoreAsync(id);
         }
     }
 }
