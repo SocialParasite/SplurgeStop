@@ -74,7 +74,7 @@ namespace SplurgeStop.Data.EF.Repositories
         public async Task ChangeStore(PurchaseTransaction purchaseTransaction, StoreId storeId)
         {
             var transaction = await context.Purchases.FindAsync(purchaseTransaction.Id);
-            transaction.Store = await GetStoreAsync(storeId);
+            transaction.UpdateStore(await GetStoreAsync(storeId));
             await context.SaveChangesAsync();
         }
 

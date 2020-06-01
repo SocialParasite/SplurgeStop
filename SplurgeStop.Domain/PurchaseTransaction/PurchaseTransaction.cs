@@ -38,7 +38,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             private set { purchaseDate = value; }
         }
 
-        public Store Store { get; set; }
+        public Store Store { get; private set; }
         public List<LineItem> LineItems { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
@@ -52,6 +52,11 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             var currency = LineItems.Select(i => i.Price.Currency).First();
 
             return new Money((credit - debit), currency).ToString();
+        }
+
+        public void UpdateStore(Store store)
+        {
+            Store = store;
         }
 
         internal void UpdateLineItem(LineItem lineItem)
@@ -111,11 +116,10 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         internal bool EnsureValidState()
         {
-            return true;
-            //return Id.Value != default
-            //    && PurchaseDate != default
-            //    && Store != null
-            //    && LineItems.Count >= 1;
+            return Id.Value != default
+                && PurchaseDate != default;
+                //&& Store != null
+                //&& LineItems.Count >= 1;
         }
     }
 }
