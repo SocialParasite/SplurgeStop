@@ -7,6 +7,7 @@ namespace SplurgeStop.Domain.StoreProfile
         public class StoreCreated
         {
             public Guid Id { get; set; }
+            public string Name { get; set; }
         }
 
         public class StoreNameChanged

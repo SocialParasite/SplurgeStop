@@ -40,7 +40,7 @@ namespace SplurgeStop.Domain.StoreProfile
             {
                 case Events.StoreCreated e:
                     Id = new StoreId(e.Id);
-                    Name = string.Empty;
+                    Name = e.Name;
                     break;
                 case Events.StoreNameChanged e:
                     Name = e.Name;
