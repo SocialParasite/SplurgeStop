@@ -211,6 +211,15 @@ namespace SplurgeStop.Integration.Tests
             var sut = await repository.LoadStoreAsync(store.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
+            Assert.True(sut.Name.Length > 0);
+        }
+
+        [Fact]
+        public async Task Invalid_Store()
+        {
+            Store store = await CreateInvalidStore();
+
+            Assert.Null(store);
         }
 
         [Fact]

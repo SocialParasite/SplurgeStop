@@ -44,6 +44,10 @@ namespace SplurgeStop.Domain.StoreProfile
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newStore = Store.Create(cmd.Id);
+            if (cmd.Name != null)
+            {
+                newStore.UpdateStoreName(cmd.Name);
+            }
             await repository.AddStoreAsync(newStore);
             
             if (newStore.EnsureValidState())

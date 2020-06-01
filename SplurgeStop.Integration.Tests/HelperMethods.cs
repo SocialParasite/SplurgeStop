@@ -74,8 +74,25 @@ namespace SplurgeStop.Integration.Tests
 
             await storeController.Put(updateCommand);
 
-            //return command.Store;
             return await repository.GetStoreFullAsync(command.Id);
+        }
+
+        public async static Task<Store> CreateInvalidStore()
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new StoreRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new StoreService(repository, unitOfWork);
+
+            var command = new store.Commands.Create();
+            command.Id = null;
+
+            // Create Store
+            var storeController = new StoreController(service);
+            var storeId = await storeController.Post(command);
+
+            return await repository.GetStoreFullAsync(storeId.Value.Id);
         }
 
         public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)
