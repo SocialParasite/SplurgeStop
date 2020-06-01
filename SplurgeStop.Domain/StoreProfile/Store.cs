@@ -5,13 +5,14 @@ namespace SplurgeStop.Domain.StoreProfile
 {
     public class Store
     {
-        public static Store Create(StoreId id)
+        public static Store Create(StoreId id, string name)
         {
             var store = new Store();
 
             store.Apply(new Events.StoreCreated
             {
-                Id = id 
+                Id = id,
+                Name = name
             });
 
             return store;
