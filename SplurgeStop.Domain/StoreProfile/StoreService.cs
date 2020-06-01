@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.Exceptions;
 using static SplurgeStop.Domain.StoreProfile.Commands;
 
 namespace SplurgeStop.Domain.StoreProfile

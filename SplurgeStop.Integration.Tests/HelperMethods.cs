@@ -7,6 +7,7 @@ using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using transaction = SplurgeStop.Domain.PurchaseTransaction;
 using store = SplurgeStop.Domain.StoreProfile;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -61,6 +62,7 @@ namespace SplurgeStop.Integration.Tests
             var service = new StoreService(repository, unitOfWork);
 
             var command = new store.Commands.Create();
+            command.Name = "New store";
             command.Id = null;
 
             // Create Store
@@ -77,7 +79,7 @@ namespace SplurgeStop.Integration.Tests
             return await repository.GetStoreFullAsync(command.Id);
         }
 
-        public async static Task<Store> CreateInvalidStore()
+        public async static Task<dynamic> CreateInvalidStore()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -90,9 +92,7 @@ namespace SplurgeStop.Integration.Tests
 
             // Create Store
             var storeController = new StoreController(service);
-            var storeId = await storeController.Post(command);
-
-            return await repository.GetStoreFullAsync(storeId.Value.Id);
+            return await storeController.Post(command);
         }
 
         public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)

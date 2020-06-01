@@ -69,11 +69,6 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionLineItem request)
             => RequestHandler.HandleCommand(request, service.Handle);
-
-        //[Route("purchaseLineItem")]
-        //[HttpPut]
-        //public Task<IActionResult> Put(Commands.UpdateLineItem request)
-        //    => RequestHandler.HandleCommand(request, service.Handle);
     }
 
     public enum Period

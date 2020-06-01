@@ -42,7 +42,17 @@ namespace SplurgeStop.UI.WebApi.Controllers
 
                 await RequestHandler.HandleCommand(request, service.Handle);
 
-                return new StoreCreated { Id = (Guid)request.Id, Name = request.Name };
+                // HACK: Future me, do something clever instead...
+                if (!string.IsNullOrEmpty(request.Name))
+                {
+                    return new StoreCreated { Id = (Guid)request.Id, Name = request.Name };
+                }
+                return new BadRequestObjectResult(
+                    new
+                    {
+                        error = "Store was not in valid state! Name should not be empty."
+                    }
+                );
             }
             catch (Exception e)
             {

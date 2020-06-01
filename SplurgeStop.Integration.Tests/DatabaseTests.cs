@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
@@ -217,9 +218,9 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Invalid_Store()
         {
-            Store store = await CreateInvalidStore();
+            var result = await CreateInvalidStore();
 
-            Assert.Null(store);
+            Assert.IsAssignableFrom<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
