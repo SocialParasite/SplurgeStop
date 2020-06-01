@@ -42,7 +42,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
 
                 await RequestHandler.HandleCommand(request, service.Handle);
 
-                return new StoreCreated { Id = (Guid)request.Id };
+                return new StoreCreated { Id = (Guid)request.Id, Name = request.Name };
             }
             catch (Exception e)
             {
@@ -54,7 +54,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
 
         [Route("storeName")]
         [HttpPut]
-        public Task<IActionResult> Put(Commands.SetStoreName request) 
+        public Task<IActionResult> Put(Commands.SetStoreName request)
             => RequestHandler.HandleCommand(request, service.Handle);
     }
 }
