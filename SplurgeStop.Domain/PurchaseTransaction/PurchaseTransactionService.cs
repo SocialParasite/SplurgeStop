@@ -110,7 +110,15 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
         {
-            return await repository.GetPurchaseTransactionFullAsync(id);
+            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(id);
+
+            //HACK: ?? to prevent PurchaseTransaction nav prop causing problem in serializatio to json
+            foreach (var item in purchaseTransaction.LineItems)
+            {
+                item.PurchaseTransaction = null;
+            }
+
+            return purchaseTransaction;
         }
     }
 }
