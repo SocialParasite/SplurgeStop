@@ -29,6 +29,8 @@ export const Header = () => (
     >
       Splurge Stop!
     </a>
+    <a href="/">Purchase transactions</a>
+    <a href="/Store">Stores</a>
     <input
       type="text"
       placeholder="Search..."

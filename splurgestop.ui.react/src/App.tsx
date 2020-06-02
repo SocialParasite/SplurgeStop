@@ -8,6 +8,8 @@ import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransacti
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray2 } from './Styles';
 import { configureStore } from './Store';
+import { StoreList } from '././StoreProfile/StoreList';
+import { StorePage } from '././StoreProfile/StorePage';
 
 const store = configureStore();
 
@@ -30,6 +32,8 @@ const App: React.FC = () => {
               path="/PurchaseTransaction/:id"
               component={PurchaseTransactionPage}
             />
+            <Route path="/Store" component={StoreList} />
+            <Route path="/StoreInfo/:id" component={StorePage} />
           </Switch>
         </div>
       </BrowserRouter>

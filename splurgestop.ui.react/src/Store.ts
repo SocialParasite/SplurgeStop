@@ -13,6 +13,7 @@ import {
   PurchaseTransactionData,
   getPurchaseTransactions,
 } from './PurchaseTransaction/PurchaseTransactionData';
+import { storesReducer, StoreState } from './StoreProfile/StoreStore';
 
 interface PurchaseTransactionState {
   readonly loading: boolean;
@@ -24,6 +25,7 @@ interface GettingPurchaseTransactionsAction
 
 export interface AppState {
   readonly transactions: PurchaseTransactionState;
+  readonly stores: StoreState;
 }
 
 export interface GotPurchaseTransactionsAction
@@ -91,6 +93,7 @@ const neverReached = (never: never) => {};
 
 const rootReducer = combineReducers<AppState>({
   transactions: purchaseTransactionsReducer,
+  stores: storesReducer,
 });
 
 export function configureStore(): Store<AppState> {
