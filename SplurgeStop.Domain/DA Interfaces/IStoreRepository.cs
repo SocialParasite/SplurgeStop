@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.DTO;
 
 namespace SplurgeStop.Domain.DA_Interfaces
 {
@@ -12,5 +13,7 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task<Store> GetStoreFullAsync(StoreId id);
         Task<Store> LoadFullStoreAsync(StoreId id);
         Task<Store> LoadStoreAsync(StoreId id);
+
+        Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync();
     }
 }

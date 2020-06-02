@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.Exceptions;
+using SplurgeStop.Domain.StoreProfile.DTO;
 using static SplurgeStop.Domain.StoreProfile.Commands;
 
 namespace SplurgeStop.Domain.StoreProfile
@@ -17,10 +17,6 @@ namespace SplurgeStop.Domain.StoreProfile
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        }
-        public async Task<IEnumerable<Store>> GetAllStores()
-        {
-            return await repository.GetAllStoresAsync();
         }
 
         public async Task<Store> GetDetailedStore(StoreId id)
@@ -67,6 +63,11 @@ namespace SplurgeStop.Domain.StoreProfile
             {
                 await unitOfWork.Commit();
             }
+        }
+
+        public async Task<IEnumerable<StoreStripped>> GetAllStoresStripped()
+        {
+            return await repository.GetAllStoresStrippedAsync();
         }
     }
 }

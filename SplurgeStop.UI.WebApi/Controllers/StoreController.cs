@@ -5,6 +5,7 @@ using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.DTO;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.StoreProfile.Events;
 
@@ -22,11 +23,12 @@ namespace SplurgeStop.UI.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Store>> GetStores()
+        public async Task<IEnumerable<StoreStripped>> GetStores()
         {
-            return await service.GetAllStores();
+            return await service.GetAllStoresStripped();
         }
 
+        [Route("StoreInfo")]
         [HttpGet("{id}")]
         public async Task<Store> GetStore(Guid id)
         {

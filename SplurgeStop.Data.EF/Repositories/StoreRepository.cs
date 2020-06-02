@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.DTO;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -48,6 +50,18 @@ namespace SplurgeStop.Data.EF.Repositories
         public async Task<Store> LoadFullStoreAsync(StoreId id)
         {
             return await context.Stores.FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync()
+        {
+            return await context.Stores
+                    .Select(r => new StoreStripped
+                    {
+                        Id = r.Id,
+                        Name = r.Name
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
         }
     }
 }
