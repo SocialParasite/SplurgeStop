@@ -66,3 +66,30 @@ export const getStore = async (
     return null;
   }
 };
+
+export interface PostStoreData {
+  id: string | undefined;
+  name: string;
+}
+
+export const postStore = async (
+  store: PostStoreData,
+): Promise<StoreData | undefined> => {
+  try {
+    const result = await http<PostStoreData, StoreDataFromServer>({
+      path: '/Store/storeInfo',
+      method: 'put',
+      body: store,
+    });
+    console.log(result);
+    if (result.ok && result.parsedBody) {
+      let test = mapStoreFromServer(result.parsedBody);
+      console.log('parsed bod: ' + test);
+      return test;
+    } else {
+      return undefined;
+    }
+  } catch (ex) {
+    return undefined;
+  }
+};

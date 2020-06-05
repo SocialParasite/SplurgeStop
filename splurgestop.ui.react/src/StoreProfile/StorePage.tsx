@@ -1,7 +1,9 @@
-import React, { FC, useState, Fragment, useEffect, ChangeEvent } from 'react';
+import React, { FC, useState, Fragment, useEffect } from 'react';
 import { Page } from './../Page';
 import { RouteComponentProps } from 'react-router-dom';
-import { DetailedStoreData, getStore } from './StoreData';
+import { DetailedStoreData, getStore, postStore } from './StoreData';
+import { Form, required, minLength, Values } from './../Form';
+import { Field } from './../Field';
 
 interface RouteParams {
   id: string;
@@ -28,32 +30,36 @@ export const StorePage: FC<RouteComponentProps<RouteParams>> = ({ match }) => {
     setEditing(!isEditing);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (store != null) {
-      store.name = e.currentTarget.value;
-    }
-    setStore(store);
+  const handleSubmit = async (values: Values) => {
+    const modStore = await postStore({
+      id: store?.id.value.toString(),
+      name: values.name,
+    });
+    return { success: modStore ? true : false };
   };
 
   return (
-    <Page>
+    <Page title={store?.name}>
       <button onClick={editModeClick}>Edit</button>
       <div>
         {store !== null && (
           <Fragment>
             <div>
               {isEditing ? (
-                <form>
-                  <div>
-                    <input
-                      type="text"
-                      name="name"
-                      value={store.name}
-                      onChange={handleChange}
-                    ></input>
-                  </div>
-                  <button type="submit">Save</button>
-                </form>
+                <Form
+                  submitCaption="Save"
+                  onSubmit={handleSubmit}
+                  validationRules={{
+                    name: [
+                      { validator: required },
+                      { validator: minLength, arg: 1 },
+                    ],
+                  }}
+                  failureMessage="There was a problem with your store"
+                  successMessage="Your store update was successfully submitted"
+                >
+                  <Field name="name" label="Store name" />
+                </Form>
               ) : (
                 <div>
                   <h1>{store.name}</h1>
