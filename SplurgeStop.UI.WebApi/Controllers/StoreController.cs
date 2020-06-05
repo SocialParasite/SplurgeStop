@@ -28,7 +28,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
             return await service.GetAllStoresStripped();
         }
 
-        [Route("StoreInfo")]
+        //[Route("StoreInfo")]
         [HttpGet("{id}")]
         public async Task<Store> GetStore(Guid id)
         {
@@ -64,9 +64,9 @@ namespace SplurgeStop.UI.WebApi.Controllers
             }
         }
 
-        [Route("storeName")]
+        [Route("StoreInfo")]
         [HttpPut]
-        public Task<IActionResult> Put(Commands.SetStoreName request)
-            => RequestHandler.HandleCommand(request, service.Handle);
+        public async Task<IActionResult> Put(Commands.SetStoreName request) 
+            => await RequestHandler.HandleCommand(request, service.Handle);
     }
 }
