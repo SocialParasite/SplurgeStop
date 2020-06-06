@@ -4,6 +4,7 @@ import { css, jsx } from '@emotion/core';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import { Page } from './../Components/Page';
 
 export function StorePage({ match }) {
   const [store, setStore] = useState(null);
@@ -34,34 +35,36 @@ export function StorePage({ match }) {
   };
 
   return (
-    <div>
-      <button onClick={editModeClick}>Edit</button>
+    <Page title={store?.name}>
       <div>
-        {storesLoading ? (
-          <div
-            css={css`
-              font-size: 16px;
-              font-style: italic;
-            `}
-          >
-            Loading...
-          </div>
-        ) : (
-          <Fragment>
-            <div>
-              {isEditing ? (
-                <form submitCaption="Save" onChange={changeHandler}>
-                  <input type="text" name="name" label="Store name" />
-                </form>
-              ) : (
-                <div>
-                  <h1>{store.name}</h1>
-                </div>
-              )}
+        <button onClick={editModeClick}>Edit</button>
+        <div>
+          {storesLoading ? (
+            <div
+              css={css`
+                font-size: 16px;
+                font-style: italic;
+              `}
+            >
+              Loading...
             </div>
-          </Fragment>
-        )}
+          ) : (
+            <Fragment>
+              <div>
+                {isEditing ? (
+                  <form submitCaption="Save" onChange={changeHandler}>
+                    <input type="text" name="name" label="Store name" />
+                  </form>
+                ) : (
+                  <div>
+                    <h1>{store.name}</h1>
+                  </div>
+                )}
+              </div>
+            </Fragment>
+          )}
+        </div>
       </div>
-    </div>
+    </Page>
   );
 }
