@@ -83,9 +83,7 @@ export const postStore = async (
     });
     console.log(result);
     if (result.ok && result.parsedBody) {
-      let test = mapStoreFromServer(result.parsedBody);
-      console.log('parsed bod: ' + test);
-      return test;
+      return mapStoreFromServer(result.parsedBody);
     } else {
       return undefined;
     }

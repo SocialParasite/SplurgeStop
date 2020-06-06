@@ -12,4 +12,5 @@ It's a start... not much else at the moment, especially on UI side.
 ### Back to basics
 I think I hogged a little too big of a slice at once.
 That for I added second React UI (.ui.reactsimple). 
+(This one uses js instead of ts.) 
 I'll try to keep this one really simple so I won't confuse myself again.

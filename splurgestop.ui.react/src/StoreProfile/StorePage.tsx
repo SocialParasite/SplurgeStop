@@ -19,7 +19,6 @@ export const StorePage: FC<RouteComponentProps<RouteParams>> = ({ match }) => {
       const foundStore = await getStore(id);
       setStore(foundStore);
     };
-
     if (match.params.id) {
       const storeId = match.params.id;
       doGetStore(storeId);

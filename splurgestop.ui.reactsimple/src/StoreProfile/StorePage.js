@@ -3,8 +3,8 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { css, jsx } from '@emotion/core';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
 import { Page } from './../Components/Page';
+import { updateStore } from './StoreCommands';
 
 export function StorePage({ match }) {
   const [store, setStore] = useState(null);
@@ -19,51 +19,65 @@ export function StorePage({ match }) {
       const data = await response.json();
       setStore(data);
       setStoresLoading(false);
-      return null;
     };
 
-    loadStore();
-  });
+    if (match.params.id) {
+      const storeId = match.params.id;
+      loadStore(storeId);
+    }
+  }, [match.params.id]);
 
   const editModeClick = () => {
     setEditing(!isEditing);
   };
 
+  const handleSubmit = async () => {
+    await updateStore({
+      id: store.id.value,
+      name: store.name,
+    });
+  };
+
   const changeHandler = (e) => {
-    console.log(e.currentTarget.name);
-    console.log(e.currentTarget.value);
+    store.name = e.currentTarget.value;
+    setStore(store);
   };
 
   return (
     <Page title={store?.name}>
+      <button onClick={editModeClick}>Edit</button>
       <div>
-        <button onClick={editModeClick}>Edit</button>
-        <div>
-          {storesLoading ? (
-            <div
-              css={css`
-                font-size: 16px;
-                font-style: italic;
-              `}
-            >
-              Loading...
+        {storesLoading ? (
+          <div
+            css={css`
+              font-size: 16px;
+              font-style: italic;
+            `}
+          >
+            Loading...
+          </div>
+        ) : (
+          <Fragment>
+            <div>
+              {isEditing ? (
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="name"
+                    label="Store name"
+                    placeholder={store.name}
+                    onChange={changeHandler}
+                  />
+                  <input type="submit" value="Save" />
+                </form>
+              ) : (
+                <div>
+                  <h1>{store.name}</h1>
+                </div>
+              )}
             </div>
-          ) : (
-            <Fragment>
-              <div>
-                {isEditing ? (
-                  <form submitCaption="Save" onChange={changeHandler}>
-                    <input type="text" name="name" label="Store name" />
-                  </form>
-                ) : (
-                  <div>
-                    <h1>{store.name}</h1>
-                  </div>
-                )}
-              </div>
-            </Fragment>
-          )}
-        </div>
+          </Fragment>
+        )}
       </div>
     </Page>
   );

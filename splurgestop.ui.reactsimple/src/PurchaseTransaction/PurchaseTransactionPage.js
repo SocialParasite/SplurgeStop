@@ -22,8 +22,11 @@ export function PurchaseTransactionPage({ match }) {
       setTransactionsLoading(false);
     };
 
-    loadTransaction();
-  });
+    if (match.params.id) {
+      loadTransaction();
+      console.log('Loaded');
+    }
+  }, [match.params.id]);
 
   const editModeClick = () => {
     setEditing(!isEditing);

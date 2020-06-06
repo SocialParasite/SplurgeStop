@@ -63,7 +63,7 @@ export function StoreList() {
               </tr>
             </thead>
             {stores.map((store) => (
-              <tbody>
+              <tbody key={store.id}>
                 <tr>
                   <Fragment key={store.id}>
                     <td>
