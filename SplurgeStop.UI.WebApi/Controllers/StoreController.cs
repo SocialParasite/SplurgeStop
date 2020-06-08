@@ -28,7 +28,6 @@ namespace SplurgeStop.UI.WebApi.Controllers
             return await service.GetAllStoresStripped();
         }
 
-        //[Route("StoreInfo")]
         [HttpGet("{id}")]
         public async Task<Store> GetStore(Guid id)
         {
@@ -66,7 +65,21 @@ namespace SplurgeStop.UI.WebApi.Controllers
 
         [Route("StoreInfo")]
         [HttpPut]
-        public async Task<IActionResult> Put(Commands.SetStoreName request) 
+        public async Task<IActionResult> Put(Commands.SetStoreName request)
             => await RequestHandler.HandleCommand(request, service.Handle);
+
+        [Route("Delete")]
+        [HttpPost]
+        public async Task<ActionResult<StoreDeleted>> DeleteStore(Commands.DeleteStore request)
+        {
+            var result = await RequestHandler.HandleCommand(request, service.Handle);
+
+            if (result.GetType() == typeof(OkResult))
+                return new StoreDeleted { Id = request.Id };
+
+            else
+                return new BadRequestObjectResult(new { error = "Error occurred during delete attempt." });
+
+        }
     }
 }

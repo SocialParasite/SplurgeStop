@@ -77,7 +77,7 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
         }
-        
+
         // PURCHASETRANSACTION
         // LineItems
         [Fact]
@@ -161,7 +161,7 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
-        public async Task Add_lineItem_with_notes() 
+        public async Task Add_lineItem_with_notes()
         {
             var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
                 .WithNotes("My Notes!")
@@ -181,7 +181,7 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(22.33m);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            
+
             var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.NotNull(sut.LineItems);
@@ -244,6 +244,22 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Equal("Mega Market", sut.Name);
             Assert.Equal(storeId, sut.Id);
+        }
+
+        [Fact]
+        public async Task Remove_Store()
+        {
+            Store store = await CreateValidStore();
+
+            var sut = await CheckIfStoreExists(store.Id);
+
+            Assert.True(sut);
+
+            await RemoveStore(store.Id);
+
+            sut = await CheckIfStoreExists(store.Id);
+
+            Assert.False(sut);
         }
     }
 }

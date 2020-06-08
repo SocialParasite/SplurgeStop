@@ -14,5 +14,10 @@ namespace SplurgeStop.Domain.StoreProfile
             public Guid Id { get; set; }
             public string Name { get; set; }
         }
+
+        public class DeleteStore
+        {
+            public Guid Id { get; set; }
+        }
     }
 }

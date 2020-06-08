@@ -9,11 +9,13 @@ namespace SplurgeStop.Domain.DA_Interfaces
     {
         Task AddStoreAsync(Store store);
         Task<bool> ExistsAsync(StoreId id);
+        Task<Store> LoadStoreAsync(StoreId id);
         Task<IEnumerable<Store>> GetAllStoresAsync();
         Task<Store> GetStoreFullAsync(StoreId id);
         Task<Store> LoadFullStoreAsync(StoreId id);
-        Task<Store> LoadStoreAsync(StoreId id);
 
         Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync();
+
+        Task RemoveStoreAsync(StoreId id);
     }
 }

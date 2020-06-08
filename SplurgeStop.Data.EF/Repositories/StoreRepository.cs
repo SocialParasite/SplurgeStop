@@ -63,5 +63,13 @@ namespace SplurgeStop.Data.EF.Repositories
                     .AsNoTracking()
                     .ToListAsync();
         }
+
+        public async Task RemoveStoreAsync(StoreId id)
+        {
+            var store = await context.Stores.FindAsync(id);
+
+            if (store != null)
+                context.Stores.Remove(store);
+        }
     }
 }

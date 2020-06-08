@@ -19,7 +19,7 @@ namespace SplurgeStop.Domain.StoreProfile
         }
 
         public StoreId Id { get; private set; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
         // store name, K-Citymarket Länsikeskus
         // chain, Kesko
         // store type, Citymarket
@@ -44,6 +44,10 @@ namespace SplurgeStop.Domain.StoreProfile
                     Name = e.Name;
                     break;
                 case Events.StoreNameChanged e:
+                    Name = e.Name;
+                    break;
+                case Events.StoreDeleted e:
+                    Id = new StoreId(e.Id);
                     Name = e.Name;
                     break;
             }

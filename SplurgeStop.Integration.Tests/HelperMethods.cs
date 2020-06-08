@@ -165,6 +165,21 @@ namespace SplurgeStop.Integration.Tests
             await storeController.Put(updateCommand);
         }
 
+        public async static Task RemoveStore(StoreId id)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new StoreRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new StoreService(repository, unitOfWork);
+            var storeController = new StoreController(service);
+
+            var updateCommand = new store.Commands.DeleteStore();
+            updateCommand.Id = id;
+
+            await storeController.DeleteStore(updateCommand);
+        }
+
         public async static Task<PurchaseTransaction> ReloadPurchaseTransaction(PurchaseTransactionId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
@@ -172,6 +187,15 @@ namespace SplurgeStop.Integration.Tests
             var repository = new PurchaseTransactionRepository(context);
 
             return await repository.GetPurchaseTransactionFullAsync(id);
+        }
+
+        public async static Task<bool> CheckIfStoreExists(StoreId id)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new StoreRepository(context);
+
+            return await repository.ExistsAsync(id);
         }
     }
 }

@@ -36,8 +36,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                                   cmd.LineItemId)
                         .WithNotes(cmd.Notes)
                         .Build())),
-                //UpdateLineItem cmd
-                //    => HandleUpdate(cmd.Id, async c => await UpdateLineItemAsync(cmd.Id, cmd.LineItem)),
                 _ => Task.CompletedTask
             };
         }

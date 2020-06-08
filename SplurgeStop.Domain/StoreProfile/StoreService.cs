@@ -31,6 +31,7 @@ namespace SplurgeStop.Domain.StoreProfile
                 Create cmd => HandleCreate(cmd),
                 SetStoreName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateStoreName(cmd.Name)),
+                DeleteStore cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveStoreAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -43,8 +44,23 @@ namespace SplurgeStop.Domain.StoreProfile
             var newStore = Store.Create(cmd.Id, cmd.Name);
 
             await repository.AddStoreAsync(newStore);
-            
+
             if (newStore.EnsureValidState())
+            {
+                await unitOfWork.Commit();
+            }
+        }
+
+        private async Task HandleUpdateAsync(Guid storeId, Func<Store, Task> operation)
+        {
+            var store = await repository.LoadStoreAsync(storeId);
+
+            if (store == null)
+                throw new InvalidOperationException($"Entity with id {storeId} cannot be found");
+
+            await operation(store);
+
+            if (store.EnsureValidState())
             {
                 await unitOfWork.Commit();
             }
