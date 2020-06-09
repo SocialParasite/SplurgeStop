@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { Page } from './../Components/Page';
+import { deleteStore } from './StoreCommands';
 
 export function StoreList() {
   const [stores, setStores] = useState(null);
@@ -17,19 +18,40 @@ export function StoreList() {
       const data = await response.json();
       setStores(data);
       setStoresLoading(false);
-      return null;
     };
 
     loadStores();
   }, []);
 
+  const removeItem = (index) => {
+    let data = stores.filter((_, i) => i !== index);
+    setStores(data);
+  };
+
+  const handleDelete = async (store) => {
+    let index = stores.findIndex((s) => s.id === store.id);
+    removeItem(index);
+
+    await deleteStore({
+      id: store.id,
+    });
+  };
+
   return (
     <Page title="Stores">
+      <Link
+        css={css`
+          text-decoration: none;
+        `}
+        to={`Store/Add`}
+      >
+        {' '}
+        <Button className="float-right">Add Store</Button>
+      </Link>
       <div
         css={css`
           margin: 50px auto 20px auto;
           padding: 30px 12px;
-          max-width: 1600px;
         `}
       >
         <div
@@ -56,10 +78,13 @@ export function StoreList() {
               <tr
                 css={css`
                   background: burlywood;
-                  text-align: left;
+                  text-align: center;
+                  text-transform: uppercase;
                 `}
               >
                 <th>Store name</th>
+                <th>Details</th>
+                <th>Remove</th>
               </tr>
             </thead>
             {stores.map((store) => (
@@ -75,6 +100,31 @@ export function StoreList() {
                       >
                         {store.name}
                       </Link>
+                    </td>
+                    <td>
+                      <Link
+                        css={css`
+                          text-decoration: none;
+                        `}
+                        to={`StoreInfo/${store.id}`}
+                      >
+                        Show
+                      </Link>
+                    </td>
+                    <td
+                      css={css`
+                        display: flex;
+                        justify-content: center;
+                      `}
+                    >
+                      <Button
+                        variant="danger"
+                        onClick={() => {
+                          handleDelete(store);
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </td>
                   </Fragment>
                 </tr>

@@ -29,7 +29,7 @@ export function PurchaseTransactionList() {
         css={css`
           margin: 50px auto 20px auto;
           padding: 30px 12px;
-          max-width: 1600px;
+          max-width: 1000px;
         `}
       >
         <div
@@ -52,36 +52,58 @@ export function PurchaseTransactionList() {
           </div>
         ) : (
           <Table bordered hover size="sm">
-            <thead>
+            <thead class="text-uppercase text-center background-burlywood">
               <tr
                 css={css`
                   background: burlywood;
-                  text-align: left;
                 `}
               >
                 <th>Purchase date</th>
                 <th>Store</th>
                 <th>Total spent</th>
                 <th>Item count</th>
+                <th>Details</th>
+                <th>Remove</th>
               </tr>
             </thead>
             {transactions.map((transaction) => (
               <tbody key={transaction.id}>
-                <tr>
+                <tr class="text-right">
                   <Fragment key={transaction.id}>
-                    <td>
+                    <td>{formatDate(transaction.purchaseDate)}</td>
+                    <td> {transaction.storeName} </td>
+                    <td> {transaction.totalPrice} </td>
+                    <td> {transaction.itemCount} </td>
+                    <td
+                      css={css`
+                        width: 50px;
+                        text-align: center;
+                      `}
+                    >
                       <Link
                         css={css`
                           text-decoration: none;
                         `}
                         to={`PurchaseTransaction/${transaction.id}`}
                       >
-                        {formatDate(transaction.purchaseDate)}
+                        Show
                       </Link>
                     </td>
-                    <td> {transaction.storeName} </td>
-                    <td> {transaction.totalPrice} </td>
-                    <td> {transaction.itemCount} </td>
+                    <td
+                      css={css`
+                        width: 50px;
+                        text-align: center;
+                      `}
+                    >
+                      <Link
+                        css={css`
+                          text-decoration: none;
+                        `}
+                        to={`PurchaseTransaction/${transaction.id}`}
+                      >
+                        Delete
+                      </Link>
+                    </td>
                   </Fragment>
                 </tr>
               </tbody>

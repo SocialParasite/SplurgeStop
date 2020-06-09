@@ -5,6 +5,7 @@ import { PurchaseTransactionList } from './PurchaseTransaction/PurchaseTransacti
 import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransactionPage';
 import { StoreList } from './StoreProfile/StoreList';
 import { StorePage } from './StoreProfile/StorePage';
+import { NewStore } from './StoreProfile/NewStore';
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
             path="/PurchaseTransaction/:id"
             component={PurchaseTransactionPage}
           />
-          <Route path="/Store" component={StoreList} />
+          <Route exact path="/Store" component={StoreList} />
+          <Route exact path="/Store/Add" component={NewStore} />
           <Route path="/StoreInfo/:id" component={StorePage} />
         </Switch>
       </BrowserRouter>
