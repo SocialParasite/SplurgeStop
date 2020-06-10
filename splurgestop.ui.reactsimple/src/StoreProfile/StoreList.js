@@ -101,20 +101,18 @@ export function StoreList() {
                         {store.name}
                       </Link>
                     </td>
-                    <td>
-                      <Link
-                        css={css`
-                          text-decoration: none;
-                        `}
-                        to={`StoreInfo/${store.id}`}
-                      >
+                    <td
+                      css={css`
+                        width: 5em;
+                      `}
+                    >
+                      <Button variant="info" href={`StoreInfo/${store.id}`}>
                         Show
-                      </Link>
+                      </Button>
                     </td>
                     <td
                       css={css`
-                        display: flex;
-                        justify-content: center;
+                        width: 5em;
                       `}
                     >
                       <Button

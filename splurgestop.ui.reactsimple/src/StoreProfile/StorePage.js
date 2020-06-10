@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Table } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Page } from './../Components/Page';
 import { updateStore } from './StoreCommands';
@@ -45,7 +45,9 @@ export function StorePage({ match }) {
 
   return (
     <Page title={store?.name}>
-      <button onClick={editModeClick}>Edit</button>
+      <Button onClick={editModeClick} className="float-right">
+        Edit
+      </Button>
       <div>
         {storesLoading ? (
           <div
@@ -58,7 +60,11 @@ export function StorePage({ match }) {
           </div>
         ) : (
           <Fragment>
-            <div>
+            <div
+              css={css`
+                margin-top: 5em;
+              `}
+            >
               {isEditing ? (
                 <form onSubmit={handleSubmit}>
                   <input
