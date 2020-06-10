@@ -8,11 +8,6 @@ import { addStore } from './StoreCommands';
 export function NewStore() {
   const [store, setStore] = useState(null);
 
-  useEffect(() => {
-    let json = { id: null, name: '' };
-    setStore(json);
-  }, []);
-
   const handleInputChange = (event) => {
     setStore({
       id: null,
