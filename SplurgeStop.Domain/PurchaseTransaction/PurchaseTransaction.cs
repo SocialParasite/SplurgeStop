@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using GuidHelpers;
+using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -17,6 +16,20 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             purchaseTransaction.Apply(new Events.PurchaseTransactionCreated
             {
                 Id = id
+            });
+
+            return purchaseTransaction;
+        }
+
+        public static PurchaseTransaction CreateFull(PurchaseTransactionId id, Store store, List<LineItemStripped> lineItems)
+        {
+            var purchaseTransaction = new PurchaseTransaction();
+
+            purchaseTransaction.Apply(new Events.PurchaseTransactionFullCreated
+            {
+                Id = id,
+                Store = store,
+                LineItems = lineItems
             });
 
             return purchaseTransaction;
@@ -118,8 +131,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             return Id.Value != default
                 && PurchaseDate != default;
-                //&& Store != null
-                //&& LineItems.Count >= 1;
+            //&& Store != null
+            //&& LineItems.Count >= 1;
         }
     }
 }

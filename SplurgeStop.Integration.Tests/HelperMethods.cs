@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
-using transaction = SplurgeStop.Domain.PurchaseTransaction;
 using store = SplurgeStop.Domain.StoreProfile;
-using Microsoft.AspNetCore.Mvc;
+using transaction = SplurgeStop.Domain.PurchaseTransaction;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -49,6 +50,44 @@ namespace SplurgeStop.Integration.Tests
             updateLineItemCommand.Notes = lineItem?.Notes;
 
             await transactionController.Put(updateLineItemCommand);
+
+            return command.Id;
+        }
+
+        public async static Task<PurchaseTransactionId> CreateFullValidPurchaseTransaction()
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new PurchaseTransactionRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new PurchaseTransactionService(repository, unitOfWork);
+
+            var command = new transaction.Commands.CreateFull();
+            command.Id = null;
+
+            // Add PurchaseDate
+            command.TransactionDate = DateTime.Now;
+
+            // Add Store
+            var store = await CreateValidStore();
+            command.StoreId = store.Id;
+
+            // Add one LineItem
+            var newLineItem = new LineItemStripped
+            {
+                Booking = Booking.Credit,
+                Price = 1.23m,
+                CurrencyCode = "EUR",
+                CurrencySymbol = "€",
+                CurrencySymbolPosition = CurrencySymbolPosition.end,
+                Notes = "New notes"
+            };
+
+            command.LineItems = new List<LineItemStripped>();
+            command.LineItems.Add(newLineItem);
+
+            var transactionController = new PurchaseTransactionController(service);
+            var result = await transactionController.Post(command);
 
             return command.Id;
         }

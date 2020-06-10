@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using SplurgeStop.Domain.PurchaseTransaction.DTO;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
@@ -7,6 +10,14 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public class Create
         {
             public Guid? Id { get; set; }
+        }
+
+        public class CreateFull
+        {
+            public Guid? Id { get; set; }
+            public DateTime TransactionDate { get; set; }
+            public Guid StoreId { get; set; }
+            public ICollection<LineItemStripped> LineItems { get; set; }
         }
 
         public class SetPurchaseTransactionDate

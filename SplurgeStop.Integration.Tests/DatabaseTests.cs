@@ -60,6 +60,20 @@ namespace SplurgeStop.Integration.Tests
         }
 
         [Fact]
+        public async Task FullPurchase_transaction_inserted_to_database()
+        {
+            PurchaseTransactionId transactionId = await CreateFullValidPurchaseTransaction();
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+
+            Assert.True(await repository.ExistsAsync(transactionId));
+            Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
+            Assert.NotNull(sut.Store);
+            Assert.Single(sut.LineItems);
+        }
+
+        [Fact]
         public async Task Update_transaction_date()
         {
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();

@@ -14,7 +14,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public Price Price { get; private set; }
 
-        //public int Quantitity { get; set; } // this will always be pieces; other "measurements" in Product 
+        //public int Quantity { get; set; } // this will always be pieces; other "measurements" in Product 
         //(change type? Could be g, l, kg, pieces)
 
         public void UpdateLineItemPrice(Price newPrice)

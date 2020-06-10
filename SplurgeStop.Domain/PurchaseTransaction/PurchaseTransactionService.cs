@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
@@ -25,6 +26,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
+                CreateFull cmd => HandleCreateFull(cmd),
                 SetPurchaseTransactionDate cmd
                     => HandleUpdate(cmd.Id, c => c.UpdatePurchaseTransactionDate(cmd.TransactionDate)),
                 SetPurchaseTransactionStore cmd
@@ -46,6 +48,38 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newPurchaseTransaction = PurchaseTransaction.Create(cmd.Id);
+            await repository.AddPurchaseTransactionAsync(newPurchaseTransaction);
+
+            if (newPurchaseTransaction.EnsureValidState())
+            {
+                await unitOfWork.Commit();
+            }
+        }
+
+        private async Task HandleCreateFull(CreateFull cmd)
+        {
+            if (await repository.ExistsAsync(cmd.Id))
+                throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
+
+            var newPurchaseTransaction = PurchaseTransaction.Create(cmd.Id);
+            newPurchaseTransaction.UpdatePurchaseTransactionDate(cmd.TransactionDate);
+            var store = await repository.GetStoreAsync(cmd.StoreId);
+            newPurchaseTransaction.UpdateStore(store);
+
+            foreach (var lineItem in cmd.LineItems)
+            {
+                var newLineItem = LineItemBuilder
+                            .LineItem(new Price(lineItem.Price,
+                            lineItem.Booking,
+                            lineItem.CurrencyCode,
+                            lineItem.CurrencySymbol,
+                            lineItem.CurrencySymbolPosition))
+                            .WithNotes(lineItem.Notes)
+                            .Build();
+
+                newPurchaseTransaction.UpdateLineItem(newLineItem);
+            }
+
             await repository.AddPurchaseTransactionAsync(newPurchaseTransaction);
 
             if (newPurchaseTransaction.EnsureValidState())
