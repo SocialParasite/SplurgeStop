@@ -1,11 +1,12 @@
 import React, { Fragment, useState, useEffect } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { Page } from './../Components/Page';
 import { formatDate } from './../Common/DateTimeHelpers';
+import { deletePurchaseTransaction } from './PurchaseTransactionCommands';
 
 export function PurchaseTransactionList() {
   const [transactions, setTransactions] = useState(null);
@@ -18,13 +19,29 @@ export function PurchaseTransactionList() {
       const data = await response.json();
       setTransactions(data);
       setTransactionsLoading(false);
-      console.log('load called');
     };
     loadTransactions();
   }, []);
 
+  const removeItem = (index) => {
+    let data = transactions.filter((_, i) => i !== index);
+    setTransactions(data);
+  };
+
+  const handleDelete = async (transaction) => {
+    let index = transactions.findIndex((t) => t.id === transaction.id);
+    removeItem(index);
+
+    await deletePurchaseTransaction({
+      id: transaction.id,
+    });
+  };
+
   return (
     <Page title="Purchase transactions">
+      <Button className="float-right" href={`PurchaseTransaction/Add`}>
+        Add Purchase
+      </Button>
       <div
         css={css`
           margin: 50px auto 20px auto;
@@ -52,7 +69,7 @@ export function PurchaseTransactionList() {
           </div>
         ) : (
           <Table bordered hover size="sm">
-            <thead class="text-uppercase text-center background-burlywood">
+            <thead className="text-uppercase text-center background-burlywood">
               <tr
                 css={css`
                   background: burlywood;
@@ -68,7 +85,7 @@ export function PurchaseTransactionList() {
             </thead>
             {transactions.map((transaction) => (
               <tbody key={transaction.id}>
-                <tr class="text-right">
+                <tr className="text-right">
                   <Fragment key={transaction.id}>
                     <td>{formatDate(transaction.purchaseDate)}</td>
                     <td> {transaction.storeName} </td>
@@ -80,14 +97,12 @@ export function PurchaseTransactionList() {
                         text-align: center;
                       `}
                     >
-                      <Link
-                        css={css`
-                          text-decoration: none;
-                        `}
-                        to={`PurchaseTransaction/${transaction.id}`}
+                      <Button
+                        variant="info"
+                        href={`PurchaseTransaction/${transaction.id}`}
                       >
                         Show
-                      </Link>
+                      </Button>
                     </td>
                     <td
                       css={css`
@@ -95,14 +110,14 @@ export function PurchaseTransactionList() {
                         text-align: center;
                       `}
                     >
-                      <Link
-                        css={css`
-                          text-decoration: none;
-                        `}
-                        to={`PurchaseTransaction/${transaction.id}`}
+                      <Button
+                        variant="danger"
+                        onClick={() => {
+                          handleDelete(transaction);
+                        }}
                       >
                         Delete
-                      </Link>
+                      </Button>
                     </td>
                   </Fragment>
                 </tr>

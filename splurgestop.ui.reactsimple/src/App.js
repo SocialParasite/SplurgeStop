@@ -6,6 +6,7 @@ import { PurchaseTransactionPage } from './PurchaseTransaction/PurchaseTransacti
 import { StoreList } from './StoreProfile/StoreList';
 import { StorePage } from './StoreProfile/StorePage';
 import { NewStore } from './StoreProfile/NewStore';
+import { NewPurchaseTransaction } from './PurchaseTransaction/NewPurchaseTransaction';
 
 function App() {
   return (
@@ -16,6 +17,12 @@ function App() {
           <Redirect from="/home" to="/" />
           <Route exact path="/" component={PurchaseTransactionList} />
           <Route
+            exact
+            path="/PurchaseTransaction/Add"
+            component={NewPurchaseTransaction}
+          />
+          <Route
+            exact
             path="/PurchaseTransaction/:id"
             component={PurchaseTransactionPage}
           />
