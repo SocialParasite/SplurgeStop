@@ -21,7 +21,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             return purchaseTransaction;
         }
 
-        public static PurchaseTransaction CreateFull(PurchaseTransactionId id, Store store, List<LineItemStripped> lineItems)
+        public static PurchaseTransaction CreateFull(PurchaseTransactionId id, Store store, ICollection<LineItemStripped> lineItems)
         {
             var purchaseTransaction = new PurchaseTransaction();
 
