@@ -24,16 +24,11 @@ export function PurchaseTransactionPage({ match }) {
 
     if (match.params.id) {
       loadTransaction();
-      console.log('Loaded');
     }
   }, [match.params.id]);
 
   const editModeClick = () => {
     setEditing(!isEditing);
-  };
-
-  const changeHandler = (e) => {
-    console.log('change triggered!');
   };
 
   return (
@@ -53,6 +48,7 @@ export function PurchaseTransactionPage({ match }) {
           ) : (
             <Fragment>
               <div>
+                {console.log(transaction)}
                 {isEditing ? (
                   <form>
                     <p>
