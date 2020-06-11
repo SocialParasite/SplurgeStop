@@ -48,7 +48,6 @@ export function PurchaseTransactionPage({ match }) {
           ) : (
             <Fragment>
               <div>
-                {console.log(transaction)}
                 {isEditing ? (
                   <form>
                     <p>

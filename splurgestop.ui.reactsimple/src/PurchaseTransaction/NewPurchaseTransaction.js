@@ -7,31 +7,43 @@ import { Page } from './../Components/Page';
 import { addPurchaseTransaction } from './PurchaseTransactionCommands';
 
 export function NewPurchaseTransaction() {
-  //https://stackoverflow.com/questions/54163796/react-usestate-hook-setter-has-no-result-with-array-variable
-
-  //const [transaction, setTransaction] = useState(null);
   const [transaction, setTransaction] = useState({
-    transactionDate: '2020-06-09',
-    storeId: '6c05f0ce-2e1d-4ba9-a0fa-18a465b194e0',
+    transactionDate: '',
+    storeId: '',
     lineItems: [
       {
-        amount: 1.23,
+        amount: 0.0,
         currencyCode: 'EUR',
         currencySymbol: '€',
         booking: 'Credit',
         positionRelativeToPrice: 'end',
-        notes: 'Line item 1',
-      },
-      {
-        amount: 11.23,
-        currencyCode: 'EUR',
-        currencySymbol: '€',
-        booking: 'Credit',
-        positionRelativeToPrice: 'end',
-        notes: 'Line item 2',
+        notes: '',
       },
     ],
   });
+
+  // const [transaction, setTransaction] = useState({
+  //   transactionDate: '2020-06-09',
+  //   storeId: '6c05f0ce-2e1d-4ba9-a0fa-18a465b194e0',
+  //   lineItems: [
+  //     {
+  //       amount: 1.23,
+  //       currencyCode: 'EUR',
+  //       currencySymbol: '€',
+  //       booking: 'Credit',
+  //       positionRelativeToPrice: 'end',
+  //       notes: 'Line item 1',
+  //     },
+  //     {
+  //       amount: 11.23,
+  //       currencyCode: 'EUR',
+  //       currencySymbol: '€',
+  //       booking: 'Credit',
+  //       positionRelativeToPrice: 'end',
+  //       notes: 'Line item 2',
+  //     },
+  //   ],
+  // });
 
   const [stores, setStores] = useState(null);
   const [storesLoading, setStoresLoading] = useState(true);
@@ -51,21 +63,45 @@ export function NewPurchaseTransaction() {
     loadStores();
   }, []);
 
-  const handleInputChange = (event) => {
+  const handleChange = (idx) => (e) => {
+    const { name, value } = e.target;
+    const lineItems = [...transaction.lineItems];
+    lineItems[idx] = {
+      [name]: value,
+    };
     setTransaction({
-      id: null,
-      purchaseDate: null,
-      store: null,
-      lineItems: null,
+      transactionDate: transaction.transactionDate,
+      storeId: transaction.storeId,
+      lineItems,
     });
+  };
+
+  const handleAddRow = () => {
+    const item = {
+      product: 'new prod',
+      amount: 0.0,
+      notes: '',
+    };
+
+    setTransaction({
+      transactionDate: transaction.transactionDate,
+      storeId: transaction.storeId,
+      lineItems: [...transaction.lineItems, item],
+    });
+  };
+
+  const handleRemoveSpecificRow = (idx) => () => {
+    const lineItems = [...transaction.lineItems];
+    lineItems.splice(idx, 1);
+    setTransaction({ lineItems });
   };
 
   const handleSubmit = async () => {
     await addPurchaseTransaction({
       id: null,
-      transactionDate: null,
-      store: null,
-      lineItems: null,
+      transactionDate: transaction.transactionDate,
+      store: transaction.storeId,
+      lineItems: transaction.lineItems,
     });
   };
 
@@ -75,42 +111,62 @@ export function NewPurchaseTransaction() {
         <Fragment>
           <div>
             <form>
-              <p>
-                <b>
-                  <input
-                    type="date"
-                    id="purchaseDate"
-                    name="purchaseDate"
-                  ></input>
-                </b>
-                &nbsp;&nbsp;&nbsp;
-                {storesLoading ? (
-                  <div
-                    css={css`
-                      font-size: 16px;
-                      font-style: italic;
-                    `}
-                  >
-                    Loading...
-                  </div>
-                ) : (
-                  <div>
-                    <label for="stores">Select a store:</label>
-                    <select name="stores" id="stores">
-                      {stores.map((store) => (
-                        <option>{store.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </p>
-              <div>
+              <div
+                css={css`
+                  margin: 1em;
+                `}
+              >
+                <input
+                  type="date"
+                  id="purchaseDate"
+                  name="purchaseDate"
+                ></input>
+              </div>
+              {storesLoading ? (
+                <div
+                  css={css`
+                    font-size: 16px;
+                    font-style: italic;
+                  `}
+                >
+                  Loading...
+                </div>
+              ) : (
+                <div
+                  css={css`
+                    margin: 1em;
+                  `}
+                >
+                  <label for="stores">Select a store:</label>
+                  <select name="stores" id="stores">
+                    {stores.map((store) => (
+                      <option>{store.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <div
+                css={css`
+                  margin: 1em;
+                `}
+              >
                 Total: {totalPrice().toFixed(2)}{' '}
                 {transaction.lineItems[0].currencySymbol}{' '}
               </div>
-              <div>
+              <div
+                css={css`
+                  margin: 1em;
+                  width: 50em;
+                `}
+              >
                 <lable for="notes">Notes:</lable>
-                <textarea id="notes" name="notes" />
+                <textarea
+                  id="notes"
+                  name="notes"
+                  css={css`
+                    width: 50em;
+                  `}
+                />
               </div>
               <div>
                 <Table bordered hover size="sm">
@@ -119,10 +175,11 @@ export function NewPurchaseTransaction() {
                       <th>Product</th>
                       <th>Price</th>
                       <th>Notes</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {transaction?.lineItems == null ? (
+                    {transaction.lineItems == null ? (
                       <tr>
                         <td contentEditable="true">
                           Product name goes here...
@@ -131,19 +188,90 @@ export function NewPurchaseTransaction() {
                         <td contentEditable="true">notes</td>
                       </tr>
                     ) : (
-                      transaction.lineItems.map((lineItem) => (
+                      transaction.lineItems.map((lineItem, idx) => (
                         <tr>
-                          <td contentEditable="true">{lineItem.booking}</td>
-                          <td contentEditable="true">{lineItem.amount}</td>
-                          <td contentEditable="true">{lineItem.notes}</td>
+                          <td
+                            css={css`
+                              height: 30px;
+                              width: 33%;
+                            `}
+                          >
+                            <input
+                              type="text"
+                              name="booking"
+                              value={transaction.lineItems[idx].booking}
+                              onChange={handleChange(idx)}
+                              css={css`
+                                border: none;
+                                height: 100%;
+                                width: 100%;
+                              `}
+                            />
+                          </td>
+                          <td
+                            css={css`
+                              height: 30px;
+                              width: 33%;
+                            `}
+                          >
+                            <input
+                              type="text"
+                              name="amount"
+                              value={transaction.lineItems[idx].amount}
+                              onChange={handleChange(idx)}
+                              css={css`
+                                border: none;
+                                height: 100%;
+                                width: 100%;
+                              `}
+                            />
+                          </td>
+                          <td
+                            css={css`
+                              height: 30px;
+                              width: 33%;
+                            `}
+                          >
+                            <input
+                              type="text"
+                              name="notes"
+                              value={transaction.lineItems[idx].notes}
+                              onChange={handleChange(idx)}
+                              css={css`
+                                border: none;
+                                height: 100%;
+                                width: 100%;
+                              `}
+                            />
+                          </td>
+                          <td>
+                            <Button
+                              variant="danger"
+                              onClick={handleRemoveSpecificRow(idx)}
+                            >
+                              -
+                            </Button>
+                          </td>
                         </tr>
                       ))
                     )}
                   </tbody>
-                  <Button>+</Button>
                 </Table>
+                <Button onClick={handleAddRow} variant="success">
+                  Add Row
+                </Button>
               </div>
-              <button type="submit">Save</button>
+              <Button
+                type="submit"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+                css={css`
+                  margin: 1em 0 0 0;
+                  width: 5.5em;
+                `}
+              >
+                Save
+              </Button>
             </form>
           </div>
         </Fragment>

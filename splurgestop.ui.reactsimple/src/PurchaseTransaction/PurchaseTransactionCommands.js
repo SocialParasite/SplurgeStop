@@ -22,7 +22,6 @@
 export const addPurchaseTransaction = async (transaction) => {
   try {
     const url = 'https://localhost:44304/api/PurchaseTransaction/';
-
     let response = await fetch(url, {
       method: 'POST',
       headers: {
