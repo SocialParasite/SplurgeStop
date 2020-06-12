@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -75,6 +75,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                             lineItem.CurrencySymbol,
                             lineItem.CurrencySymbolPosition))
                             .WithNotes(lineItem.Notes)
+                            .WithProduct(lineItem.Product)
                             .Build();
 
                 newPurchaseTransaction.UpdateLineItem(newLineItem);

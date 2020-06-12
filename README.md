@@ -5,6 +5,26 @@ This voyage takes me to the realms of DDD, ASP.NET Core and React (Redux),
 and probably some yet unknown adventures including desperation 
 but hopefully some insight as well.
 
+**Frameworks & libraries:**
+
+.NET Standard 2.1
+- SplurgeStop.Data.EF
+  - Data access project (Entity Framework Core 3.1)
+- SplurgeStop.Domain
+  - Domain project
+
+.NET Core 3.1
+- SplurgeStop.UI.WebApi
+  - ASP.NET Core API (C# 8.0, Serilog)
+- SplurgeStop.*.Tests, 
+  - Test projects (xUnit, Moq)
+
+User interfaces
+- splurgestop.ui.react
+  - React (Router, Redux, TypeScript)
+- splurgestop.ui.reactsimple
+  - React (JavaScript)
+
 ## Status
 
 It's a start... not much else at the moment, especially on UI side.
