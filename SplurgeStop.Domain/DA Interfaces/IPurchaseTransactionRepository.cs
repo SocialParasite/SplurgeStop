@@ -19,5 +19,7 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task ChangeStore(transaction.PurchaseTransaction purchaseTransaction, StoreId storeId);
 
         Task ChangeLineItem(transaction.PurchaseTransaction purchaseTransaction, LineItem lineItem);
+
+        Task RemovePurchaseTransactionAsync(PurchaseTransactionId id);
     }
 }

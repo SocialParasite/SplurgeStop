@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -38,6 +38,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                                   cmd.LineItemId)
                         .WithNotes(cmd.Notes)
                         .Build())),
+                DeletePurchaseTransaction cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemovePurchaseTransactionAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }

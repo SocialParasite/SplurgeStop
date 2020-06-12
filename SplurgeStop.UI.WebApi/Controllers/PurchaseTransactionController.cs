@@ -89,6 +89,20 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionLineItem request)
             => RequestHandler.HandleCommand(request, service.Handle);
+
+        [Route("Delete")]
+        [HttpPost]
+        public async Task<ActionResult<PurchaseTransactionDeleted>> Delete(Commands.DeletePurchaseTransaction request)
+        {
+            var result = await RequestHandler.HandleCommand(request, service.Handle);
+
+            if (result.GetType() == typeof(OkResult))
+                return new PurchaseTransactionDeleted { Id = request.Id };
+
+            else
+                return new BadRequestObjectResult(new { error = "Error occurred during delete attempt." });
+
+        }
     }
 
     public enum Period

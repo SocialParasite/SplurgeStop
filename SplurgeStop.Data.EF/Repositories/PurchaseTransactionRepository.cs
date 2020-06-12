@@ -91,5 +91,13 @@ namespace SplurgeStop.Data.EF.Repositories
             purchaseTransaction.LineItems.Add(lineItem);
             await context.SaveChangesAsync();
         }
+
+        public async Task RemovePurchaseTransactionAsync(PurchaseTransactionId id)
+        {
+            var pt = await context.Purchases.FindAsync(id);
+
+            if (pt != null)
+                context.Purchases.Remove(pt);
+        }
     }
 }

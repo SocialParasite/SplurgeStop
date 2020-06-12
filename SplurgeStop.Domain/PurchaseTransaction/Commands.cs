@@ -42,6 +42,12 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             public CurrencySymbolPosition CurrencySymbolPosition { get; set; }
             public Booking Booking { get; set; }
             public string Notes { get; set; }
+            public string Product { get; set; }
+        }
+
+        public class DeletePurchaseTransaction
+        {
+            public Guid Id { get; set; }
         }
 
         public class UpdateLineItem
