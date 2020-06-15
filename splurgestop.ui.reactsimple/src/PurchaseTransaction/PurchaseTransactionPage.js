@@ -85,7 +85,7 @@ export function PurchaseTransactionPage({ match }) {
                           {transaction.lineItems.map((item) => {
                             return (
                               <tr key={item.id.value}>
-                                <td>Product name goes here...</td>
+                                <td>{item.product}</td>
                                 <td>
                                   {item.price.currency
                                     .positionRelativeToPrice === 'end'
@@ -133,7 +133,7 @@ export function PurchaseTransactionPage({ match }) {
                           {transaction.lineItems.map((item) => {
                             return (
                               <tr key={item.id}>
-                                <td>Product name goes here...</td>
+                                <td>{item.product}</td>
                                 <td>
                                   {item.price.currency
                                     .positionRelativeToPrice === 'end'

@@ -17,6 +17,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             public Guid? Id { get; set; }
             public DateTime TransactionDate { get; set; }
             public Guid StoreId { get; set; }
+            public string Notes { get; set; }
             public ICollection<LineItemStripped> LineItems { get; set; }
         }
 

@@ -60,11 +60,16 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         private string GetTotalSum()
         {
-            var credit = LineItems.Where(i => i.Price.Booking == Booking.Credit).Sum(i => i.Price.Amount);
-            var debit = LineItems.Where(i => i.Price.Booking == Booking.Debit).Sum(i => i.Price.Amount);
-            var currency = LineItems.Select(i => i.Price.Currency).First();
+            if (LineItems.Count > 0)
+            {
+                var credit = LineItems.Where(i => i.Price.Booking == Booking.Credit).Sum(i => i.Price.Amount);
+                var debit = LineItems.Where(i => i.Price.Booking == Booking.Debit).Sum(i => i.Price.Amount);
+                var currency = LineItems.Select(i => i.Price.Currency).First();
 
-            return new Money((credit - debit), currency).ToString();
+                return new Money((credit - debit), currency).ToString();
+            }
+            else
+                return "N/A";
         }
 
         public void UpdateStore(Store store)

@@ -33,7 +33,7 @@ export const addPurchaseTransaction = async (transaction) => {
     let responseJson = await response.json();
     return responseJson.result;
   } catch (ex) {
-    console.log('Store not added.');
+    console.log('Purchase transaction not added.');
     console.log(ex);
     return undefined;
   }
