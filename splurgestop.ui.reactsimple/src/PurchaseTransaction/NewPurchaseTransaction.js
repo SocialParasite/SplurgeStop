@@ -5,7 +5,7 @@ import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Page } from './../Components/Page';
 import { addPurchaseTransaction } from './PurchaseTransactionCommands';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import id from 'uuid/v1';
 import produce from 'immer';
 import { set, has } from 'lodash';
@@ -36,49 +36,42 @@ const initialState = {
     {
       id: id(),
       product: '',
-      amount: '',
+      price: 0.0,
       currencyCode: 'EUR',
       currencySymbol: '€',
       booking: 'Credt',
-      positionRelativeToPrice: 'end',
+      currencySymbolPosition: 'end',
       notes: '',
     },
   ],
 };
 
 export function NewPurchaseTransaction() {
+  const [transactionLineItems, setTransactionLineItems] = useState([]);
   const [state, updateState] = React.useReducer(enhancedReducer, initialState);
-  const updateForm = React.useCallback(
-    ({ target: { value, name, type } }) => {
-      const updatePath = name.split('.');
-
-      if (updatePath.length === 1) {
-        const [key] = updatePath;
-
-        updateState({
-          [key]: value,
-        });
-      }
-
-      if (updatePath.length === 2) {
-        updateState({
-          _path: updatePath,
-          _value: value,
-        });
-      }
-      console.log(state);
-    },
-    [state],
-  );
-
-  // const [transactionLineItems, setTransactionLineItems] = useState([]);
-  // const { register, getValues, handleSubmit, control } = useForm();
-
   const [stores, setStores] = useState(null);
   const [storesLoading, setStoresLoading] = useState(true);
 
-  // const totalPrice = () =>
-  //   transaction.lineItems.reduce((sum, item) => sum + item.amount, 0);
+  const { handleSubmit } = useForm();
+
+  const updateForm = React.useCallback(({ target: { value, name, type } }) => {
+    const updatePath = name.split('.');
+
+    if (updatePath.length === 1) {
+      const [key] = updatePath;
+
+      updateState({
+        [key]: value,
+      });
+    }
+
+    if (updatePath.length === 2) {
+      updateState({
+        _path: updatePath,
+        _value: value,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const loadStores = async () => {
@@ -92,31 +85,61 @@ export function NewPurchaseTransaction() {
     loadStores();
   }, []);
 
+  const add = () => {
+    setTransactionLineItems([
+      ...transactionLineItems,
+      {
+        id: id(),
+        product: '',
+        price: 0.0,
+        currencyCode: 'EUR',
+        currencySymbol: '€',
+        booking: 'Credit',
+        currencySymbolPosition: 'end',
+        notes: '',
+      },
+    ]);
+  };
+
+  const update = (e, index) => {
+    let items = [...transactionLineItems];
+    let item = { ...transactionLineItems[index] };
+    if (e.currentTarget.name === 'price') {
+      var num = Number.parseFloat(e.currentTarget.value);
+      item[e.currentTarget.name] = num.toFixed(2);
+    } else {
+      item[e.currentTarget.name] = e.currentTarget.value;
+    }
+    items[index] = item;
+
+    setTransactionLineItems(items);
+  };
+
+  const remove = (index) => {
+    setTransactionLineItems([
+      ...transactionLineItems.slice(0, index),
+      ...transactionLineItems.slice(index + 1),
+    ]);
+  };
+  // const totalPrice = () =>
+  //   transaction.lineItems.reduce((sum, item) => sum + item.amount, 0);
+
   const onSubmit = async () => {
-    console.log(state.transactionDate);
-    console.log(state.storeId);
-    console.log(state.notes);
-    console.log(state.lineItems);
     await addPurchaseTransaction({
       id: null,
       transactionDate: state.transactionDate,
       storeId: state.storeId,
       notes: state.notes,
-      lineItems: [], //state.lineItems,
+      lineItems: [...transactionLineItems],
     });
   };
-
-  // const onSubmit = (transactionLineItems) => {
-  //   console.log(transactionLineItems);
-  // };
 
   return (
     <Page title="Add new purchase transaction">
       <div>
         <Fragment>
           <div>
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div
                 css={css`
                   margin: 1em;
@@ -187,6 +210,83 @@ export function NewPurchaseTransaction() {
                   `}
                 />
               </div>
+              <div>
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Notes</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactionLineItems.map((lineItem, idx) => (
+                      <tr key={lineItem.id}>
+                        <td
+                          css={css`
+                            height: 30px;
+                            width: 33%;
+                          `}
+                        >
+                          <input
+                            type="text"
+                            className="input"
+                            id="product"
+                            name="product"
+                            onChange={(e) => update(e, idx)}
+                            defaultValue={state.lineItems[idx]?.product}
+                          ></input>
+                        </td>
+                        <td
+                          css={css`
+                            height: 30px;
+                            width: 33%;
+                          `}
+                        >
+                          <input
+                            type="text"
+                            className="input"
+                            id="price"
+                            name="price"
+                            onChange={(e) => update(e, idx)}
+                            defaultValue={state.lineItems[idx]?.price}
+                          ></input>
+                        </td>
+                        <td
+                          css={css`
+                            height: 30px;
+                            width: 33%;
+                          `}
+                        >
+                          <input
+                            type="text"
+                            className="input"
+                            id="notes"
+                            name="notes"
+                            onChange={(e) => update(e, idx)}
+                            defaultValue={state.lineItems[idx]?.notes}
+                          ></input>
+                        </td>
+                        <td>
+                          <Button variant="danger" onClick={() => remove(idx)}>
+                            -
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                <Button
+                  onClick={() => {
+                    add();
+                  }}
+                  variant="success"
+                >
+                  Add Row
+                </Button>
+              </div>
+
               <input
                 type="submit"
                 className="btn btn-primary"

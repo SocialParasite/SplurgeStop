@@ -76,7 +76,7 @@ namespace SplurgeStop.Integration.Tests
             var newLineItem = new LineItemStripped
             {
                 Booking = Booking.Credit,
-                Price = 1.23m,
+                Price = "1.23",
                 CurrencyCode = "EUR",
                 CurrencySymbol = "€",
                 CurrencySymbolPosition = CurrencySymbolPosition.end,

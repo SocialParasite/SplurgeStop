@@ -70,7 +70,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             foreach (var lineItem in cmd.LineItems)
             {
                 var newLineItem = LineItemBuilder
-                            .LineItem(new Price(lineItem.Price,
+                            .LineItem(new Price(decimal.Parse(lineItem.Price, CultureInfo.InvariantCulture),
                             lineItem.Booking,
                             lineItem.CurrencyCode,
                             lineItem.CurrencySymbol,

@@ -6,7 +6,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction.DTO
     {
         public Guid? Id { get; set; }
         public string Product { get; set; }
-        public decimal Price { get; set; }
+        public string Price { get; set; }
         public string CurrencyCode { get; set; }
         public string CurrencySymbol { get; set; }
         public CurrencySymbolPosition CurrencySymbolPosition { get; set; }
