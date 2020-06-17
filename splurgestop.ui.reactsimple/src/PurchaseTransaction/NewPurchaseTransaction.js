@@ -9,6 +9,8 @@ import { useForm } from 'react-hook-form';
 import id from 'uuid/v1';
 import produce from 'immer';
 import { set, has } from 'lodash';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function enhancedReducer(state, updateArg) {
   if (updateArg.constructor === Function) {
@@ -124,20 +126,40 @@ export function NewPurchaseTransaction() {
   // const totalPrice = () =>
   //   transaction.lineItems.reduce((sum, item) => sum + item.amount, 0);
 
+  const notify = (info) => {
+    toast.info(info);
+  };
+
   const onSubmit = async () => {
-    await addPurchaseTransaction({
+    let error = await addPurchaseTransaction({
       id: null,
       transactionDate: state.transactionDate,
       storeId: state.storeId,
       notes: state.notes,
       lineItems: [...transactionLineItems],
-    });
+    }).then(
+      () => null,
+      (purchaseTransaction) => purchaseTransaction,
+    );
+    if (error === null) {
+      console.log(error);
+      notify('Purchase transaction added');
+    } else {
+      toast.error(
+        <div>
+          Purchase transaction not added!
+          <br />
+          {error.message}
+        </div>,
+      );
+    }
   };
 
   return (
     <Page title="Add new purchase transaction">
       <div>
         <Fragment>
+          <ToastContainer />
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div
