@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SplurgeStop.Domain.PurchaseTransaction;
@@ -15,7 +14,7 @@ namespace SplurgeStop.Data.EF
 
         public SplurgeStopDbContext(string connectionString)
         {
-            ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            ConnectionString = connectionString;
         }
 
         public DbSet<PurchaseTransaction> Purchases { get; set; }
