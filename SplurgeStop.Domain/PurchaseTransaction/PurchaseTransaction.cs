@@ -9,7 +9,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
     {
         private PurchaseDate purchaseDate;
 
-        public static PurchaseTransaction Create(PurchaseTransactionId id)
+        internal static PurchaseTransaction Create(PurchaseTransactionId id)
         {
             var purchaseTransaction = new PurchaseTransaction();
 
