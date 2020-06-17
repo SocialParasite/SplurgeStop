@@ -37,26 +37,6 @@ namespace SplurgeStop.UI.WebApi.Controllers
             return await service.GetDetailedPurchaseTransaction(id);
         }
 
-        [Obsolete]
-        [HttpPost]
-        [Route("AddPurchaseTransaction")]
-        public async Task<ActionResult<PurchaseTransactionCreated>> Post(Commands.Create request)
-        {
-            try
-            {
-                request.Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-                await RequestHandler.HandleCommand(request, service.Handle);
-
-                return new PurchaseTransactionCreated { Id = (Guid)request.Id };
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Error(e, "Somehow something happened =-O");
-                return new BadRequestResult();
-                throw;
-            }
-        }
-
         [HttpPost]
         public async Task<ActionResult<PurchaseTransactionCreated>> Post(Commands.CreateFull request)
         {
@@ -65,7 +45,8 @@ namespace SplurgeStop.UI.WebApi.Controllers
                 request.Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
                 await RequestHandler.HandleCommand(request, service.Handle);
 
-                return new PurchaseTransactionCreated { Id = (Guid)request.Id };
+                //return new PurchaseTransactionCreated { Id = (Guid)request.Id };
+                return RedirectToAction("GetPurchaseTransaction", new { id = request.Id });
             }
             catch (Exception e)
             {

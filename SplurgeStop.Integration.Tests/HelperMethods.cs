@@ -15,7 +15,8 @@ namespace SplurgeStop.Integration.Tests
     public static class HelperMethods
     {
         public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
-                                                                                       LineItem lineItem = null)
+                                                                                       LineItem lineItem = null,
+                                                                                       string product = "")
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -23,33 +24,30 @@ namespace SplurgeStop.Integration.Tests
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
 
-            var command = new transaction.Commands.Create();
+            var command = new transaction.Commands.CreateFull();
             command.Id = null;
-
-            // Create PurchaseTransaction
-            var transactionController = new PurchaseTransactionController(service);
-            var result = await transactionController.Post(command);
-
-            // Add PurchaseDate
-            await UpdatePurchaseDate(result.Value.Id, DateTime.Now);
-
-            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(result.Value.Id);
+            command.TransactionDate = DateTime.Now;
 
             // Add Store
             var store = await CreateValidStore();
-            await UpdateStore(purchaseTransaction.Id, store);
+            command.StoreId = store.Id;
 
             // Add one LineItem
-            var updateLineItemCommand = new transaction.Commands.SetPurchaseTransactionLineItem();
-            updateLineItemCommand.Id = purchaseTransaction.Id;
-            updateLineItemCommand.Price = price;
-            updateLineItemCommand.Currency = "EUR";
-            updateLineItemCommand.CurrencySymbol = "€";
-            updateLineItemCommand.Booking = Booking.Credit;
-            updateLineItemCommand.CurrencySymbolPosition = CurrencySymbolPosition.end;
-            updateLineItemCommand.Notes = lineItem?.Notes;
+            command.LineItems = new List<LineItemStripped>();
+            command.LineItems.Add(new LineItemStripped
+            {
+                Price = price.ToString(),
+                CurrencyCode = "EUR",
+                CurrencySymbol = "€",
+                CurrencySymbolPosition = CurrencySymbolPosition.end,
+                Booking = Booking.Credit,
+                Notes = lineItem?.Notes,
+                Product = product
+            });
 
-            await transactionController.Put(updateLineItemCommand);
+            // Create PurchaseTransaction
+            var transactionController = new PurchaseTransactionController(service);
+            await transactionController.Post(command);
 
             return command.Id;
         }
