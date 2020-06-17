@@ -25,7 +25,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             return command switch
             {
-                Create cmd => HandleCreate(cmd),
                 CreateFull cmd => HandleCreateFull(cmd),
                 SetPurchaseTransactionDate cmd
                     => HandleUpdate(cmd.Id, c => c.UpdatePurchaseTransactionDate(cmd.TransactionDate)),
@@ -41,20 +40,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                 DeletePurchaseTransaction cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemovePurchaseTransactionAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
-        }
-
-        private async Task HandleCreate(Create cmd)
-        {
-            if (await repository.ExistsAsync(cmd.Id))
-                throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
-
-            var newPurchaseTransaction = PurchaseTransaction.Create(cmd.Id);
-            await repository.AddPurchaseTransactionAsync(newPurchaseTransaction);
-
-            if (newPurchaseTransaction.EnsureValidState())
-            {
-                await unitOfWork.Commit();
-            }
         }
 
         private async Task HandleCreateFull(CreateFull cmd)
