@@ -1,4 +1,4 @@
-﻿namespace SplurgeStop.Domain.StoreProfile
+﻿namespace SplurgeStop.Domain.CountryProfile
 {
     public class Country
     {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SplurgeStop.Domain.CityProfile;
+﻿using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.CountryProfile;
 
 namespace SplurgeStop.Domain.StoreProfile
 {

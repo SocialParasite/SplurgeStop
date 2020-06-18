@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GuidHelpers;
 
-namespace SplurgeStop.Domain.StoreProfile
+namespace SplurgeStop.Domain.CountryProfile
 {
     public class CountryId : ValueObject
     {
