@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.CityProfile;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using SplurgeStop.Domain.CityProfile.DTO;
+using System.Linq;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -23,6 +26,25 @@ namespace SplurgeStop.Data.EF.Repositories
         public async Task<City> LoadCityAsync(CityId id)
         {
             return await context.Cities.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<City>> GetAllCitiesAsync()
+        {
+            return await context.Cities
+                    .AsNoTracking()
+                    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<CityDto>> GetAllCityDtoAsync()
+        {
+            return await context.Cities
+                    .Select(r => new CityDto
+                    {
+                        Id = r.Id,
+                        Name = r.Name
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
         }
 
         public async Task<City> GetCityAsync(CityId id)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using SplurgeStop.Domain.CityProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
 using static SplurgeStop.Domain.CityProfile.Commands;
 
@@ -72,6 +74,16 @@ namespace SplurgeStop.Domain.CityProfile
             {
                 await unitOfWork.Commit();
             }
+        }
+
+        public async Task<IEnumerable<CityDto>> GetAllCityDtoAsync()
+        {
+            return await repository.GetAllCityDtoAsync();
+        }
+
+        public async Task<City> GetCityAsync(CityId id)
+        {
+            return await repository.GetCityAsync(id);
         }
     }
 }

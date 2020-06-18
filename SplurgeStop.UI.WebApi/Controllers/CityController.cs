@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.CityProfile.DTO;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.CityProfile.Events;
 
@@ -21,6 +22,18 @@ namespace SplurgeStop.UI.WebApi.Controllers
         public CityController(ICityService service)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<CityDto>> GetCities()
+        {
+            return await service.GetAllCityDtoAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<City> GetCity(Guid id)
+        {
+            return await service.GetCityAsync(id);
         }
 
         [HttpPost]
