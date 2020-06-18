@@ -17,6 +17,8 @@
     <Compile Remove="Migrations\20200531115336_transactionNavPropToLineItem.Designer.cs" />
     <Compile Remove="Migrations\20200531145325_pt_and_lineitems.cs" />
     <Compile Remove="Migrations\20200531145325_pt_and_lineitems.Designer.cs" />
+    <Compile Remove="Migrations\20200618111641_LocationCityCountry.cs" />
+    <Compile Remove="Migrations\20200618111641_LocationCityCountry.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

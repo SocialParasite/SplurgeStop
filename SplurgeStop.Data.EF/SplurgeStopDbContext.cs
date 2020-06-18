@@ -19,12 +19,18 @@ namespace SplurgeStop.Data.EF
 
         public DbSet<PurchaseTransaction> Purchases { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PurchaseTransactionConfig());
             modelBuilder.ApplyConfiguration(new LineItemConfig());
             modelBuilder.ApplyConfiguration(new StoreConfig());
+            modelBuilder.ApplyConfiguration(new CityConfig());
+            modelBuilder.ApplyConfiguration(new CountryConfig());
+            modelBuilder.ApplyConfiguration(new LocationConfig());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
