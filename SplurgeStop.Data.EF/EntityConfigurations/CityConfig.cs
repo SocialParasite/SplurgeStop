@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.CityProfile;
 
 namespace SplurgeStop.Data.EF
 {
