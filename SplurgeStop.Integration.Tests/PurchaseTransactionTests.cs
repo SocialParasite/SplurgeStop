@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
 using Xunit;
-using static SplurgeStop.Integration.Tests.HelperMethods;
+using static SplurgeStop.Integration.Tests.Helpers.PurchaseTransactionHelpers;
 
 namespace SplurgeStop.Integration.Tests
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.StoreProfile;
 using Xunit;
-using static SplurgeStop.Integration.Tests.HelperMethods;
+using static SplurgeStop.Integration.Tests.Helpers.StoreHelpers;
 using store = SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Integration.Tests

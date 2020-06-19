@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CityProfile;
 using Xunit;
-using static SplurgeStop.Integration.Tests.HelperMethods;
+using static SplurgeStop.Integration.Tests.Helpers.CityHelpers;
 
 namespace SplurgeStop.Integration.Tests
 {
