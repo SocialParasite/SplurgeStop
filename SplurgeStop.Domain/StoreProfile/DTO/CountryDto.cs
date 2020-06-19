@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.CityProfile.DTO
+namespace SplurgeStop.Domain.CountryProfile.DTO
 {
-    public sealed class CityDto
+    public sealed class CountryDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
