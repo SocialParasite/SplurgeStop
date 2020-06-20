@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.PurchaseTransactionHelpers;
 
@@ -63,7 +64,22 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Change_Store()
         {
-            Assert.True(false);
+            var purchaseTransactionId = await CreateValidPurchaseTransaction();
+
+            var repository = new PurchaseTransactionRepository(fixture.context);
+
+            var sut = await repository.GetPurchaseTransactionFullAsync(purchaseTransactionId);
+            Assert.True(await repository.ExistsAsync(purchaseTransactionId));
+
+            Assert.NotNull(sut);
+
+            var newStore = await StoreHelpers.CreateValidStore();
+            await UpdateStore(sut.Id, newStore);
+
+            sut = await repository.LoadFullPurchaseTransactionAsync(sut.Id);
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(newStore.Id, sut.Store.Id);
         }
 
         // PURCHASETRANSACTION
