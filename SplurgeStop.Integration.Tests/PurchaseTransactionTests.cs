@@ -59,6 +59,13 @@ namespace SplurgeStop.Integration.Tests
             Assert.Equal(DateTime.Now.AddDays(-1).Date, sut.PurchaseDate);
         }
 
+        // STORE
+        [Fact]
+        public async Task Change_Store()
+        {
+            Assert.True(false);
+        }
+
         // PURCHASETRANSACTION
         // LineItems
         [Fact]
