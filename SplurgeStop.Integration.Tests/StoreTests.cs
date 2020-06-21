@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.StoreHelpers;
 using store = SplurgeStop.Domain.StoreProfile;
@@ -53,6 +54,27 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Equal("Mega Market", sut.Name);
             Assert.Equal(storeId, sut.Id);
+        }
+
+        [Fact]
+        public async Task Update_store_location()
+        {
+            Store store = await CreateValidStore();
+
+            var repository = new StoreRepository(fixture.context);
+            Assert.True(await repository.ExistsAsync(store.Id));
+
+            var sut = await repository.LoadStoreAsync(store.Id);
+
+            Assert.NotNull(sut);
+
+            var newLocation = await LocationHelpers.CreateValidLocation();
+            await UpdateStoreLocation(sut.Id, newLocation);
+
+            sut = await repository.LoadFullStoreAsync(sut.Id);
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(newLocation.Id, sut.Location.Id);
         }
 
         [Fact]

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain;
-using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CityProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.LocationProfile.DTO;

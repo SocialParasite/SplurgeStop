@@ -68,6 +68,11 @@ namespace SplurgeStop.UI.WebApi.Controllers
         public async Task<IActionResult> Put(Commands.SetStoreName request)
             => await RequestHandler.HandleCommand(request, service.Handle);
 
+        [Route("StoreInfo")]
+        [HttpPut]
+        public async Task<IActionResult> Put(Commands.ChangeLocation request)
+            => await RequestHandler.HandleCommand(request, service.Handle);
+
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<StoreDeleted>> DeleteStore(Commands.DeleteStore request)

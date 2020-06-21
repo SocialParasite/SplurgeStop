@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.DTO;
 using static SplurgeStop.Domain.StoreProfile.Commands;
 
@@ -31,9 +32,16 @@ namespace SplurgeStop.Domain.StoreProfile
                 Create cmd => HandleCreate(cmd),
                 SetStoreName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateStoreName(cmd.Name)),
+                ChangeLocation cmd
+                    => HandleUpdateAsync(cmd.Id, async c => await ChangeLocationAsync(c, cmd.Location.Id)),
                 DeleteStore cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveStoreAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
+        }
+
+        private async Task ChangeLocationAsync(Store store, LocationId locationId)
+        {
+            await repository.ChangeLocation(store, locationId);
         }
 
         private async Task HandleCreate(Create cmd)

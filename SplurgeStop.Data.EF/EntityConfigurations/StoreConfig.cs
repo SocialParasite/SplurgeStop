@@ -15,6 +15,8 @@ namespace SplurgeStop.Data.EF
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(128);
+
+            builder.HasOne(x => x.Location);
         }
     }
 }

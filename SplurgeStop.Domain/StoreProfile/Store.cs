@@ -1,5 +1,6 @@
 ﻿using System;
 using GuidHelpers;
+using SplurgeStop.Domain.LocationProfile;
 
 namespace SplurgeStop.Domain.StoreProfile
 {
@@ -20,14 +21,19 @@ namespace SplurgeStop.Domain.StoreProfile
 
         public StoreId Id { get; private set; }
         public string Name { get; private set; }
+        public Location Location { get; private set; }
         // store name, K-Citymarket Länsikeskus
         // chain, Kesko
         // store type, Citymarket
-        // store location? Länsikeskus / Turku??? Finland!!
 
         internal void UpdateStoreName(string name)
         {
             Name = name ?? throw new ArgumentNullException("A valid name for store must be provided.");
+        }
+
+        public void UpdateLocation(Location location)
+        {
+            Location = location ?? throw new ArgumentNullException("A location must be provided.");
         }
 
         private void Apply(object @event)

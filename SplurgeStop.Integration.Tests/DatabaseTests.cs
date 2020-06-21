@@ -19,12 +19,12 @@ namespace SplurgeStop.Integration.Tests
 
         public void Dispose()
         {
-            context.Database.ExecuteSqlRaw("DELETE FROM Locations");
-            context.Database.ExecuteSqlRaw("DELETE FROM Cities");
-            context.Database.ExecuteSqlRaw("DELETE FROM Countries");
             context.Database.ExecuteSqlRaw("DELETE FROM LineItem");
             context.Database.ExecuteSqlRaw("DELETE FROM Purchases");
             context.Database.ExecuteSqlRaw("DELETE FROM Stores");
+            context.Database.ExecuteSqlRaw("DELETE FROM Locations");
+            context.Database.ExecuteSqlRaw("DELETE FROM Cities");
+            context.Database.ExecuteSqlRaw("DELETE FROM Countries");
         }
     }
 

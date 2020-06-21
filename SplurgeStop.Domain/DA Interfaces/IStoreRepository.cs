@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.DTO;
 
@@ -17,5 +18,6 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync();
 
         Task RemoveStoreAsync(StoreId id);
+        Task ChangeLocation(Store store, LocationId locationId);
     }
 }

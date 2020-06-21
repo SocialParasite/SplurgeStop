@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
+using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using store = SplurgeStop.Domain.StoreProfile;
@@ -63,6 +64,22 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var updateCommand = new store.Commands.SetStoreName();
             updateCommand.Id = id;
             updateCommand.Name = name;
+
+            await storeController.Put(updateCommand);
+        }
+
+        public async static Task UpdateStoreLocation(StoreId id, Location location)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new StoreRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new StoreService(repository, unitOfWork);
+            var storeController = new StoreController(service);
+
+            var updateCommand = new store.Commands.ChangeLocation();
+            updateCommand.Id = id;
+            updateCommand.Location = location;
 
             await storeController.Put(updateCommand);
         }

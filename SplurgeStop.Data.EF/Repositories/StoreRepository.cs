@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.DTO;
 
@@ -32,6 +33,10 @@ namespace SplurgeStop.Data.EF.Repositories
         {
             return await context.Stores
                 .AsNoTracking()
+                .Include(s => s.Location)
+                .ThenInclude(l => l.City)
+                .Include(s => s.Location)
+                .ThenInclude(l => l.Country)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -49,7 +54,12 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Store> LoadFullStoreAsync(StoreId id)
         {
-            return await context.Stores.FirstOrDefaultAsync(s => s.Id == id);
+            return await context.Stores
+                .Include(s => s.Location)
+                .ThenInclude(l => l.City)
+                .Include(s => s.Location)
+                .ThenInclude(l => l.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync()
@@ -70,6 +80,18 @@ namespace SplurgeStop.Data.EF.Repositories
 
             if (store != null)
                 context.Stores.Remove(store);
+        }
+
+        public async Task ChangeLocation(Store store, LocationId locationId)
+        {
+            var modStore = await context.Stores.FindAsync(store.Id);
+            modStore.UpdateLocation(await GetLocationAsync(locationId));
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<Location> GetLocationAsync(LocationId id)
+        {
+            return await context.Locations.FindAsync(id);
         }
     }
 }
