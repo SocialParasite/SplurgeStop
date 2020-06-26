@@ -68,7 +68,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
         public async Task<IActionResult> Put(Commands.SetStoreName request)
             => await RequestHandler.HandleCommand(request, service.Handle);
 
-        [Route("StoreInfo")]
+        [Route("Location")]
         [HttpPut]
         public async Task<IActionResult> Put(Commands.ChangeLocation request)
             => await RequestHandler.HandleCommand(request, service.Handle);

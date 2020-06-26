@@ -142,7 +142,6 @@ export function NewPurchaseTransaction() {
       (purchaseTransaction) => purchaseTransaction,
     );
     if (error === null) {
-      console.log(error);
       notify('Purchase transaction added');
     } else {
       toast.error(
@@ -200,7 +199,9 @@ export function NewPurchaseTransaction() {
                     onChange={updateForm}
                   >
                     {stores.map((store) => (
-                      <option value={store.id}>{store.name}</option>
+                      <option value={store.id} key={store.id}>
+                        {store.name}
+                      </option>
                     ))}
                   </select>
                 </div>

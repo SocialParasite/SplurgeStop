@@ -6,14 +6,15 @@ namespace SplurgeStop.Domain.StoreProfile
 {
     public class Store
     {
-        public static Store Create(StoreId id, string name)
+        public static Store Create(StoreId id, string name, Location location = null)
         {
             var store = new Store();
 
             store.Apply(new Events.StoreCreated
             {
                 Id = id,
-                Name = name
+                Name = name,
+                Location = location
             });
 
             return store;
@@ -22,7 +23,7 @@ namespace SplurgeStop.Domain.StoreProfile
         public StoreId Id { get; private set; }
         public string Name { get; private set; }
         public Location Location { get; private set; }
-        // store name, K-Citymarket Länsikeskus
+
         // chain, Kesko
         // store type, Citymarket
 
@@ -48,6 +49,7 @@ namespace SplurgeStop.Domain.StoreProfile
                 case Events.StoreCreated e:
                     Id = new StoreId(e.Id);
                     Name = e.Name;
+                    Location = e.Location;
                     break;
                 case Events.StoreNameChanged e:
                     Name = e.Name;

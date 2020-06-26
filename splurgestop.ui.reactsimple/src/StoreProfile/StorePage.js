@@ -79,6 +79,8 @@ export function StorePage({ match }) {
               ) : (
                 <div>
                   <h1>{store.name}</h1>
+                  <h2>{store.location.city.name}</h2>
+                  <h2>{store.location.country.name}</h2>
                 </div>
               )}
             </div>

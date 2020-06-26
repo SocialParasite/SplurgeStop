@@ -20,11 +20,6 @@ namespace SplurgeStop.Domain.StoreProfile
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<Store> GetDetailedStore(StoreId id)
-        {
-            return await repository.GetStoreFullAsync(id);
-        }
-
         public Task Handle(object command)
         {
             return command switch
@@ -49,7 +44,14 @@ namespace SplurgeStop.Domain.StoreProfile
             if (await repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            var newStore = Store.Create(cmd.Id, cmd.Name);
+            Location location = null;
+
+            if (cmd.LocationId != null)
+            {
+                location = await repository.GetLocationAsync(cmd.LocationId);
+            }
+
+            var newStore = Store.Create(cmd.Id, cmd.Name, location);
 
             await repository.AddStoreAsync(newStore);
 
@@ -92,6 +94,11 @@ namespace SplurgeStop.Domain.StoreProfile
         public async Task<IEnumerable<StoreStripped>> GetAllStoresStripped()
         {
             return await repository.GetAllStoresStrippedAsync();
+        }
+
+        public async Task<Store> GetDetailedStore(StoreId id)
+        {
+            return await repository.GetStoreFullAsync(id);
         }
     }
 }

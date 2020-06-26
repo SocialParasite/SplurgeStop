@@ -16,6 +16,8 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task<Store> LoadFullStoreAsync(StoreId id);
 
         Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync();
+        Task<Location> GetLocationAsync(LocationId id);
+
 
         Task RemoveStoreAsync(StoreId id);
         Task ChangeLocation(Store store, LocationId locationId);
