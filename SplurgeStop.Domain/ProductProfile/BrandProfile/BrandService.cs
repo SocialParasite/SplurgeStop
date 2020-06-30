@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile.DTO;
-using static SplurgeStop.Domain.CityProfile.Commands;
+using static SplurgeStop.Domain.ProductProfile.BrandProfile.Commands;
 
 namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 {
