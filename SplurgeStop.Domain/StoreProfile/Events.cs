@@ -12,15 +12,10 @@ namespace SplurgeStop.Domain.StoreProfile
             public Location Location { get; set; }
         }
 
-        public class StoreNameChanged
-        {
-            public Guid Id { get; set; }
-            public string Name { get; set; }
-        }
-
         public class StoreChanged
         {
             public Guid Id { get; set; }
+            public string Name { get; set; }
             public Location Location { get; set; }
 
         }

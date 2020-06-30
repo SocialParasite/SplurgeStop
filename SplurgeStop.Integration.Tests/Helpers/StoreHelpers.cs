@@ -18,20 +18,25 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new StoreService(repository, unitOfWork);
 
+            var newLocation = await LocationHelpers.CreateValidLocation();
+
             var command = new store.Commands.Create();
             command.Name = "New store";
             command.Id = null;
+            command.LocationId = newLocation.Id;
+
 
             // Create Store
             var storeController = new StoreController(service);
             var storeId = await storeController.Post(command);
 
             // Update store name
-            var updateCommand = new store.Commands.SetStoreName();
-            updateCommand.Id = storeId.Value.Id;
-            updateCommand.Name = "Test market";
+            //var updateCommand = new store.Commands.UpdateStore();
+            //updateCommand.Id = storeId.Value.Id;
+            //updateCommand.Name = "Test market";
+            //updateCommand.LocationId = newLocation.Id;
 
-            await storeController.Put(updateCommand);
+            //await storeController.Put(updateCommand);
 
             return await repository.GetStoreFullAsync(command.Id);
         }
@@ -52,7 +57,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await storeController.Post(command);
         }
 
-        public async static Task UpdateStoreName(StoreId id, string name)
+        public async static Task UpdateStoreName(StoreId id, string name, LocationId locationId)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -61,9 +66,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new StoreService(repository, unitOfWork);
             var storeController = new StoreController(service);
 
-            var updateCommand = new store.Commands.SetStoreName();
+            var updateCommand = new store.Commands.UpdateStore();
             updateCommand.Id = id;
             updateCommand.Name = name;
+            updateCommand.LocationId = locationId;
 
             await storeController.Put(updateCommand);
         }

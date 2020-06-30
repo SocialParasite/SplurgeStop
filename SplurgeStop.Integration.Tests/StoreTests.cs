@@ -46,9 +46,9 @@ namespace SplurgeStop.Integration.Tests
             var storeId = sut.Id;
 
             Assert.NotNull(sut);
-            Assert.Equal("Test market", sut.Name);
+            Assert.Equal("New store", sut.Name);
 
-            await UpdateStoreName(sut.Id, "Mega Market");
+            await UpdateStoreName(sut.Id, "Mega Market", sut.Location.Id);
 
             await fixture.context.Entry(sut).ReloadAsync();
 

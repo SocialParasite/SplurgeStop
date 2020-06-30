@@ -51,8 +51,9 @@ namespace SplurgeStop.Domain.StoreProfile
                     Name = e.Name;
                     Location = e.Location;
                     break;
-                case Events.StoreNameChanged e:
+                case Events.StoreChanged e:
                     Name = e.Name;
+                    Location = e.Location;
                     break;
                 case Events.StoreDeleted e:
                     Id = new StoreId(e.Id);

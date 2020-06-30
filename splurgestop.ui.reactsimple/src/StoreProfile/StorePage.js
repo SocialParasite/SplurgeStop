@@ -10,6 +10,8 @@ export function StorePage({ match }) {
   const [store, setStore] = useState(null);
   const [storesLoading, setStoresLoading] = useState(true);
   const [isEditing, setEditing] = useState(false);
+  const [locations, setLocations] = useState(null);
+  const [locationsLoading, setLocationsLoading] = useState(true);
 
   useEffect(() => {
     const loadStore = async () => {
@@ -21,9 +23,18 @@ export function StorePage({ match }) {
       setStoresLoading(false);
     };
 
+    const loadLocations = async () => {
+      const url = 'https://localhost:44304/api/Location';
+      const response = await fetch(url);
+      const data = await response.json();
+      setLocations(data);
+      setLocationsLoading(false);
+    };
+
     if (match.params.id) {
       const storeId = match.params.id;
       loadStore(storeId);
+      loadLocations();
     }
   }, [match.params.id]);
 
@@ -31,10 +42,20 @@ export function StorePage({ match }) {
     setEditing(!isEditing);
   };
 
-  const handleSubmit = async () => {
-    await updateStore({
+  const handleLocationChange = (event) => {
+    setStore({
       id: store.id.value,
+      name: store?.name,
+      location: locations.find((x) => x.id === event.target.value),
+    });
+  };
+
+  const handleSubmit = async () => {
+    console.log(store.location);
+    await updateStore({
+      id: store.id,
       name: store.name,
+      locationId: store.location.id,
     });
   };
 
@@ -74,6 +95,41 @@ export function StorePage({ match }) {
                     placeholder={store.name}
                     onChange={changeHandler}
                   />
+                  <div
+                    css={css`
+                      margin: 1em;
+                    `}
+                  >
+                    {locationsLoading ? (
+                      <div
+                        css={css`
+                          font-size: 16px;
+                          font-style: italic;
+                        `}
+                      >
+                        Loading...
+                      </div>
+                    ) : (
+                      <div>
+                        <label for="locations">Location:</label>
+                        <br />
+                        <select
+                          name="locationId"
+                          id="locationId"
+                          className="input"
+                          type="text"
+                          onChange={handleLocationChange}
+                        >
+                          <option>Select store location</option>
+                          {locations.map((location) => (
+                            <option value={location.id} key={location.id}>
+                              {location.cityName}, {location.countryName}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
                   <input type="submit" value="Save" />
                 </form>
               ) : (

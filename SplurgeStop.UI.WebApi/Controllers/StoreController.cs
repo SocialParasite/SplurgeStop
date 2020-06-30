@@ -48,6 +48,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
                 {
                     return new StoreCreated { Id = (Guid)request.Id, Name = request.Name };
                 }
+
                 return new BadRequestObjectResult(
                     new
                     {
@@ -65,7 +66,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
 
         [Route("StoreInfo")]
         [HttpPut]
-        public async Task<IActionResult> Put(Commands.SetStoreName request)
+        public async Task<IActionResult> Put(Commands.UpdateStore request)
             => await RequestHandler.HandleCommand(request, service.Handle);
 
         [Route("Location")]
