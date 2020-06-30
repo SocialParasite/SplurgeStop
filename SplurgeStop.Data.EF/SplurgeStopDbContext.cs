@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.StoreProfile;
 
@@ -25,6 +27,8 @@ namespace SplurgeStop.Data.EF
         public DbSet<Location> Locations { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +38,8 @@ namespace SplurgeStop.Data.EF
             modelBuilder.ApplyConfiguration(new CityConfig());
             modelBuilder.ApplyConfiguration(new CountryConfig());
             modelBuilder.ApplyConfiguration(new LocationConfig());
+            modelBuilder.ApplyConfiguration((new ProductConfig()));
+            modelBuilder.ApplyConfiguration((new BrandConfig()));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

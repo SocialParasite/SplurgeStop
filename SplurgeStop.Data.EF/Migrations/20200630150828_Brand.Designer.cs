@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SplurgeStop.Data.EF;
 
 namespace SplurgeStop.Data.EF.Migrations
 {
     [DbContext(typeof(SplurgeStopDbContext))]
-    partial class SplurgeStopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200630150828_Brand")]
+    partial class Brand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,26 +84,6 @@ namespace SplurgeStop.Data.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
-                });
-
-            modelBuilder.Entity("SplurgeStop.Domain.ProductProfile.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BrandId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SplurgeStop.Domain.PurchaseTransaction.LineItem", b =>
@@ -181,13 +163,6 @@ namespace SplurgeStop.Data.EF.Migrations
                     b.HasOne("SplurgeStop.Domain.CountryProfile.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId");
-                });
-
-            modelBuilder.Entity("SplurgeStop.Domain.ProductProfile.Product", b =>
-                {
-                    b.HasOne("SplurgeStop.Domain.ProductProfile.BrandProfile.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId");
                 });
 
             modelBuilder.Entity("SplurgeStop.Domain.PurchaseTransaction.LineItem", b =>
