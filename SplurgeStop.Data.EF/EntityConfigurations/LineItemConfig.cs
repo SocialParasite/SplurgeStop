@@ -30,6 +30,10 @@ namespace SplurgeStop.Data.EF
                                      (CurrencySymbolPosition)Enum.Parse(typeof(CurrencySymbolPosition), GetSection(price, 4))));
 
             builder.HasOne(x => x.PurchaseTransaction).WithMany(x => x.LineItems).IsRequired();
+
+            // TEMP
+            builder.Property(x => x.TEMPProductName)
+                .HasColumnName("Product");
         }
 
         string GetSection(string text, int pos)
