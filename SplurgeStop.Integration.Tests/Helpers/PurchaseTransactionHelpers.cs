@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
@@ -16,7 +17,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
     {
         public static async Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
                                                                                       LineItem lineItem = null,
-                                                                                      string product = "")
+                                                                                      Product product = null)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -42,7 +43,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 CurrencySymbolPosition = CurrencySymbolPosition.end,
                 Booking = Booking.Credit,
                 Notes = lineItem?.Notes,
-                Product = product
+                Product = product?.Name
             });
 
             // Create PurchaseTransaction
@@ -85,7 +86,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             command.LineItems.Add(newLineItem);
 
             var transactionController = new PurchaseTransactionController(service);
-            var result = await transactionController.Post(command);
+            await transactionController.Post(command);
 
             return command.Id;
         }

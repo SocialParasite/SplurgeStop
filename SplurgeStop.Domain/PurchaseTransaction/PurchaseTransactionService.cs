@@ -61,7 +61,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                             lineItem.CurrencySymbol,
                             lineItem.CurrencySymbolPosition))
                             .WithNotes(lineItem.Notes)
-                            .WithProduct(lineItem.Product)
+                            .WithProduct(lineItem.Product) // HACK: Fix
                             .Build();
 
                 newPurchaseTransaction.UpdateLineItem(newLineItem);
