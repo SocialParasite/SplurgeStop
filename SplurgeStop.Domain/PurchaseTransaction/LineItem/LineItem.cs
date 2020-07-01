@@ -1,5 +1,6 @@
 ﻿using System;
 using GuidHelpers;
+using SplurgeStop.Domain.ProductProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
@@ -18,16 +19,18 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         //(change type? Could be g, l, kg, pieces)
 
         // TEMP product
+        [Obsolete]
         public string TEMPProductName { get; set; }
 
-        public void UpdateLineItemPrice(Price newPrice)
-        {
-            Price = newPrice ?? throw new ArgumentNullException(nameof(newPrice), "Price is required.");
-        }
+        public Product Product { get; set; }
 
         public string Notes { get; set; }
 
         public PurchaseTransaction PurchaseTransaction { get; set; }
+        public void UpdateLineItemPrice(Price newPrice)
+        {
+            Price = newPrice ?? throw new ArgumentNullException(nameof(newPrice), "Price is required.");
+        }
     }
 
     public class LineItemBuilder

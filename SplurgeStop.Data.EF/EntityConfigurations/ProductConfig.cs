@@ -17,6 +17,7 @@ namespace SplurgeStop.Data.EF
                 .HasMaxLength(128);
 
             builder.HasOne(x => x.Brand);
+            builder.HasOne(x => x.ProductType);
         }
     }
 }
