@@ -12,7 +12,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class LocationHelpers
     {
-        public async static Task<Location> CreateValidLocation()
+        public static async Task<Location> CreateValidLocation()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -34,7 +34,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.GetLocationAsync(location.Value.Id);
         }
 
-        public async static Task<dynamic> CreateInvalidLocation(string invalidProp)
+        public static async Task<dynamic> CreateInvalidLocation(string invalidProp)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -51,7 +51,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await locationController.Post(command);
         }
 
-        public async static Task UpdateLocationCity(LocationId id, City city)
+        public static async Task UpdateLocationCity(LocationId id, City city)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -67,7 +67,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await locationController.Put(updateCommand);
         }
 
-        public async static Task UpdateLocationCountry(LocationId id, Country country)
+        public static async Task UpdateLocationCountry(LocationId id, Country country)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -83,7 +83,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await locationController.Put(updateCommand);
         }
 
-        public async static Task<bool> CheckIfLocationExists(LocationId id)
+        public static async Task<bool> CheckIfLocationExists(LocationId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -92,7 +92,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.ExistsAsync(id);
         }
 
-        public async static Task RemoveLocation(LocationId id)
+        public static async Task RemoveLocation(LocationId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);

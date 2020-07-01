@@ -9,7 +9,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class CityHelpers
     {
-        public async static Task<City> CreateValidCity()
+        public static async Task<City> CreateValidCity()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -27,7 +27,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.GetCityAsync(city.Value.Id);
         }
 
-        public async static Task<dynamic> CreateInvalidCity()
+        public static async Task<dynamic> CreateInvalidCity()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -43,7 +43,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await cityController.Post(command);
         }
 
-        public async static Task UpdateCityName(CityId id, string name)
+        public static async Task UpdateCityName(CityId id, string name)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -59,7 +59,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await cityController.Put(updateCommand);
         }
 
-        public async static Task<bool> CheckIfCityExists(CityId id)
+        public static async Task<bool> CheckIfCityExists(CityId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -68,7 +68,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.ExistsAsync(id);
         }
 
-        public async static Task RemoveCity(CityId id)
+        public static async Task RemoveCity(CityId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);

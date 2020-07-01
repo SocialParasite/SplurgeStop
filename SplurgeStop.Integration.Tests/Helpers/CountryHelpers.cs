@@ -9,7 +9,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class CountryHelpers
     {
-        public async static Task<Country> CreateValidCountry()
+        public static async Task<Country> CreateValidCountry()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -27,7 +27,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.GetCountryAsync(country.Value.Id);
         }
 
-        public async static Task<dynamic> CreateInvalidCountry()
+        public static async Task<dynamic> CreateInvalidCountry()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -43,7 +43,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await countryController.Post(command);
         }
 
-        public async static Task UpdateCountryName(CountryId id, string name)
+        public static async Task UpdateCountryName(CountryId id, string name)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -59,7 +59,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await countryController.Put(updateCommand);
         }
 
-        public async static Task<bool> CheckIfCountryExists(CountryId id)
+        public static async Task<bool> CheckIfCountryExists(CountryId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -68,7 +68,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.ExistsAsync(id);
         }
 
-        public async static Task RemoveCountry(CountryId id)
+        public static async Task RemoveCountry(CountryId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);

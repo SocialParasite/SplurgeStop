@@ -14,7 +14,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class PurchaseTransactionHelpers
     {
-        public async static Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
+        public static async Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
                                                                                       LineItem lineItem = null,
                                                                                       string product = "")
         {
@@ -52,7 +52,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return command.Id;
         }
 
-        public async static Task<PurchaseTransactionId> CreateFullValidPurchaseTransaction()
+        public static async Task<PurchaseTransactionId> CreateFullValidPurchaseTransaction()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -90,7 +90,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return command.Id;
         }
 
-        public async static Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)
+        public static async Task UpdatePurchaseDate(PurchaseTransactionId id, DateTime date)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -106,7 +106,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await transactionController.Put(updateCommand);
         }
 
-        public async static Task UpdateLineItem(PurchaseTransactionId id, LineItem lineItem)
+        public static async Task UpdateLineItem(PurchaseTransactionId id, LineItem lineItem)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -128,7 +128,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await transactionController.Put(updateCommand);
         }
 
-        public async static Task UpdateStore(PurchaseTransactionId id, Store store)
+        public static async Task UpdateStore(PurchaseTransactionId id, Store store)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -144,7 +144,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await transactionController.Put(updateCommand);
         }
 
-        public async static Task<PurchaseTransaction> ReloadPurchaseTransaction(PurchaseTransactionId id)
+        public static async Task<PurchaseTransaction> ReloadPurchaseTransaction(PurchaseTransactionId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);

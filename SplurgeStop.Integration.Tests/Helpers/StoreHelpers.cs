@@ -10,7 +10,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class StoreHelpers
     {
-        public async static Task<Store> CreateValidStore()
+        public static async Task<Store> CreateValidStore()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -28,20 +28,13 @@ namespace SplurgeStop.Integration.Tests.Helpers
 
             // Create Store
             var storeController = new StoreController(service);
-            var storeId = await storeController.Post(command);
+            await storeController.Post(command);
 
-            // Update store name
-            //var updateCommand = new store.Commands.UpdateStore();
-            //updateCommand.Id = storeId.Value.Id;
-            //updateCommand.Name = "Test market";
-            //updateCommand.LocationId = newLocation.Id;
-
-            //await storeController.Put(updateCommand);
 
             return await repository.GetStoreFullAsync(command.Id);
         }
 
-        public async static Task<dynamic> CreateInvalidStore()
+        public static async Task<dynamic> CreateInvalidStore()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -57,7 +50,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await storeController.Post(command);
         }
 
-        public async static Task UpdateStoreName(StoreId id, string name, LocationId locationId)
+        public static async Task UpdateStoreName(StoreId id, string name, LocationId locationId)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -74,7 +67,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await storeController.Put(updateCommand);
         }
 
-        public async static Task UpdateStoreLocation(StoreId id, Location location)
+        public static async Task UpdateStoreLocation(StoreId id, Location location)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -90,7 +83,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await storeController.Put(updateCommand);
         }
 
-        public async static Task RemoveStore(StoreId id)
+        public static async Task RemoveStore(StoreId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -105,7 +98,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await storeController.DeleteStore(updateCommand);
         }
 
-        public async static Task<bool> CheckIfStoreExists(StoreId id)
+        public static async Task<bool> CheckIfStoreExists(StoreId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
