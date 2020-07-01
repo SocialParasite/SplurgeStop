@@ -1,13 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
-using System.Linq;
-using System.Collections.Generic;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
-using System.Transactions;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -35,6 +34,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await context.Purchases
                 .Include(p => p.Store)
                 .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
@@ -82,6 +82,7 @@ namespace SplurgeStop.Data.EF.Repositories
         {
             var transaction = await context.Purchases
                 .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
                 .FirstOrDefaultAsync(p => p.Id == purchaseTransaction.Id);
 
             LineItem toBeRemoved = transaction.LineItems.Find(l => l.Id == lineItem.Id);
