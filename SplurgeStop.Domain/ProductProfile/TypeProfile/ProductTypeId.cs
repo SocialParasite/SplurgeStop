@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GuidHelpers;
 
-namespace SplurgeStop.Domain.ProductProfile
+namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 {
-    public class ProductId : ValueObject
+    public class ProductTypeId : ValueObject
     {
         public Guid Value { get; protected set; }
 
-        internal ProductId(Guid id)
+        public ProductTypeId(Guid id)
         {
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));
@@ -22,9 +21,9 @@ namespace SplurgeStop.Domain.ProductProfile
             yield return Value;
         }
 
-        public static implicit operator Guid(ProductId self) => self.Value;
+        public static implicit operator Guid(ProductTypeId self) => self.Value;
 
-        public static implicit operator ProductId(Guid value)
-            => new ProductId(new SequentialGuid(value));
+        public static implicit operator ProductTypeId(Guid value)
+            => new ProductTypeId(new SequentialGuid(value));
     }
 }
