@@ -15,18 +15,16 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public Price Price { get; private set; }
 
-        //public int Quantity { get; set; } // this will always be pieces; other "measurements" in Product
-        //(change type? Could be g, l, kg, pieces)
-
         // TEMP product
         [Obsolete]
         public string TEMPProductName { get; set; }
 
-        public Product Product { get; set; }
-
+        public int Quantity { get; set; }
         public string Notes { get; set; }
 
+        public Product Product { get; set; }
         public PurchaseTransaction PurchaseTransaction { get; set; }
+
         public void UpdateLineItemPrice(Price newPrice)
         {
             Price = newPrice ?? throw new ArgumentNullException(nameof(newPrice), "Price is required.");
@@ -59,16 +57,9 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public LineItem Build()
         {
-            LineItem lineItem;
-
-            if (Id is null)
-            {
-                lineItem = new LineItem(new LineItemId(SequentialGuid.NewSequentialGuid()));
-            }
-            else
-            {
-                lineItem = new LineItem(Id);
-            }
+            var lineItem = Id is null
+                ? new LineItem(new LineItemId(SequentialGuid.NewSequentialGuid()))
+                : new LineItem(Id);
 
             lineItem.UpdateLineItemPrice(Price);
             lineItem.Notes = Notes ?? string.Empty;
