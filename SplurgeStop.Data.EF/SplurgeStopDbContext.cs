@@ -43,6 +43,7 @@ namespace SplurgeStop.Data.EF
             modelBuilder.ApplyConfiguration((new ProductConfig()));
             modelBuilder.ApplyConfiguration((new BrandConfig()));
             modelBuilder.ApplyConfiguration((new ProductTypeConfig()));
+            modelBuilder.ApplyConfiguration((new SizeConfig()));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

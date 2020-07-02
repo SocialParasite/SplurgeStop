@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SplurgeStop.Data.EF;
 
 namespace SplurgeStop.Data.EF.Migrations
 {
     [DbContext(typeof(SplurgeStopDbContext))]
-    partial class SplurgeStopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200702145014_SizeVersion1")]
+    partial class SizeVersion1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
