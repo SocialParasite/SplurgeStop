@@ -1,4 +1,5 @@
 ﻿using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Domain.ProductProfile
@@ -13,6 +14,6 @@ namespace SplurgeStop.Domain.ProductProfile
         public ProductType ProductType { get; set; }
         //public GeneralName GeneralName { get; set; }
 
-        //public Size Size { get; set; }
+        public Size Size { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace SplurgeStop.Data.EF
 
             builder.HasOne(x => x.Brand);
             builder.HasOne(x => x.ProductType);
+            builder.HasOne(x => x.Size);
         }
     }
 }
