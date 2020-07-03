@@ -80,13 +80,43 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Update_product_type()
         {
-            Assert.True(false);
+            var product = await CreateValidProduct();
+
+            var repository = new ProductRepository(fixture.context);
+
+            var sut = await repository.GetProductFullAsync(product.Id);
+            Assert.True(await repository.ExistsAsync(product.Id));
+
+            Assert.NotNull(sut);
+
+            var newProductType = await ProductTypeHelpers.CreateValidProductType();
+            await UpdateProductType(sut.Id, newProductType);
+
+            sut = await repository.LoadFullProductAsync(sut.Id);
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(newProductType.Id, sut.ProductType.Id);
         }
 
         [Fact]
         public async Task Update_product_size()
         {
-            Assert.True(false);
+            var product = await CreateValidProduct();
+
+            var repository = new ProductRepository(fixture.context);
+
+            var sut = await repository.GetProductFullAsync(product.Id);
+            Assert.True(await repository.ExistsAsync(product.Id));
+
+            Assert.NotNull(sut);
+
+            var newSize = await SizeHelpers.CreateValidSize();
+            await UpdateProductSize(sut.Id, newSize);
+
+            sut = await repository.LoadFullProductAsync(sut.Id);
+            await fixture.context.Entry(sut).ReloadAsync();
+
+            Assert.Equal(newSize.Id, sut.Size.Id);
         }
 
         [Fact]

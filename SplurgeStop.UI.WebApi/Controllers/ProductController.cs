@@ -73,6 +73,16 @@ namespace SplurgeStop.UI.WebApi.Controllers
         public Task<IActionResult> Put(Commands.ChangeBrand request)
             => RequestHandler.HandleCommand(request, service.Handle);
 
+        [Route("productType")]
+        [HttpPut]
+        public Task<IActionResult> Put(Commands.ChangeProductType request)
+            => RequestHandler.HandleCommand(request, service.Handle);
+
+        [Route("productSize")]
+        [HttpPut]
+        public Task<IActionResult> Put(Commands.ChangeSize request)
+            => RequestHandler.HandleCommand(request, service.Handle);
+
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<ProductDeleted>> DeleteProduct(Commands.DeleteProduct request)

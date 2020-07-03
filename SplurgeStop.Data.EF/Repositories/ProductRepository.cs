@@ -7,6 +7,8 @@ using System.Linq;
 using SplurgeStop.Domain.ProductProfile.DTO;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
@@ -89,7 +91,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Brand> GetBrandAsync(BrandId brandId)
         {
-            return await context.Brands.FindAsync((brandId));
+            return await context.Brands.FindAsync(brandId);
         }
 
         public async Task ChangeBrand(Product prod, BrandId brandId)
@@ -97,6 +99,30 @@ namespace SplurgeStop.Data.EF.Repositories
             var product = await context.Products.FindAsync(prod.Id);
             product.UpdateBrand(await GetBrandAsync(brandId));
             await context.SaveChangesAsync();
+        }
+
+        public async Task ChangeProductType(Product prod, ProductTypeId productTypeId)
+        {
+            var product = await context.Products.FindAsync(prod.Id);
+            product.UpdateProductType(await GetProductTypeAsync(productTypeId));
+            await context.SaveChangesAsync();
+        }
+
+        private async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
+        {
+            return await context.ProductTypes.FindAsync(productTypeId);
+        }
+
+        public async Task ChangeSize(Product prod, SizeId sizeId)
+        {
+            var product = await context.Products.FindAsync(prod.Id);
+            product.UpdateSize(await GetSizeAsync(sizeId));
+            await context.SaveChangesAsync();
+        }
+
+        private async Task<Size> GetSizeAsync(SizeId sizeId)
+        {
+            return await context.Size.FindAsync(sizeId);
         }
     }
 }

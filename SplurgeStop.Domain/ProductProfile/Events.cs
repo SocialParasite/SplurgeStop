@@ -1,5 +1,7 @@
 ﻿using System;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Domain.ProductProfile
 {
@@ -22,6 +24,18 @@ namespace SplurgeStop.Domain.ProductProfile
         {
             public Guid Id { get; set; }
             public Brand Brand { get; set; }
+        }
+
+        public class ProductTypeChanged
+        {
+            public Guid Id { get; set; }
+            public ProductType ProductType { get; set; }
+        }
+
+        public class SizeChanged
+        {
+            public Guid Id { get; set; }
+            public Size Size { get; set; }
         }
 
         public class ProductDeleted

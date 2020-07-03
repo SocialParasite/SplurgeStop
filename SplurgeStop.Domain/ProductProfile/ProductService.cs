@@ -29,10 +29,24 @@ namespace SplurgeStop.Domain.ProductProfile
                     => HandleUpdate(cmd.Id, c => c.UpdateProductName(cmd.Name)),
                 ProductProfile.Commands.ChangeBrand cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateBrandAsync(c, cmd.BrandId)),
+                ProductProfile.Commands.ChangeProductType cmd
+                    => HandleUpdateAsync(cmd.Id, async c => await UpdateProductTypeAsync(c, cmd.ProductTypeId)),
+                ProductProfile.Commands.ChangeSize cmd
+                    => HandleUpdateAsync(cmd.Id, async c => await UpdateSizeAsync(c, cmd.SizeId)),
                 ProductProfile.Commands.DeleteProduct cmd
                     => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveProductAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
+        }
+
+        private async Task UpdateSizeAsync(Product product, Guid sizeId)
+        {
+            await repository.ChangeSize(product, sizeId);
+        }
+
+        private async Task UpdateProductTypeAsync(Product product, Guid productTypeId)
+        {
+            await repository.ChangeProductType(product, productTypeId);
         }
 
         private async Task UpdateBrandAsync(Product product, BrandId brandId)

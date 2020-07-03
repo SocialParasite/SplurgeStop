@@ -24,6 +24,17 @@ namespace SplurgeStop.Domain.ProductProfile
             public Guid BrandId { get; set; }
         }
 
+        public class ChangeProductType
+        {
+            public Guid Id { get; set; }
+            public Guid ProductTypeId { get; set; }
+        }
+
+        public class ChangeSize
+        {
+            public Guid Id { get; set; }
+            public Guid SizeId { get; set; }
+        }
         public class DeleteProduct
         {
             public Guid Id { get; set; }

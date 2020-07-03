@@ -3,6 +3,8 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using product = SplurgeStop.Domain.ProductProfile;
 
@@ -79,6 +81,38 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var updateCommand = new product.Commands.ChangeBrand();
             updateCommand.Id = id;
             updateCommand.BrandId = brand.Id;
+
+            await productController.Put(updateCommand);
+        }
+
+        public static async Task UpdateProductType(ProductId id, ProductType productType)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new ProductRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new ProductService(repository, unitOfWork);
+            var productController = new ProductController(service);
+
+            var updateCommand = new product.Commands.ChangeProductType();
+            updateCommand.Id = id;
+            updateCommand.ProductTypeId = productType.Id;
+
+            await productController.Put(updateCommand);
+        }
+
+        public static async Task UpdateProductSize(ProductId id, Size size)
+        {
+            var connectionString = ConnectivityService.GetConnectionString("TEMP");
+            var context = new SplurgeStopDbContext(connectionString);
+            var repository = new ProductRepository(context);
+            var unitOfWork = new EfCoreUnitOfWork(context);
+            var service = new ProductService(repository, unitOfWork);
+            var productController = new ProductController(service);
+
+            var updateCommand = new product.Commands.ChangeSize();
+            updateCommand.Id = id;
+            updateCommand.SizeId = size.Id;
 
             await productController.Put(updateCommand);
         }

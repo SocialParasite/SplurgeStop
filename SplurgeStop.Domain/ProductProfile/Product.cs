@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Domain.ProductProfile
 {
-    public sealed class Product
+    public class Product
     {
         public ProductId Id { get; set; }
 
@@ -58,6 +57,14 @@ namespace SplurgeStop.Domain.ProductProfile
                     Id = new ProductId(e.Id);
                     Brand = e.Brand;
                     break;
+                case Events.ProductTypeChanged e:
+                    Id = new ProductId(e.Id);
+                    ProductType = e.ProductType;
+                    break;
+                case Events.SizeChanged e:
+                    Id = new ProductId(e.Id);
+                    Size = e.Size;
+                    break;
                 case Events.ProductDeleted e:
                     Id = new ProductId(e.Id);
                     Name = e.Name;
@@ -74,6 +81,16 @@ namespace SplurgeStop.Domain.ProductProfile
         public void UpdateBrand(Brand brand)
         {
             Brand = brand;
+        }
+
+        public void UpdateProductType(ProductType productType)
+        {
+            ProductType = productType;
+        }
+
+        public void UpdateSize(Size size)
+        {
+            Size = size;
         }
     }
 }
