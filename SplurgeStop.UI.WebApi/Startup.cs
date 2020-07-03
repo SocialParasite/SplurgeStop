@@ -11,7 +11,10 @@ using SplurgeStop.Domain;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.StoreProfile;
 
@@ -44,6 +47,12 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<IProductRepository, IProductRepository>();
+            services.AddTransient<IProductService, IProductService>();
+            services.AddTransient<IProductTypeRepository, IProductTypeRepository>();
+            services.AddTransient<IProductTypeService, IProductTypeService>();
+            services.AddTransient<ISizeRepository, SizeRepository>();
+            services.AddTransient<ISizeService, SizeService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder.AllowAnyMethod()
