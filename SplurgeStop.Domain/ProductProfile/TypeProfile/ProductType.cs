@@ -22,7 +22,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         internal void UpdateProductTypeName(string name)
         {
-            Name = name ?? throw new ArgumentNullException("A valid name for product type must be provided.");
+            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for product type must be provided.");
         }
 
         private void Apply(object @event)

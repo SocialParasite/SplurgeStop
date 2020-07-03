@@ -19,6 +19,11 @@ namespace SplurgeStop.Integration.Tests
 
         public void Dispose()
         {
+            context.Database.ExecuteSqlRaw("DELETE FROM Products");
+            context.Database.ExecuteSqlRaw("DELETE FROM Brands");
+            context.Database.ExecuteSqlRaw("DELETE FROM ProductTypes");
+            context.Database.ExecuteSqlRaw("DELETE FROM Size");
+
             context.Database.ExecuteSqlRaw("DELETE FROM LineItem");
             context.Database.ExecuteSqlRaw("DELETE FROM Purchases");
             context.Database.ExecuteSqlRaw("DELETE FROM Stores");

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GuidHelpers;
 
 namespace SplurgeStop.Domain.ProductProfile
@@ -9,7 +8,7 @@ namespace SplurgeStop.Domain.ProductProfile
     {
         public Guid Value { get; protected set; }
 
-        internal ProductId(Guid id)
+        public ProductId(Guid id)
         {
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));
