@@ -8,7 +8,7 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
     {
         public Guid Value { get; protected set; }
 
-        internal SizeId(Guid id)
+        public SizeId(Guid id)
         {
             if (id == default)
                 throw new ArgumentException("Invalid id!", nameof(id));

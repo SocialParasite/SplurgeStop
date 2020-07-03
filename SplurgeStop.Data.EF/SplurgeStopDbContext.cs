@@ -5,6 +5,7 @@ using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.StoreProfile;
@@ -31,6 +32,8 @@ namespace SplurgeStop.Data.EF
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Size> Size { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
