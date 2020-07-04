@@ -36,6 +36,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                         .LineItem(new Price(cmd.Price, cmd.Booking, cmd.Currency, cmd.CurrencySymbol, cmd.CurrencySymbolPosition),
                                   cmd.LineItemId)
                         .WithNotes(cmd.Notes)
+                        .WithProduct(cmd.Product)
                         .Build())),
                 DeletePurchaseTransaction cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemovePurchaseTransactionAsync(cmd.Id)),
                 _ => Task.CompletedTask
@@ -54,6 +55,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
             foreach (var lineItem in cmd.LineItems)
             {
+                var prod = await repository.GetProductAsync(lineItem.Product.Id);
+
                 var newLineItem = LineItemBuilder
                             .LineItem(new Price(decimal.Parse(lineItem.Price, CultureInfo.InvariantCulture),
                             lineItem.Booking,
@@ -61,7 +64,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                             lineItem.CurrencySymbol,
                             lineItem.CurrencySymbolPosition))
                             .WithNotes(lineItem.Notes)
-                            .WithProduct(lineItem.Product) // HACK: Fix
+                            .WithProduct(prod)
                             .Build();
 
                 newPurchaseTransaction.UpdateLineItem(newLineItem);

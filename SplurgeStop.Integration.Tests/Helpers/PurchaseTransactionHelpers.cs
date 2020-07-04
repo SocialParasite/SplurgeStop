@@ -16,8 +16,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
     public static class PurchaseTransactionHelpers
     {
         public static async Task<PurchaseTransactionId> CreateValidPurchaseTransaction(decimal price = 1.00m,
-                                                                                      LineItem lineItem = null,
-                                                                                      Product product = null)
+                                                                                      LineItem lineItem = null)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -33,6 +32,9 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var store = await StoreHelpers.CreateValidStore();
             command.StoreId = store.Id;
 
+            // Get Product
+            var prod = await ProductHelpers.CreateValidProduct();
+
             // Add one LineItem
             command.LineItems = new List<LineItemStripped>();
             command.LineItems.Add(new LineItemStripped
@@ -43,7 +45,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 CurrencySymbolPosition = CurrencySymbolPosition.end,
                 Booking = Booking.Credit,
                 Notes = lineItem?.Notes,
-                Product = product?.Name
+                Product = prod
             });
 
             // Create PurchaseTransaction
@@ -71,6 +73,9 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var store = await StoreHelpers.CreateValidStore();
             command.StoreId = store.Id;
 
+            // Get Product
+            var prod = await ProductHelpers.CreateValidProduct();
+
             // Add one LineItem
             var newLineItem = new LineItemStripped
             {
@@ -79,7 +84,8 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 CurrencyCode = "EUR",
                 CurrencySymbol = "€",
                 CurrencySymbolPosition = CurrencySymbolPosition.end,
-                Notes = "New notes"
+                Notes = "New notes",
+                Product = prod
             };
 
             command.LineItems = new List<LineItemStripped>();
@@ -125,6 +131,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             updateCommand.Booking = lineItem.Price.Booking;
             updateCommand.CurrencySymbolPosition = lineItem.Price.Currency.PositionRelativeToPrice;
             updateCommand.Notes = lineItem?.Notes;
+            updateCommand.Product = lineItem.Product;
 
             await transactionController.Put(updateCommand);
         }

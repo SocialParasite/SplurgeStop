@@ -14,14 +14,14 @@ namespace SplurgeStop.Data.EF
 {
     public sealed class SplurgeStopDbContext : DbContext
     {
-        public string ConnectionString;
+        private string _connectionString;
         public IConfigurationRoot Configuration { get; private set; }
 
         public SplurgeStopDbContext() { }
 
         public SplurgeStopDbContext(string connectionString)
         {
-            ConnectionString = connectionString;
+            _connectionString = connectionString;
         }
 
         public DbSet<PurchaseTransaction> Purchases { get; set; }
@@ -51,12 +51,9 @@ namespace SplurgeStop.Data.EF
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (ConnectionString is null)
-            {
-                ConnectionString = ConnectivityService.GetConnectionString();
-            }
+            _connectionString ??= ConnectivityService.GetConnectionString();
 
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(_connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }

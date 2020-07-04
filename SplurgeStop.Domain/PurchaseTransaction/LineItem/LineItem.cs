@@ -15,10 +15,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public Price Price { get; private set; }
 
-        // TEMP product
-        [Obsolete]
-        public string TEMPProductName { get; set; }
-
         public int Quantity { get; set; }
         public string Notes { get; set; }
 
@@ -33,19 +29,20 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
     public class LineItemBuilder
     {
-        public LineItemId Id { get; set; }
-        public Price Price { get; private set; }
-        public string Notes { get; private set; }
-        public string Product { get; set; }
+        private LineItemId Id { get; set; }
+        private Price Price { get; set; }
+        private string Notes { get; set; }
+
+        private Product Product { get; set; }
 
         public static LineItemBuilder LineItem(Price price, LineItemId id = null)
         {
             return new LineItemBuilder { Price = price, Id = id };
         }
 
-        public LineItemBuilder WithProduct(string product)
+        public LineItemBuilder WithProduct(Product product)
         {
-            Product = product ?? string.Empty;
+            Product = product ?? throw new ArgumentNullException(nameof(product), "Invalid product provided.");
             return this;
         }
 
@@ -63,7 +60,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
             lineItem.UpdateLineItemPrice(Price);
             lineItem.Notes = Notes ?? string.Empty;
-            lineItem.TEMPProductName = Product ?? string.Empty;
+            lineItem.Product = Product ?? null;
 
             return lineItem;
         }

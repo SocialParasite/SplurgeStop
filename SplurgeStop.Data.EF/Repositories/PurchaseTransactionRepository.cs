@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
@@ -35,6 +36,13 @@ namespace SplurgeStop.Data.EF.Repositories
                 .Include(p => p.Store)
                 .Include(p => p.LineItems)
                 .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.Brand)
+                .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.ProductType)
+                .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.Size)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
@@ -63,7 +71,8 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases.Include(s => s.Store).FirstOrDefaultAsync(s => s.Id == id);
+            return await context.Purchases.Include(s => s.Store)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Store> GetStoreAsync(StoreId id)
@@ -83,13 +92,22 @@ namespace SplurgeStop.Data.EF.Repositories
             var transaction = await context.Purchases
                 .Include(p => p.LineItems)
                 .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.Brand)
+                .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.ProductType)
+                .Include(p => p.LineItems)
+                .ThenInclude(l => l.Product)
+                .ThenInclude(p => p.Size)
                 .FirstOrDefaultAsync(p => p.Id == purchaseTransaction.Id);
 
             LineItem toBeRemoved = transaction.LineItems.Find(l => l.Id == lineItem.Id);
             purchaseTransaction.LineItems.Remove(toBeRemoved);
             await context.SaveChangesAsync();
 
+            lineItem.Product = await context.Products.FindAsync(lineItem.Product.Id);
             purchaseTransaction.LineItems.Add(lineItem);
+
             await context.SaveChangesAsync();
         }
 
@@ -99,6 +117,15 @@ namespace SplurgeStop.Data.EF.Repositories
 
             if (pt != null)
                 context.Purchases.Remove(pt);
+        }
+
+        public async Task<Product> GetProductAsync(ProductId id)
+        {
+            return await context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.ProductType)
+                .Include(p => p.Size)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

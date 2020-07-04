@@ -96,8 +96,12 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
+            // Get Product
+            var prod = await ProductHelpers.CreateValidProduct();
+
             var lineItem = LineItemBuilder
                 .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithProduct(prod)
                 .Build();
 
             await UpdateLineItem(sut.Id, lineItem);
@@ -119,8 +123,12 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
+            // Get Product
+            var prod = await ProductHelpers.CreateValidProduct();
+
             var secondLineItem = LineItemBuilder
                 .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithProduct(prod)
                 .Build();
 
             await UpdateLineItem(sut.Id, secondLineItem);
@@ -145,11 +153,17 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.Single(sut.LineItems);
 
+            // Get Product
+            var prod1 = await ProductHelpers.CreateValidProduct();
+            var prod2 = await ProductHelpers.CreateValidProduct();
+
             var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithProduct(prod1)
                 .Build();
             await UpdateLineItem(sut.Id, secondLineItem);
 
             var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end))
+                .WithProduct(prod2)
                 .Build();
             await UpdateLineItem(sut.Id, debitLineItem);
 
@@ -194,8 +208,12 @@ namespace SplurgeStop.Integration.Tests
 
             var lineItemId = sut.LineItems.FirstOrDefault().Id;
 
+            // Get Product
+            var prod = await ProductHelpers.CreateValidProduct();
+
             var updatedLineItem = LineItemBuilder
                 .LineItem(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end), lineItemId)
+                .WithProduct(prod)
                 .Build();
 
             await UpdateLineItem(transactionId, updatedLineItem);

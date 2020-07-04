@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -43,7 +43,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             public CurrencySymbolPosition CurrencySymbolPosition { get; set; }
             public Booking Booking { get; set; }
             public string Notes { get; set; }
-            public string Product { get; set; }
+            public Product Product { get; set; }
         }
 
         public class DeletePurchaseTransaction

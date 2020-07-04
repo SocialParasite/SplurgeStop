@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.StoreProfile;
@@ -21,5 +22,6 @@ namespace SplurgeStop.Domain.DA_Interfaces
         Task ChangeLineItem(transaction.PurchaseTransaction purchaseTransaction, LineItem lineItem);
 
         Task RemovePurchaseTransactionAsync(PurchaseTransactionId id);
+        Task<Product> GetProductAsync(ProductId id);
     }
 }

@@ -33,10 +33,6 @@ namespace SplurgeStop.Data.EF
                 .WithMany(x => x.LineItems).IsRequired();
 
             builder.HasOne(x => x.Product);
-
-            // TEMP
-            builder.Property(x => x.TEMPProductName)
-                .HasColumnName("Product");
         }
 
         string GetSection(string text, int pos)

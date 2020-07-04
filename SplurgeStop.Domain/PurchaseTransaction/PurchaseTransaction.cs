@@ -121,14 +121,13 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     }
                     LineItems.Add(e.LineItem);
                     break;
-                case Events.LineItemChanged e:
-                    var test = this;
-                    if (LineItems.Any(l => l.Id == e.LineItem.Id))
-                    {
-                        LineItems.Remove(LineItems.Find(l => l.Id == e.LineItem.Id));
-                    }
-                    LineItems.Add(e.LineItem);
-                    break;
+                    //case Events.LineItemChanged e:
+                    //    if (LineItems.Any(l => l.Id == e.LineItem.Id))
+                    //    {
+                    //        LineItems.Remove(LineItems.Find(l => l.Id == e.LineItem.Id));
+                    //    }
+                    //    LineItems.Add(e.LineItem);
+                    //    break;
             }
         }
 

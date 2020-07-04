@@ -53,6 +53,8 @@ export function NewPurchaseTransaction() {
   const [state, updateState] = React.useReducer(enhancedReducer, initialState);
   const [stores, setStores] = useState(null);
   const [storesLoading, setStoresLoading] = useState(true);
+  const [products, setProducts] = useState(null);
+  const [productsLoading, setProductsLoading] = useState(true);
 
   const { handleSubmit } = useForm();
 
@@ -84,7 +86,16 @@ export function NewPurchaseTransaction() {
       setStoresLoading(false);
     };
 
+    const loadProducts = async () => {
+      const url = 'https://localhost:44304/api/Product';
+      const response = await fetch(url);
+      const data = await response.json();
+      setProducts(data);
+      setProductsLoading(false);
+    };
+
     loadStores();
+    loadProducts();
   }, []);
 
   const add = () => {
@@ -109,6 +120,8 @@ export function NewPurchaseTransaction() {
     if (e.currentTarget.name === 'price') {
       var num = Number.parseFloat(e.currentTarget.value);
       item[e.currentTarget.name] = num.toFixed(2);
+    } else if (e.currentTarget.name === 'product') {
+      item[e.currentTarget.product] = e.currentTarget.value;
     } else {
       item[e.currentTarget.name] = e.currentTarget.value;
     }
@@ -246,7 +259,39 @@ export function NewPurchaseTransaction() {
                   <tbody>
                     {transactionLineItems.map((lineItem, idx) => (
                       <tr key={lineItem.id}>
-                        <td
+                        {productsLoading ? (
+                          <div
+                            css={css`
+                              height: 30px;
+                              width: 33%;
+                            `}
+                          >
+                            Loading...
+                          </div>
+                        ) : (
+                          <div
+                            css={css`
+                              margin: 1em;
+                            `}
+                          >
+                            <select
+                              name="productId"
+                              id="productId"
+                              className="input"
+                              type="text"
+                              onChange={(e) => update(e, idx)}
+                              defaultValue={state.lineItems[idx]?.product.name}
+                              // onChange={updateForm}
+                            >
+                              {products.map((product) => (
+                                <option value={product.id} key={product.id}>
+                                  {product.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+                        {/* <td
                           css={css`
                             height: 30px;
                             width: 33%;
@@ -260,7 +305,7 @@ export function NewPurchaseTransaction() {
                             onChange={(e) => update(e, idx)}
                             defaultValue={state.lineItems[idx]?.product}
                           ></input>
-                        </td>
+                        </td> */}
                         <td
                           css={css`
                             height: 30px;
