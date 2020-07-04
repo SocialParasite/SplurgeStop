@@ -22,12 +22,13 @@ namespace SplurgeStop.UI.WebApi
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -47,10 +48,10 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<IBrandService, BrandService>();
-            services.AddTransient<IProductRepository, IProductRepository>();
-            services.AddTransient<IProductService, IProductService>();
-            services.AddTransient<IProductTypeRepository, IProductTypeRepository>();
-            services.AddTransient<IProductTypeService, IProductTypeService>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+            services.AddTransient<IProductTypeService, ProductTypeService>();
             services.AddTransient<ISizeRepository, SizeRepository>();
             services.AddTransient<ISizeService, SizeService>();
 
