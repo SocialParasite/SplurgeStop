@@ -61,7 +61,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
             lineItem.UpdateLineItemPrice(Price);
             lineItem.Notes = Notes ?? string.Empty;
-            lineItem.Product = Product ?? null;
+            lineItem.Product = Product ?? throw new ArgumentNullException(nameof(Product), "Invalid product provided.");
 
             return lineItem;
         }

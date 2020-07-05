@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Repositories;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Integration.Tests.Helpers;
@@ -101,7 +102,7 @@ namespace SplurgeStop.Integration.Tests
             var prod = await ProductHelpers.CreateValidProduct();
 
             var lineItem = LineItemBuilder
-                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
+                .LineItem(new Price(2.54m))
                 .WithProduct(prod)
                 .Build();
 
@@ -128,7 +129,7 @@ namespace SplurgeStop.Integration.Tests
             var prod = await ProductHelpers.CreateValidProduct();
 
             var secondLineItem = LineItemBuilder
-                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
+                .LineItem(new Price(2.54m))
                 .WithProduct(prod)
                 .Build();
 
@@ -158,12 +159,12 @@ namespace SplurgeStop.Integration.Tests
             var prod1 = await ProductHelpers.CreateValidProduct();
             var prod2 = await ProductHelpers.CreateValidProduct();
 
-            var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
+            var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m))
                 .WithProduct(prod1)
                 .Build();
             await UpdateLineItem(sut.Id, secondLineItem);
 
-            var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.End))
+            var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit))
                 .WithProduct(prod2)
                 .Build();
             await UpdateLineItem(sut.Id, debitLineItem);
@@ -182,16 +183,18 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Add_lineItem_with_notes()
         {
-            var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
+            var lineItem = LineItemBuilder.LineItem(new Price(1.00m))
                 .WithNotes("My Notes!")
+                .WithProduct(new Product())
                 .Build();
+
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1m, lineItem);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
             var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
-            Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault().Notes);
+            Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault()?.Notes);
         }
 
         [Fact]
@@ -205,15 +208,15 @@ namespace SplurgeStop.Integration.Tests
 
             Assert.NotNull(sut.LineItems);
             Assert.Single(sut.LineItems);
-            Assert.Equal(22.33m, sut.LineItems.FirstOrDefault().Price.Amount);
+            Assert.Equal(22.33m, sut.LineItems.FirstOrDefault()?.Price.Amount);
 
-            var lineItemId = sut.LineItems.FirstOrDefault().Id;
+            var lineItemId = sut.LineItems.FirstOrDefault()?.Id;
 
             // Get Product
             var prod = await ProductHelpers.CreateValidProduct();
 
             var updatedLineItem = LineItemBuilder
-                .LineItem(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End), lineItemId)
+                .LineItem(new Price(33.44m), lineItemId)
                 .WithProduct(prod)
                 .Build();
 
@@ -222,7 +225,7 @@ namespace SplurgeStop.Integration.Tests
             sut = await ReloadPurchaseTransaction(sut.Id);
 
             Assert.Single(sut.LineItems);
-            Assert.Equal(33.44m, sut.LineItems.FirstOrDefault().Price.Amount);
+            Assert.Equal(33.44m, sut.LineItems.FirstOrDefault()?.Price.Amount);
         }
     }
 }
