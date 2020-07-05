@@ -10,7 +10,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Valid_lineItem()
         {
-            var price = new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end);
+            var price = new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End);
             var sut = LineItemBuilder.LineItem(price).Build();
 
             Assert.IsType<LineItem>(sut);
@@ -20,7 +20,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Has_notes()
         {
-            var price = new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end);
+            var price = new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End);
             var sut = LineItemBuilder.LineItem(price).WithNotes("No kun sai niin halvalla.").Build();
 
             Assert.Contains("halvalla", sut.Notes);
