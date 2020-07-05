@@ -1,6 +1,4 @@
-﻿using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
-
-namespace SplurgeStop.Domain.PurchaseTransaction
+﻿namespace SplurgeStop.Domain.PurchaseTransaction.PriceProfile
 {
     public struct PurchaseTotalSum
     {
