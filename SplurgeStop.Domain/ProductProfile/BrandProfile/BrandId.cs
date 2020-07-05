@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GuidHelpers;
+using SplurgeStop.Domain.Shared;
 
 namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 {

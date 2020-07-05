@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SplurgeStop.Domain
+namespace SplurgeStop.Domain.Shared
 {
     public interface IUnitOfWork
     {

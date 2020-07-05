@@ -1,5 +1,4 @@
 ﻿using System;
-using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using Xunit;
 

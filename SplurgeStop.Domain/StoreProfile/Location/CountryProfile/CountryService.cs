@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.Shared;
 using static SplurgeStop.Domain.CountryProfile.Commands;
 
 namespace SplurgeStop.Domain.CountryProfile

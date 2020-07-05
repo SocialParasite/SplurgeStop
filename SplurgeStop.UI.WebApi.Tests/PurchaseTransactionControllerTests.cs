@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
-using SplurgeStop.Domain;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 
@@ -67,7 +67,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var mockPurchaseTransactionService = new Mock<IPurchaseTransactionService>();
             mockPurchaseTransactionService.Setup(s => s.GetDetailedPurchaseTransaction(id))
                 .Returns(() => Task.FromResult(mockPurchaseTransaction.Object));
-            
+
             var purchaseTransactionController = new PurchaseTransactionController(mockPurchaseTransactionService.Object);
             var result = await purchaseTransactionController.GetPurchaseTransaction(id);
 

@@ -6,6 +6,7 @@ using SplurgeStop.Domain.DA_Interfaces;
 using static SplurgeStop.Domain.LocationProfile.Commands;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.Shared;
 
 namespace SplurgeStop.Domain.LocationProfile
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile.DTO;
 using static SplurgeStop.Domain.StoreProfile.Commands;
 
@@ -25,8 +26,6 @@ namespace SplurgeStop.Domain.StoreProfile
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
-                //UpdateStore cmd
-                //    => HandleUpdate(cmd.Id, c => c.UpdateStoreName(cmd.Name)),
                 UpdateStore cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateStore(cmd.LocationId, c),
                     c => c.UpdateStoreName(cmd.Name)),

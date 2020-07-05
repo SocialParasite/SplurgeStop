@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SplurgeStop.Domain.Shared;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {

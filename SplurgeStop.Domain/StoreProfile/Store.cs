@@ -1,5 +1,4 @@
 ﻿using System;
-using GuidHelpers;
 using SplurgeStop.Domain.LocationProfile;
 
 namespace SplurgeStop.Domain.StoreProfile

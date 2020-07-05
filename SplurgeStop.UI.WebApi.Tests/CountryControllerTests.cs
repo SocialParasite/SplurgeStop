@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
-using SplurgeStop.Domain;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SplurgeStop.Domain;
+using SplurgeStop.Domain.Shared;
 
 namespace SplurgeStop.Data.EF
 {

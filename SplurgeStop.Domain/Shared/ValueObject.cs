@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SplurgeStop.Domain
+namespace SplurgeStop.Domain.Shared
 {
     public abstract class ValueObject
     {
@@ -42,7 +42,7 @@ namespace SplurgeStop.Domain
             return a.Equals(b);
         }
 
-        public static bool operator !=(ValueObject a, ValueObject b) 
+        public static bool operator !=(ValueObject a, ValueObject b)
             => !(a == b);
     }
 }

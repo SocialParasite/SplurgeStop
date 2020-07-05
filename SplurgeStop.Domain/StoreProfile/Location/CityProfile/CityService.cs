@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.CityProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.Shared;
 using static SplurgeStop.Domain.CityProfile.Commands;
 
 namespace SplurgeStop.Domain.CityProfile
