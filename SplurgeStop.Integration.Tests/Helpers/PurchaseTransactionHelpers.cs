@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
@@ -40,7 +40,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             command.LineItems = new List<LineItemStripped>();
             command.LineItems.Add(new LineItemStripped
             {
-                Price = price.ToString(),
+                Price = price.ToString(CultureInfo.InvariantCulture),
                 CurrencyCode = "EUR",
                 CurrencySymbol = "€",
                 CurrencySymbolPosition = CurrencySymbolPosition.End,
@@ -131,7 +131,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             updateCommand.CurrencySymbol = lineItem.Price.Currency.CurrencySymbol;
             updateCommand.Booking = lineItem.Price.Booking;
             updateCommand.CurrencySymbolPosition = lineItem.Price.Currency.PositionRelativeToPrice;
-            updateCommand.Notes = lineItem?.Notes;
+            updateCommand.Notes = lineItem.Notes;
             updateCommand.Product = lineItem.Product;
 
             await transactionController.Put(updateCommand);

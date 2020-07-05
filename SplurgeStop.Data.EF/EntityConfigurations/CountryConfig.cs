@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SplurgeStop.Domain.CountryProfile;
-using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Data.EF

@@ -6,13 +6,13 @@ namespace SplurgeStop.Data.EF
 {
     public sealed class EfCoreUnitOfWork : IUnitOfWork
     {
-        private readonly SplurgeStopDbContext dbContext;
+        private readonly SplurgeStopDbContext _dbContext;
 
         public EfCoreUnitOfWork(SplurgeStopDbContext dbContext)
         {
-            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
         public async Task Commit()
-            => await dbContext.SaveChangesAsync();
+            => await _dbContext.SaveChangesAsync();
     }
 }

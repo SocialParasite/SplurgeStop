@@ -2,20 +2,19 @@
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.UI.WebApi.Controllers;
-using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using size = SplurgeStop.Domain.ProductProfile.SizeProfile;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {
     public static class SizeHelpers
     {
-        public static async Task<Size> CreateValidSize()
+        public static async Task<size.Size> CreateValidSize()
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
             var repository = new SizeRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
-            var service = new SizeService(repository, unitOfWork);
+            var service = new size.SizeService(repository, unitOfWork);
 
             var command = new size.Commands.Create();
             command.Amount = "L";
@@ -33,7 +32,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var context = new SplurgeStopDbContext(connectionString);
             var repository = new SizeRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
-            var service = new SizeService(repository, unitOfWork);
+            var service = new size.SizeService(repository, unitOfWork);
 
             var command = new size.Commands.Create();
             command.Id = null;
@@ -42,13 +41,13 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await sizeController.Post(command);
         }
 
-        public static async Task UpdateSizeAmount(SizeId id, string amount)
+        public static async Task UpdateSizeAmount(size.SizeId id, string amount)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
             var repository = new SizeRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
-            var service = new SizeService(repository, unitOfWork);
+            var service = new size.SizeService(repository, unitOfWork);
             var sizeController = new SizeController(service);
 
             var updateCommand = new size.Commands.SetSizeAmount();
@@ -58,7 +57,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await sizeController.Put(updateCommand);
         }
 
-        public static async Task<bool> CheckIfSizeExists(SizeId id)
+        public static async Task<bool> CheckIfSizeExists(size.SizeId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
@@ -67,13 +66,13 @@ namespace SplurgeStop.Integration.Tests.Helpers
             return await repository.ExistsAsync(id);
         }
 
-        public static async Task RemoveSize(SizeId id)
+        public static async Task RemoveSize(size.SizeId id)
         {
             var connectionString = ConnectivityService.GetConnectionString("TEMP");
             var context = new SplurgeStopDbContext(connectionString);
             var repository = new SizeRepository(context);
             var unitOfWork = new EfCoreUnitOfWork(context);
-            var service = new SizeService(repository, unitOfWork);
+            var service = new size.SizeService(repository, unitOfWork);
             var sizeController = new SizeController(service);
 
             var updateCommand = new size.Commands.DeleteSize();

@@ -11,33 +11,33 @@ namespace SplurgeStop.Data.EF.Repositories
 {
     public sealed class ProductTypeRepository : IProductTypeRepository
     {
-        private readonly SplurgeStopDbContext context;
+        private readonly SplurgeStopDbContext _context;
 
         public ProductTypeRepository(SplurgeStopDbContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<bool> ExistsAsync(ProductTypeId id)
         {
-            return await context.ProductTypes.FindAsync(id) != null;
+            return await _context.ProductTypes.FindAsync(id) != null;
         }
 
         public async Task<ProductType> LoadProductTypeAsync(ProductTypeId id)
         {
-            return await context.ProductTypes.FindAsync(id);
+            return await _context.ProductTypes.FindAsync(id);
         }
 
         public async Task<IEnumerable<ProductType>> GetAllProductTypesAsync()
         {
-            return await context.ProductTypes
+            return await _context.ProductTypes
                     .AsNoTracking()
                     .ToListAsync();
         }
 
         public async Task<IEnumerable<ProductTypeDto>> GetAllProductTypeDtoAsync()
         {
-            return await context.ProductTypes
+            return await _context.ProductTypes
                     .Select(r => new ProductTypeDto
                     {
                         Id = r.Id,
@@ -49,22 +49,22 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<ProductType> GetProductTypeAsync(ProductTypeId id)
         {
-            return await context.ProductTypes
+            return await _context.ProductTypes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task AddProductTypeAsync(ProductType productType)
         {
-            await context.ProductTypes.AddAsync(productType);
+            await _context.ProductTypes.AddAsync(productType);
         }
 
         public async Task RemoveProductTypeAsync(ProductTypeId id)
         {
-            var productType = await context.ProductTypes.FindAsync(id);
+            var productType = await _context.ProductTypes.FindAsync(id);
 
             if (productType != null)
-                context.ProductTypes.Remove(productType);
+                _context.ProductTypes.Remove(productType);
         }
     }
 }

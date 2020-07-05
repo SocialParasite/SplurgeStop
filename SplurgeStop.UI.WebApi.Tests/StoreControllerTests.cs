@@ -56,8 +56,6 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Store()
         {
-            var mockRepository = new Mock<IStoreRepository>();
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockStore = new Mock<Store>();
             var id = Guid.NewGuid();
 
@@ -75,8 +73,6 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockRepository = new Mock<IStoreRepository>();
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockStore = new Mock<Store>();
             var id = Guid.NewGuid();
 

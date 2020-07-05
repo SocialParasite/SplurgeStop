@@ -13,26 +13,26 @@ namespace SplurgeStop.Data.EF.Repositories
 {
     public sealed class PurchaseTransactionRepository : IPurchaseTransactionRepository
     {
-        private readonly SplurgeStopDbContext context;
+        private readonly SplurgeStopDbContext _context;
 
         public PurchaseTransactionRepository(SplurgeStopDbContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task AddPurchaseTransactionAsync(PurchaseTransaction transaction)
         {
-            await context.Purchases.AddAsync(transaction);
+            await _context.Purchases.AddAsync(transaction);
         }
 
         public async Task<bool> ExistsAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases.FindAsync(id) != null;
+            return await _context.Purchases.FindAsync(id) != null;
         }
 
         public async Task<PurchaseTransaction> GetPurchaseTransactionFullAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases
+            return await _context.Purchases
                 .Include(p => p.Store)
                 .Include(p => p.LineItems)
                 .ThenInclude(l => l.Product)
@@ -49,7 +49,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactionsAsync()
         {
-            return await context.Purchases
+            return await _context.Purchases
                     .Include(s => s.Store)
                     .Include(l => l.LineItems)
                     .Select(r => new PurchaseTransactionStripped
@@ -66,30 +66,30 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases.FindAsync(id);
+            return await _context.Purchases.FindAsync(id);
         }
 
         public async Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id)
         {
-            return await context.Purchases.Include(s => s.Store)
+            return await _context.Purchases.Include(s => s.Store)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Store> GetStoreAsync(StoreId id)
         {
-            return await context.Stores.FindAsync(id);
+            return await _context.Stores.FindAsync(id);
         }
 
         public async Task ChangeStore(PurchaseTransaction purchaseTransaction, StoreId storeId)
         {
-            var transaction = await context.Purchases.FindAsync(purchaseTransaction.Id);
+            var transaction = await _context.Purchases.FindAsync(purchaseTransaction.Id);
             transaction.UpdateStore(await GetStoreAsync(storeId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeLineItem(PurchaseTransaction purchaseTransaction, LineItem lineItem)
         {
-            var transaction = await context.Purchases
+            var transaction = await _context.Purchases
                 .Include(p => p.LineItems)
                 .ThenInclude(l => l.Product)
                 .ThenInclude(p => p.Brand)
@@ -103,25 +103,25 @@ namespace SplurgeStop.Data.EF.Repositories
 
             LineItem toBeRemoved = transaction.LineItems.Find(l => l.Id == lineItem.Id);
             purchaseTransaction.LineItems.Remove(toBeRemoved);
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            lineItem.Product = await context.Products.FindAsync(lineItem.Product.Id);
+            lineItem.Product = await _context.Products.FindAsync(lineItem.Product.Id);
             purchaseTransaction.LineItems.Add(lineItem);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task RemovePurchaseTransactionAsync(PurchaseTransactionId id)
         {
-            var pt = await context.Purchases.FindAsync(id);
+            var pt = await _context.Purchases.FindAsync(id);
 
             if (pt != null)
-                context.Purchases.Remove(pt);
+                _context.Purchases.Remove(pt);
         }
 
         public async Task<Product> GetProductAsync(ProductId id)
         {
-            return await context.Products
+            return await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.ProductType)
                 .Include(p => p.Size)

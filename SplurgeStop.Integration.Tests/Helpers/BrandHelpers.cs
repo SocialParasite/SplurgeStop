@@ -3,7 +3,6 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.UI.WebApi.Controllers;
-//using brand = SplurgeStop.Domain.ProductProfile.BrandProfile;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {

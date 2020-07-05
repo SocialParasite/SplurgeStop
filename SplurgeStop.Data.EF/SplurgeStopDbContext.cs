@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;

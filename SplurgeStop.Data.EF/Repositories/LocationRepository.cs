@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
@@ -14,21 +13,21 @@ namespace SplurgeStop.Data.EF.Repositories
 {
     public sealed class LocationRepository : ILocationRepository
     {
-        private readonly SplurgeStopDbContext context;
+        private readonly SplurgeStopDbContext _context;
 
         public LocationRepository(SplurgeStopDbContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<bool> ExistsAsync(LocationId id)
         {
-            return await context.Locations.FindAsync(id) != null;
+            return await _context.Locations.FindAsync(id) != null;
         }
 
         public async Task<Location> LoadLocationAsync(LocationId id)
         {
-            return await context.Locations
+            return await _context.Locations
                 .Include(c => c.City)
                 .Include(c => c.Country)
                 .FirstOrDefaultAsync(l => l.Id == id);
@@ -36,14 +35,14 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<IEnumerable<Location>> GetAllLocationsAsync()
         {
-            return await context.Locations
+            return await _context.Locations
                     .AsNoTracking()
                     .ToListAsync();
         }
 
         public async Task<IEnumerable<LocationDto>> GetAllLocationDtoAsync()
         {
-            return await context.Locations
+            return await _context.Locations
                     .Select(r => new LocationDto
                     {
                         Id = r.Id,
@@ -56,46 +55,46 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Location> GetLocationAsync(LocationId id)
         {
-            return await context.Locations
+            return await _context.Locations
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task AddLocationAsync(Location location)
         {
-            await context.Locations.AddAsync(location);
+            await _context.Locations.AddAsync(location);
         }
 
         public async Task RemoveLocationAsync(LocationId id)
         {
-            var location = await context.Locations.FindAsync(id);
+            var location = await _context.Locations.FindAsync(id);
 
             if (location != null)
-                context.Locations.Remove(location);
+                _context.Locations.Remove(location);
         }
 
         public async Task<City> GetCityAsync(CityId id)
         {
-            return await context.Cities.FindAsync(id);
+            return await _context.Cities.FindAsync(id);
         }
 
         public async Task<Country> GetCountryAsync(CountryId id)
         {
-            return await context.Countries.FindAsync(id);
+            return await _context.Countries.FindAsync(id);
         }
 
         public async Task ChangeCountry(Location location, CountryId countryId)
         {
-            var modLocation = await context.Locations.FindAsync(location.Id);
+            var modLocation = await _context.Locations.FindAsync(location.Id);
             modLocation.UpdateCountry(await GetCountryAsync(countryId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeCity(Location location, CityId cityId)
         {
-            var modLocation = await context.Locations.FindAsync(location.Id);
+            var modLocation = await _context.Locations.FindAsync(location.Id);
             modLocation.UpdateCity(await GetCityAsync(cityId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

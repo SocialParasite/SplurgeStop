@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
-using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
@@ -56,8 +55,6 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_City()
         {
-            var mockRepository = new Mock<ICityRepository>();
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockCity = new Mock<City>();
             var id = Guid.NewGuid();
 
@@ -75,8 +72,6 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockRepository = new Mock<ICityRepository>();
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockCity = new Mock<City>();
             var id = Guid.NewGuid();
 

@@ -11,33 +11,33 @@ namespace SplurgeStop.Data.EF.Repositories
 {
     public sealed class BrandRepository : IBrandRepository
     {
-        private readonly SplurgeStopDbContext context;
+        private readonly SplurgeStopDbContext _context;
 
         public BrandRepository(SplurgeStopDbContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<bool> ExistsAsync(BrandId id)
         {
-            return await context.Brands.FindAsync(id) != null;
+            return await _context.Brands.FindAsync(id) != null;
         }
 
         public async Task<Brand> LoadBrandAsync(BrandId id)
         {
-            return await context.Brands.FindAsync(id);
+            return await _context.Brands.FindAsync(id);
         }
 
         public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
         {
-            return await context.Brands
+            return await _context.Brands
                     .AsNoTracking()
                     .ToListAsync();
         }
 
         public async Task<IEnumerable<BrandDto>> GetAllBrandDtoAsync()
         {
-            return await context.Brands
+            return await _context.Brands
                     .Select(r => new BrandDto
                     {
                         Id = r.Id,
@@ -49,22 +49,22 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Brand> GetBrandAsync(BrandId id)
         {
-            return await context.Brands
+            return await _context.Brands
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task AddBrandAsync(Brand brand)
         {
-            await context.Brands.AddAsync(brand);
+            await _context.Brands.AddAsync(brand);
         }
 
         public async Task RemoveBrandAsync(BrandId id)
         {
-            var brand = await context.Brands.FindAsync(id);
+            var brand = await _context.Brands.FindAsync(id);
 
             if (brand != null)
-                context.Brands.Remove(brand);
+                _context.Brands.Remove(brand);
         }
     }
 }

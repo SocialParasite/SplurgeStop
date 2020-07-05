@@ -14,33 +14,33 @@ namespace SplurgeStop.Data.EF.Repositories
 {
     public sealed class ProductRepository : IProductRepository
     {
-        private readonly SplurgeStopDbContext context;
+        private readonly SplurgeStopDbContext _context;
 
         public ProductRepository(SplurgeStopDbContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<bool> ExistsAsync(ProductId id)
         {
-            return await context.Products.FindAsync(id) != null;
+            return await _context.Products.FindAsync(id) != null;
         }
 
         public async Task<Product> LoadProductAsync(ProductId id)
         {
-            return await context.Products.FindAsync(id);
+            return await _context.Products.FindAsync(id);
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await context.Products
+            return await _context.Products
                     .AsNoTracking()
                     .ToListAsync();
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllProductDtoAsync()
         {
-            return await context.Products
+            return await _context.Products
                     .Select(r => new ProductDto
                     {
                         Id = r.Id,
@@ -52,14 +52,14 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Product> GetProductAsync(ProductId id)
         {
-            return await context.Products
+            return await _context.Products
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Product> GetProductFullAsync(ProductId id)
         {
-            return await context.Products
+            return await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.ProductType)
                 .Include(p => p.Size)
@@ -69,7 +69,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task<Product> LoadFullProductAsync(ProductId id)
         {
-            return await context.Products
+            return await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.ProductType)
                 .Include(p => p.Size)
@@ -78,51 +78,51 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public async Task AddProductAsync(Product product)
         {
-            await context.Products.AddAsync(product);
+            await _context.Products.AddAsync(product);
         }
 
         public async Task RemoveProductAsync(ProductId id)
         {
-            var product = await context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
             if (product != null)
-                context.Products.Remove(product);
+                _context.Products.Remove(product);
         }
 
         public async Task<Brand> GetBrandAsync(BrandId brandId)
         {
-            return await context.Brands.FindAsync(brandId);
+            return await _context.Brands.FindAsync(brandId);
         }
 
         public async Task ChangeBrand(Product prod, BrandId brandId)
         {
-            var product = await context.Products.FindAsync(prod.Id);
+            var product = await _context.Products.FindAsync(prod.Id);
             product.UpdateBrand(await GetBrandAsync(brandId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeProductType(Product prod, ProductTypeId productTypeId)
         {
-            var product = await context.Products.FindAsync(prod.Id);
+            var product = await _context.Products.FindAsync(prod.Id);
             product.UpdateProductType(await GetProductTypeAsync(productTypeId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         private async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
         {
-            return await context.ProductTypes.FindAsync(productTypeId);
+            return await _context.ProductTypes.FindAsync(productTypeId);
         }
 
         public async Task ChangeSize(Product prod, SizeId sizeId)
         {
-            var product = await context.Products.FindAsync(prod.Id);
+            var product = await _context.Products.FindAsync(prod.Id);
             product.UpdateSize(await GetSizeAsync(sizeId));
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         private async Task<Size> GetSizeAsync(SizeId sizeId)
         {
-            return await context.Size.FindAsync(sizeId);
+            return await _context.Size.FindAsync(sizeId);
         }
     }
 }

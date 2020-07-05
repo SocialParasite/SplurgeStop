@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.CountryHelpers;

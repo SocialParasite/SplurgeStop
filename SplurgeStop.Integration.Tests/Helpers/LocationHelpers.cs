@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;

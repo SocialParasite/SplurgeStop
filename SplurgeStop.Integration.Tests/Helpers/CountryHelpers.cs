@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using country = SplurgeStop.Domain.CountryProfile;
