@@ -53,7 +53,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public override string ToString()
         {
-            return Currency.PositionRelativeToPrice == CurrencySymbolPosition.front
+            return Currency.PositionRelativeToPrice == CurrencySymbolPosition.Front
                 ? $"{Currency.CurrencySymbol}{Amount}"
                 : $"{Amount} {Currency.CurrencySymbol}";
         }

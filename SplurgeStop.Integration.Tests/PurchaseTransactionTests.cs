@@ -100,7 +100,7 @@ namespace SplurgeStop.Integration.Tests
             var prod = await ProductHelpers.CreateValidProduct();
 
             var lineItem = LineItemBuilder
-                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
                 .WithProduct(prod)
                 .Build();
 
@@ -127,7 +127,7 @@ namespace SplurgeStop.Integration.Tests
             var prod = await ProductHelpers.CreateValidProduct();
 
             var secondLineItem = LineItemBuilder
-                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+                .LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
                 .WithProduct(prod)
                 .Build();
 
@@ -157,12 +157,12 @@ namespace SplurgeStop.Integration.Tests
             var prod1 = await ProductHelpers.CreateValidProduct();
             var prod2 = await ProductHelpers.CreateValidProduct();
 
-            var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+            var secondLineItem = LineItemBuilder.LineItem(new Price(2.54m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
                 .WithProduct(prod1)
                 .Build();
             await UpdateLineItem(sut.Id, secondLineItem);
 
-            var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.end))
+            var debitLineItem = LineItemBuilder.LineItem(new Price(1.54m, Booking.Debit, "EUR", "€", CurrencySymbolPosition.End))
                 .WithProduct(prod2)
                 .Build();
             await UpdateLineItem(sut.Id, debitLineItem);
@@ -181,7 +181,7 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Add_lineItem_with_notes()
         {
-            var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end))
+            var lineItem = LineItemBuilder.LineItem(new Price(1.00m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End))
                 .WithNotes("My Notes!")
                 .Build();
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1m, lineItem);
@@ -212,7 +212,7 @@ namespace SplurgeStop.Integration.Tests
             var prod = await ProductHelpers.CreateValidProduct();
 
             var updatedLineItem = LineItemBuilder
-                .LineItem(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.end), lineItemId)
+                .LineItem(new Price(33.44m, Booking.Credit, "EUR", "€", CurrencySymbolPosition.End), lineItemId)
                 .WithProduct(prod)
                 .Build();
 

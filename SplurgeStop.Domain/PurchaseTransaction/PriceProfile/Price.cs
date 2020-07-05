@@ -8,7 +8,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                      Booking booking = Booking.Credit,
                      string currencyCode = "EUR",
                      string currencySymbol = "€",
-                     CurrencySymbolPosition currencySymbolPosition = CurrencySymbolPosition.end)
+                     CurrencySymbolPosition currencySymbolPosition = CurrencySymbolPosition.End)
            : base(amount, new Currency(currencyCode, currencySymbol, currencySymbolPosition))
         {
             Booking = booking;

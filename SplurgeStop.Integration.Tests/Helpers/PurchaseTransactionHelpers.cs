@@ -42,7 +42,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 Price = price.ToString(),
                 CurrencyCode = "EUR",
                 CurrencySymbol = "€",
-                CurrencySymbolPosition = CurrencySymbolPosition.end,
+                CurrencySymbolPosition = CurrencySymbolPosition.End,
                 Booking = Booking.Credit,
                 Notes = lineItem?.Notes,
                 Product = prod
@@ -83,7 +83,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 Price = "1.23",
                 CurrencyCode = "EUR",
                 CurrencySymbol = "€",
-                CurrencySymbolPosition = CurrencySymbolPosition.end,
+                CurrencySymbolPosition = CurrencySymbolPosition.End,
                 Notes = "New notes",
                 Product = prod
             };
