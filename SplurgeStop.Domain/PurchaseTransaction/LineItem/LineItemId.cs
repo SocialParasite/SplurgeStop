@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GuidHelpers;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransaction.LineItem
 {
     public class LineItemId : ValueObject
     {
@@ -21,7 +21,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             yield return Value;
         }
 
-        public static implicit operator Guid(LineItemId self) 
+        public static implicit operator Guid(LineItemId self)
             => self.Value;
 
         public static implicit operator LineItemId(Guid value)

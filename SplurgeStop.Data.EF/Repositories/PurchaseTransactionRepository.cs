@@ -7,6 +7,7 @@ using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Data.EF.Repositories

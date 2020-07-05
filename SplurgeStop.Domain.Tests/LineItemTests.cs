@@ -2,7 +2,7 @@
 using GuidHelpers;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using Xunit;
 using Price = SplurgeStop.Domain.PurchaseTransaction.PriceProfile.Price;

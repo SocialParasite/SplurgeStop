@@ -35,7 +35,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public class PurchaseTransactionLineItemChanged
         {
             public Guid Id { get; set; }
-            public LineItem LineItem { get; set; }
+            public LineItem.LineItem LineItem { get; set; }
         }
 
         public class PurchaseTransactionDeleted

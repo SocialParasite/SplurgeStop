@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.StoreProfile;
 using transaction = SplurgeStop.Domain.PurchaseTransaction;
 

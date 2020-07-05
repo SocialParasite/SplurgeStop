@@ -40,7 +40,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         {
             if (LineItems is null)
             {
-                LineItems = new List<LineItem>();
+                LineItems = new List<LineItem.LineItem>();
             }
         }
 
@@ -53,7 +53,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         }
 
         public Store Store { get; private set; }
-        public List<LineItem> LineItems { get; private set; }
+        public List<LineItem.LineItem> LineItems { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
@@ -78,7 +78,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             Store = store;
         }
 
-        internal void UpdateLineItem(LineItem lineItem)
+        internal void UpdateLineItem(LineItem.LineItem lineItem)
         {
             Apply(new Events.PurchaseTransactionLineItemChanged
             {
@@ -109,7 +109,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     Id = new PurchaseTransactionId(e.Id);
                     PurchaseDate = PurchaseDate.Now;
                     Store = null;
-                    LineItems = new List<LineItem>();
+                    LineItems = new List<LineItem.LineItem>();
                     Notes = PurchaseTransactionNotes.NoNotes;
                     break;
                 case Events.PurchaseTransactionDateChanged e:
