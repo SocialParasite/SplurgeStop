@@ -10,11 +10,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction.PriceProfile
             if (amount < 0)
                 throw new ArgumentException("Price cannot be negative", nameof(amount));
 
-            if (currency is null)
-                throw new ArgumentNullException(nameof(currency), "Currency must be specified");
-
             Amount = amount;
-            Currency = currency;
+            Currency = currency ?? throw new ArgumentNullException(nameof(currency), "Currency must be specified");
         }
 
         public Money(decimal amount, string currencyCode, string currencySymbol, CurrencySymbolPosition currencySymbolPosition)
