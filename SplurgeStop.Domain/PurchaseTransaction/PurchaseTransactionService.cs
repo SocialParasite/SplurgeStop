@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;
 using static SplurgeStop.Domain.PurchaseTransaction.Commands;
 

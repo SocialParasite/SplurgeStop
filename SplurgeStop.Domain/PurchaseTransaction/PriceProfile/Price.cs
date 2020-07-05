@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransaction.PriceProfile
 {
     public class Price : Money
     {

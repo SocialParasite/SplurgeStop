@@ -1,5 +1,6 @@
 ﻿using System;
 using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction.DTO
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {

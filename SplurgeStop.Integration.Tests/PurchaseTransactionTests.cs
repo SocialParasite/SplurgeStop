@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.PurchaseTransactionHelpers;

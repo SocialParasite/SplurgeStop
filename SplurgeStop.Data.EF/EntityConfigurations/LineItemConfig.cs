@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 
 namespace SplurgeStop.Data.EF
 {

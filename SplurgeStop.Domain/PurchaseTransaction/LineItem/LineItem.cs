@@ -1,6 +1,7 @@
 ﻿using System;
 using GuidHelpers;
 using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
 {
