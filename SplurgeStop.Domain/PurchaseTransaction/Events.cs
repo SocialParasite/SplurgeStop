@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SplurgeStop.Domain.PurchaseTransaction.DTO;
+using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
