@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using SplurgeStop.Domain.LocationProfile.DTO;
-using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.UI.WebApi.Common;
-using static SplurgeStop.Domain.LocationProfile.Events;
+using static SplurgeStop.Domain.StoreProfile.LocationProfile.Events;
 
 namespace SplurgeStop.UI.WebApi.Controllers
 {

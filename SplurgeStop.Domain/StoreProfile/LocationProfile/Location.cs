@@ -2,7 +2,7 @@
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
 
-namespace SplurgeStop.Domain.LocationProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
     public class Location
     {
@@ -26,12 +26,12 @@ namespace SplurgeStop.Domain.LocationProfile
 
         public void UpdateCountry(Country country)
         {
-            Country = country ?? throw new ArgumentNullException("A country must be provided.");
+            Country = country ?? throw new ArgumentNullException(nameof(country), "A country must be provided.");
         }
 
         public void UpdateCity(City city)
         {
-            City = city ?? throw new ArgumentNullException("A city must be provided.");
+            City = city ?? throw new ArgumentNullException(nameof(city), "A city must be provided.");
         }
 
         private void Apply(object @event)

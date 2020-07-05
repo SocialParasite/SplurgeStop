@@ -5,7 +5,6 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
-using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;

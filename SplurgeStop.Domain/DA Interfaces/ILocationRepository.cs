@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
-using SplurgeStop.Domain.LocationProfile;
-using SplurgeStop.Domain.LocationProfile.DTO;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.Domain.DA_Interfaces
 {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SplurgeStop.Domain.LocationProfile.DTO;
 
-namespace SplurgeStop.Domain.LocationProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
     public interface ILocationService
     {

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SplurgeStop.Domain.LocationProfile.DTO;
-using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
+using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

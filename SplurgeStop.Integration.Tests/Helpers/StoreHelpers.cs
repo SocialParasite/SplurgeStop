@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using store = SplurgeStop.Domain.StoreProfile;
 

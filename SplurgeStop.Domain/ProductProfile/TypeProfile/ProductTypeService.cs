@@ -10,14 +10,14 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 {
     public sealed class ProductTypeService : IProductTypeService
     {
-        private readonly IProductTypeRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IProductTypeRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ProductTypeService(IProductTypeRepository repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -25,31 +25,31 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
-                ProductProfile.TypeProfile.Commands.SetProductTypeName cmd
+                SetProductTypeName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateProductTypeName(cmd.Name)),
-                ProductProfile.TypeProfile.Commands.DeleteProductType cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveProductTypeAsync(cmd.Id)),
+                DeleteProductType cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveProductTypeAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newProductType = ProductType.Create(cmd.Id, cmd.Name);
 
-            await repository.AddProductTypeAsync(newProductType);
+            await _repository.AddProductTypeAsync(newProductType);
 
             if (newProductType.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid productTypeId, Func<ProductType, Task> operation)
         {
-            var productType = await repository.LoadProductTypeAsync(productTypeId);
+            var productType = await _repository.LoadProductTypeAsync(productTypeId);
 
             if (productType == null)
                 throw new InvalidOperationException($"Entity with id {productTypeId} cannot be found");
@@ -58,13 +58,13 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
             if (productType.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid productTypeId, Action<ProductType> operation)
         {
-            var productType = await repository.LoadProductTypeAsync(productTypeId);
+            var productType = await _repository.LoadProductTypeAsync(productTypeId);
 
             if (productType == null)
                 throw new InvalidOperationException($"Entity with id {productTypeId} cannot be found");
@@ -73,18 +73,18 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
             if (productType.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<ProductTypeDto>> GetAllProductTypeDtoAsync()
         {
-            return await repository.GetAllProductTypeDtoAsync();
+            return await _repository.GetAllProductTypeDtoAsync();
         }
 
         public async Task<ProductType> GetProductTypeAsync(ProductTypeId id)
         {
-            return await repository.GetProductTypeAsync(id);
+            return await _repository.GetProductTypeAsync(id);
         }
     }
 }

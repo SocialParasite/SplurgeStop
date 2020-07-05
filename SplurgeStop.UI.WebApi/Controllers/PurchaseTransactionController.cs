@@ -5,7 +5,6 @@ using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.PurchaseTransaction;
-using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.PurchaseTransaction.Events;
 

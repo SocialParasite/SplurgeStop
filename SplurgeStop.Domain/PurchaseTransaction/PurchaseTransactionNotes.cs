@@ -8,7 +8,7 @@
 
         internal PurchaseTransactionNotes(string text) => Value = text;
 
-        public static PurchaseTransactionNotes FromString(string text) 
+        public static PurchaseTransactionNotes FromString(string text)
             => new PurchaseTransactionNotes(text);
 
         public static implicit operator string(PurchaseTransactionNotes text)
@@ -17,7 +17,7 @@
         public static implicit operator PurchaseTransactionNotes(string text)
             => text;
 
-        public static PurchaseTransactionNotes NoNotes 
+        public static PurchaseTransactionNotes NoNotes
             => new PurchaseTransactionNotes();
     }
 }

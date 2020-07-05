@@ -1,5 +1,4 @@
 ﻿using System;
-using SplurgeStop.Domain.LocationProfile;
 
 namespace SplurgeStop.Domain.StoreProfile
 {
@@ -9,14 +8,14 @@ namespace SplurgeStop.Domain.StoreProfile
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public Location Location { get; set; }
+            public LocationProfile.Location Location { get; set; }
         }
 
         public class StoreChanged
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public Location Location { get; set; }
+            public LocationProfile.Location Location { get; set; }
 
         }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 
 namespace SplurgeStop.Data.EF

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.CityProfile.DTO
+namespace SplurgeStop.Domain.StoreProfile.Location.CityProfile
 {
     public sealed class CityDto
     {

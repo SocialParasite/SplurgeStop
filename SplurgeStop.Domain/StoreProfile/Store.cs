@@ -1,11 +1,11 @@
 ﻿using System;
-using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.Domain.StoreProfile
 {
     public class Store
     {
-        public static Store Create(StoreId id, string name, Location location = null)
+        public static Store Create(StoreId id, string name, LocationProfile.Location location = null)
         {
             var store = new Store();
 
@@ -21,19 +21,19 @@ namespace SplurgeStop.Domain.StoreProfile
 
         public StoreId Id { get; private set; }
         public string Name { get; private set; }
-        public Location Location { get; private set; }
+        public LocationProfile.Location Location { get; private set; }
 
         // chain, Kesko
         // store type, Citymarket
 
         internal void UpdateStoreName(string name)
         {
-            Name = name ?? throw new ArgumentNullException("A valid name for store must be provided.");
+            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for store must be provided.");
         }
 
-        public void UpdateLocation(Location location)
+        public void UpdateLocation(LocationProfile.Location location)
         {
-            Location = location ?? throw new ArgumentNullException("A location must be provided.");
+            Location = location ?? throw new ArgumentNullException(nameof(location), "A location must be provided.");
         }
 
         private void Apply(object @event)

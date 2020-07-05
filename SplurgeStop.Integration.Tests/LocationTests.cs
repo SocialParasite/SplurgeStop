@@ -1,8 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.LocationHelpers;

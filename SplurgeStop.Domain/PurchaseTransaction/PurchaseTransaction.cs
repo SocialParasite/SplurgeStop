@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using SplurgeStop.Domain.PurchaseTransaction.DTO;
 using SplurgeStop.Domain.PurchaseTransaction.LineItem;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;
@@ -9,7 +8,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 {
     public class PurchaseTransaction
     {
-        private PurchaseDate purchaseDate;
+        private PurchaseDate _purchaseDate;
 
         internal static PurchaseTransaction Create(PurchaseTransactionId id)
         {
@@ -39,18 +38,15 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransaction()
         {
-            if (LineItems is null)
-            {
-                LineItems = new List<LineItem.LineItem>();
-            }
+            LineItems ??= new List<LineItem.LineItem>();
         }
 
         public PurchaseTransactionId Id { get; private set; }
 
         public PurchaseDate PurchaseDate
         {
-            get => purchaseDate.Value.Date;
-            private set { purchaseDate = value; }
+            get => _purchaseDate.Value.Date;
+            private set => _purchaseDate = value;
         }
 
         public Store Store { get; private set; }
@@ -70,8 +66,8 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
                 return new Money((credit - debit), currency).ToString();
             }
-            else
-                return "N/A";
+
+            return "N/A";
         }
 
         public void UpdateStore(Store store)
@@ -123,13 +119,6 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     }
                     LineItems.Add(e.LineItem);
                     break;
-                    //case Events.LineItemChanged e:
-                    //    if (LineItems.Any(l => l.Id == e.LineItem.Id))
-                    //    {
-                    //        LineItems.Remove(LineItems.Find(l => l.Id == e.LineItem.Id));
-                    //    }
-                    //    LineItems.Add(e.LineItem);
-                    //    break;
             }
         }
 

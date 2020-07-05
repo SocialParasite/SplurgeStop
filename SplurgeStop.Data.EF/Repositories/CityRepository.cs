@@ -4,8 +4,8 @@ using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.CityProfile;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using SplurgeStop.Domain.CityProfile.DTO;
 using System.Linq;
+using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

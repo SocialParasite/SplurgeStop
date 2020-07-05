@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SplurgeStop.Domain.LocationProfile.DTO;
-using SplurgeStop.Domain.DA_Interfaces;
-using static SplurgeStop.Domain.LocationProfile.Commands;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.CountryProfile;
+using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
+using static SplurgeStop.Domain.StoreProfile.LocationProfile.Commands;
 
-namespace SplurgeStop.Domain.LocationProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
     public sealed class LocationService : ILocationService
     {
-        private readonly ILocationRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ILocationRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LocationService(ILocationRepository repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -31,7 +30,7 @@ namespace SplurgeStop.Domain.LocationProfile
                     => HandleUpdateAsync(cmd.Id, async c => await ChangeCityAsync(c, cmd.City.Id)),
                 ChangeCountry cmd
                     => HandleUpdateAsync(cmd.Id, async c => await ChangeCountryAsync(c, cmd.Country.Id)),
-                DeleteLocation cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveLocationAsync(cmd.Id)),
+                DeleteLocation cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveLocationAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -39,38 +38,38 @@ namespace SplurgeStop.Domain.LocationProfile
         private async Task ChangeCountryAsync(Location location, CountryId countryId)
         {
 
-            await repository.ChangeCountry(location, countryId);
+            await _repository.ChangeCountry(location, countryId);
 
         }
 
         private async Task ChangeCityAsync(Location location, CityId cityId)
         {
 
-            await repository.ChangeCity(location, cityId);
+            await _repository.ChangeCity(location, cityId);
 
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            var city = await repository.GetCityAsync(cmd.CityId);
-            var country = await repository.GetCountryAsync(cmd.CountryId);
+            var city = await _repository.GetCityAsync(cmd.CityId);
+            var country = await _repository.GetCountryAsync(cmd.CountryId);
 
             var newLocation = Location.Create(cmd.Id, city, country);
 
-            await repository.AddLocationAsync(newLocation);
+            await _repository.AddLocationAsync(newLocation);
 
             if (newLocation.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid locationId, Func<Location, Task> operation)
         {
-            var location = await repository.LoadLocationAsync(locationId);
+            var location = await _repository.LoadLocationAsync(locationId);
 
             if (location == null)
                 throw new InvalidOperationException($"Entity with id {locationId} cannot be found");
@@ -79,18 +78,18 @@ namespace SplurgeStop.Domain.LocationProfile
 
             if (location.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<LocationDto>> GetAllLocationDtoAsync()
         {
-            return await repository.GetAllLocationDtoAsync();
+            return await _repository.GetAllLocationDtoAsync();
         }
 
         public async Task<Location> GetLocationAsync(LocationId id)
         {
-            return await repository.GetLocationAsync(id);
+            return await _repository.GetLocationAsync(id);
         }
     }
 }

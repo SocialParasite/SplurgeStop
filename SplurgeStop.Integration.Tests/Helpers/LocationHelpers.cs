@@ -1,12 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.LocationProfile;
-using location = SplurgeStop.Domain.LocationProfile;
-using SplurgeStop.UI.WebApi.Controllers;
-using SplurgeStop.Domain.CountryProfile;
-using System;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.CountryProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.UI.WebApi.Controllers;
+using Commands = SplurgeStop.Domain.StoreProfile.LocationProfile.Commands;
+using location = SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {
@@ -23,7 +24,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var city = await CityHelpers.CreateValidCity();
             var country = await CountryHelpers.CreateValidCountry();
 
-            var command = new location.Commands.Create();
+            var command = new Commands.Create();
             command.Id = null;
             command.CityId = city.Id;
             command.CountryId = country.Id;
@@ -42,7 +43,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new LocationService(repository, unitOfWork);
 
-            var command = new location.Commands.Create();
+            var command = new Commands.Create();
             command.Id = null;
             command.CityId = invalidProp == "CityId" ? default : Guid.NewGuid();
             command.CountryId = invalidProp == "CountryId" ? default : Guid.NewGuid();
@@ -60,7 +61,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new location.Commands.ChangeCity();
+            var updateCommand = new Commands.ChangeCity();
             updateCommand.Id = id;
             updateCommand.City = city;
 
@@ -76,7 +77,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new location.Commands.ChangeCountry();
+            var updateCommand = new Commands.ChangeCountry();
             updateCommand.Id = id;
             updateCommand.Country = country;
 
@@ -101,7 +102,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new location.Commands.DeleteLocation();
+            var updateCommand = new Commands.DeleteLocation();
             updateCommand.Id = id;
 
             await locationController.DeleteLocation(updateCommand);

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CityProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
+using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 

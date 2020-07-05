@@ -9,7 +9,6 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.LocationProfile;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
@@ -17,6 +16,7 @@ using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.UI.WebApi
 {

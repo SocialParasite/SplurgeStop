@@ -5,7 +5,7 @@ using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CityProfile.DTO;
+using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.CityProfile.Events;
 

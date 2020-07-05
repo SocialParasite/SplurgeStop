@@ -2,32 +2,32 @@
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
 
-namespace SplurgeStop.Domain.LocationProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
-    public static class Commands
+    public static class Events
     {
-        public class Create
+        public class LocationCreated
         {
-            public Guid? Id { get; set; }
-            public Guid CityId { get; set; }
-            public Guid CountryId { get; set; }
+            public Guid Id { get; set; }
+            public City City { get; set; }
+            public Country Country { get; set; }
         }
 
-        public class ChangeCity
+        public class CityChanged
         {
             public Guid Id { get; set; }
             public City City { get; set; }
 
         }
 
-        public class ChangeCountry
+        public class CountryChanged
         {
             public Guid Id { get; set; }
             public Country Country { get; set; }
 
         }
 
-        public class DeleteLocation
+        public class LocationDeleted
         {
             public Guid Id { get; set; }
         }

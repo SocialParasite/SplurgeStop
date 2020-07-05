@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.Shared;
 
-namespace SplurgeStop.Domain.LocationProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
     public class LocationId : ValueObject
     {
