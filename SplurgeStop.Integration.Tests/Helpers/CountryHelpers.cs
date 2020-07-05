@@ -2,6 +2,7 @@
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CountryProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using country = SplurgeStop.Domain.CountryProfile;
 
@@ -17,7 +18,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CountryService(repository, unitOfWork);
 
-            var command = new country.Commands.Create();
+            var command = new Commands.Create();
             command.Name = "Rapture";
             command.Id = null;
 
@@ -35,7 +36,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CountryService(repository, unitOfWork);
 
-            var command = new country.Commands.Create();
+            var command = new Commands.Create();
             command.Id = null;
 
             // Create Store
@@ -52,7 +53,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CountryService(repository, unitOfWork);
             var countryController = new CountryController(service);
 
-            var updateCommand = new country.Commands.SetCountryName();
+            var updateCommand = new Commands.SetCountryName();
             updateCommand.Id = id;
             updateCommand.Name = name;
 
@@ -77,7 +78,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CountryService(repository, unitOfWork);
             var countryController = new CountryController(service);
 
-            var updateCommand = new country.Commands.DeleteCountry();
+            var updateCommand = new Commands.DeleteCountry();
             updateCommand.Id = id;
 
             await countryController.DeleteCountry(updateCommand);

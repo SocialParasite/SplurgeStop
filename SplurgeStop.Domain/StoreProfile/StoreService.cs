@@ -52,7 +52,7 @@ namespace SplurgeStop.Domain.StoreProfile
             if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            LocationProfile.Location location = null;
+            Location location = null;
 
             if (cmd.LocationId != null)
             {

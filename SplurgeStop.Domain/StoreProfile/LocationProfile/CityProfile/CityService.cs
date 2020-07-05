@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
-using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
-using static SplurgeStop.Domain.CityProfile.Commands;
+using static SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile.Commands;
 
-namespace SplurgeStop.Domain.CityProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
     public sealed class CityService : ICityService
     {
-        private readonly ICityRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ICityRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CityService(ICityRepository repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -27,29 +27,29 @@ namespace SplurgeStop.Domain.CityProfile
                 Create cmd => HandleCreate(cmd),
                 SetCityName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateCityName(cmd.Name)),
-                DeleteCity cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveCityAsync(cmd.Id)),
+                DeleteCity cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveCityAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newCity = City.Create(cmd.Id, cmd.Name);
 
-            await repository.AddCityAsync(newCity);
+            await _repository.AddCityAsync(newCity);
 
             if (newCity.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid cityId, Func<City, Task> operation)
         {
-            var city = await repository.LoadCityAsync(cityId);
+            var city = await _repository.LoadCityAsync(cityId);
 
             if (city == null)
                 throw new InvalidOperationException($"Entity with id {cityId} cannot be found");
@@ -58,13 +58,13 @@ namespace SplurgeStop.Domain.CityProfile
 
             if (city.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid cityId, Action<City> operation)
         {
-            var city = await repository.LoadCityAsync(cityId);
+            var city = await _repository.LoadCityAsync(cityId);
 
             if (city == null)
                 throw new InvalidOperationException($"Entity with id {cityId} cannot be found");
@@ -73,18 +73,18 @@ namespace SplurgeStop.Domain.CityProfile
 
             if (city.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<CityDto>> GetAllCityDtoAsync()
         {
-            return await repository.GetAllCityDtoAsync();
+            return await _repository.GetAllCityDtoAsync();
         }
 
         public async Task<City> GetCityAsync(CityId id)
         {
-            return await repository.GetCityAsync(id);
+            return await _repository.GetCityAsync(id);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
+using SplurgeStop.Domain.CityProfile;
 
-namespace SplurgeStop.Domain.CityProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
     public interface ICityService
     {

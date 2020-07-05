@@ -9,6 +9,8 @@ using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Data.EF
 {

@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CountryProfile.DTO;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Common;
-using static SplurgeStop.Domain.CountryProfile.Events;
+using static SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile.Events;
 
 namespace SplurgeStop.UI.WebApi.Controllers
 {

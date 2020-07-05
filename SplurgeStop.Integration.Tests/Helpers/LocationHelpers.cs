@@ -5,6 +5,8 @@ using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Commands = SplurgeStop.Domain.StoreProfile.LocationProfile.Commands;
 using location = SplurgeStop.Domain.StoreProfile.LocationProfile;

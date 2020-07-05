@@ -5,7 +5,7 @@ using SplurgeStop.Domain.CityProfile;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

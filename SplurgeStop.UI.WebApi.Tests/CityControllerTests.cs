@@ -7,7 +7,7 @@ using Moq;
 using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
-using SplurgeStop.Domain.StoreProfile.Location.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 

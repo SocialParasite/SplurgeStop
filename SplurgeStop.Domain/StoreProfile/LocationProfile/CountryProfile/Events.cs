@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.CountryProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public static class Events
     {

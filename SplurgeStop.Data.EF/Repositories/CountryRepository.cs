@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

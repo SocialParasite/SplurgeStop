@@ -2,6 +2,7 @@
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using city = SplurgeStop.Domain.CityProfile;
 
@@ -17,7 +18,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CityService(repository, unitOfWork);
 
-            var command = new city.Commands.Create();
+            var command = new Commands.Create();
             command.Name = "New Mansester";
             command.Id = null;
 
@@ -35,7 +36,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CityService(repository, unitOfWork);
 
-            var command = new city.Commands.Create();
+            var command = new Commands.Create();
             command.Id = null;
 
             // Create Store
@@ -52,7 +53,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CityService(repository, unitOfWork);
             var cityController = new CityController(service);
 
-            var updateCommand = new city.Commands.SetCityName();
+            var updateCommand = new Commands.SetCityName();
             updateCommand.Id = id;
             updateCommand.Name = name;
 
@@ -77,7 +78,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CityService(repository, unitOfWork);
             var cityController = new CityController(service);
 
-            var updateCommand = new city.Commands.DeleteCity();
+            var updateCommand = new Commands.DeleteCity();
             updateCommand.Id = id;
 
             await cityController.DeleteCity(updateCommand);

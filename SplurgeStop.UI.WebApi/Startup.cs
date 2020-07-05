@@ -17,6 +17,7 @@ using SplurgeStop.Domain.PurchaseTransaction;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 
 namespace SplurgeStop.UI.WebApi
 {

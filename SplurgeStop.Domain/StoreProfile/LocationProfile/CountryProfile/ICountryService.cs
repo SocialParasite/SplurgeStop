@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SplurgeStop.Domain.CountryProfile.DTO;
 
-namespace SplurgeStop.Domain.CountryProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public interface ICountryService
     {

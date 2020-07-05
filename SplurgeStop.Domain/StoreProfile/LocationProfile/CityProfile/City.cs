@@ -1,6 +1,7 @@
 ﻿using System;
+using SplurgeStop.Domain.CityProfile;
 
-namespace SplurgeStop.Domain.CityProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
     public class City
     {
@@ -22,7 +23,7 @@ namespace SplurgeStop.Domain.CityProfile
 
         internal void UpdateCityName(string name)
         {
-            Name = name ?? throw new ArgumentNullException("A valid name for city must be provided.");
+            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for city must be provided.");
         }
 
         private void Apply(object @event)

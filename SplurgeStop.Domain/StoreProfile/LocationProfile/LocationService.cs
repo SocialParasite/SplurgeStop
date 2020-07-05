@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using static SplurgeStop.Domain.StoreProfile.LocationProfile.Commands;
 
 namespace SplurgeStop.Domain.StoreProfile.LocationProfile

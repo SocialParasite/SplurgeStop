@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
-using static SplurgeStop.Domain.CountryProfile.Commands;
+using static SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile.Commands;
 
-namespace SplurgeStop.Domain.CountryProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public sealed class CountryService : ICountryService
     {
-        private readonly ICountryRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly ICountryRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CountryService(ICountryRepository repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -27,29 +28,29 @@ namespace SplurgeStop.Domain.CountryProfile
                 Create cmd => HandleCreate(cmd),
                 SetCountryName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateCountryName(cmd.Name)),
-                DeleteCountry cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveCountryAsync(cmd.Id)),
+                DeleteCountry cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveCountryAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newCountry = Country.Create(cmd.Id, cmd.Name);
 
-            await repository.AddCountryAsync(newCountry);
+            await _repository.AddCountryAsync(newCountry);
 
             if (newCountry.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid countryId, Func<Country, Task> operation)
         {
-            var country = await repository.LoadCountryAsync(countryId);
+            var country = await _repository.LoadCountryAsync(countryId);
 
             if (country == null)
                 throw new InvalidOperationException($"Entity with id {countryId} cannot be found");
@@ -58,13 +59,13 @@ namespace SplurgeStop.Domain.CountryProfile
 
             if (country.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid countryId, Action<Country> operation)
         {
-            var country = await repository.LoadCountryAsync(countryId);
+            var country = await _repository.LoadCountryAsync(countryId);
 
             if (country == null)
                 throw new InvalidOperationException($"Entity with id {countryId} cannot be found");
@@ -73,18 +74,18 @@ namespace SplurgeStop.Domain.CountryProfile
 
             if (country.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<CountryDto>> GetAllCountryDtoAsync()
         {
-            return await repository.GetAllCountryDtoAsync();
+            return await _repository.GetAllCountryDtoAsync();
         }
 
         public async Task<Country> GetCountryAsync(CountryId id)
         {
-            return await repository.GetCountryAsync(id);
+            return await _repository.GetCountryAsync(id);
         }
     }
 }

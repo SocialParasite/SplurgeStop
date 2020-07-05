@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.CountryProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public class Country
     {
@@ -21,7 +21,7 @@ namespace SplurgeStop.Domain.CountryProfile
 
         internal void UpdateCountryName(string name)
         {
-            Name = name ?? throw new ArgumentNullException("A valid name for country must be provided.");
+            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for country must be provided.");
         }
 
         private void Apply(object @event)

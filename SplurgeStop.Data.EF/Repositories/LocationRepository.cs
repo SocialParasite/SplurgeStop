@@ -7,6 +7,8 @@ using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.CountryProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

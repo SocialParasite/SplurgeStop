@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.Shared;
 
-namespace SplurgeStop.Domain.CountryProfile
+namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public class CountryId : ValueObject
     {

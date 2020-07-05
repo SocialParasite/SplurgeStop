@@ -5,7 +5,7 @@ namespace SplurgeStop.Domain.StoreProfile
 {
     public class Store
     {
-        public static Store Create(StoreId id, string name, LocationProfile.Location location = null)
+        public static Store Create(StoreId id, string name, Location location = null)
         {
             var store = new Store();
 

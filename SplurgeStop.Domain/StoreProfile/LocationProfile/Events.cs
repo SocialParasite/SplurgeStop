@@ -1,6 +1,6 @@
 ﻿using System;
-using SplurgeStop.Domain.CityProfile;
-using SplurgeStop.Domain.CountryProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {

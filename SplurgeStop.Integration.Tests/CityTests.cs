@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.CityHelpers;
 
