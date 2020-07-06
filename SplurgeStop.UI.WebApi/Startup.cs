@@ -18,6 +18,7 @@ using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.UI.WebApi
 {
@@ -45,6 +46,9 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<IStoreService, StoreService>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IRepository<Country, CountryDto, CountryId>, CountryRepository>();
+            services.AddTransient<ICountryService, CountryService>();
+
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IBrandRepository, BrandRepository>();

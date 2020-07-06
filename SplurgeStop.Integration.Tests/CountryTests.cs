@@ -15,7 +15,7 @@ namespace SplurgeStop.Integration.Tests
             Country country = await CreateValidCountry();
 
             var repository = new CountryRepository(fixture.context);
-            var sut = await repository.LoadCountryAsync(country.Id);
+            var sut = await repository.LoadAsync(country.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -37,7 +37,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new CountryRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(country.Id));
 
-            var sut = await repository.LoadCountryAsync(country.Id);
+            var sut = await repository.LoadAsync(country.Id);
 
             var countryId = sut.Id;
 

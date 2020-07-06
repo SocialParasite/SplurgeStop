@@ -8,7 +8,7 @@ using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
-    public sealed class CountryRepository : ICountryRepository
+    public sealed class CountryRepository : IRepository<Country, CountryDto, CountryId>
     {
         private readonly SplurgeStopDbContext _context;
 
@@ -22,19 +22,19 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Countries.FindAsync(id) != null;
         }
 
-        public async Task<Country> LoadCountryAsync(CountryId id)
+        public async Task<Country> LoadAsync(CountryId id)
         {
             return await _context.Countries.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Country>> GetAllCountriesAsync()
+        public async Task<IEnumerable<Country>> GetAllAsync()
         {
             return await _context.Countries
                     .AsNoTracking()
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<CountryDto>> GetAllCountryDtoAsync()
+        public async Task<IEnumerable<CountryDto>> GetAllDtoAsync()
         {
             return await _context.Countries
                     .Select(r => new CountryDto
@@ -46,19 +46,19 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
-        public async Task<Country> GetCountryAsync(CountryId id)
+        public async Task<Country> GetAsync(CountryId id)
         {
             return await _context.Countries
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddCountryAsync(Country country)
+        public async Task AddAsync(Country country)
         {
             await _context.Countries.AddAsync(country);
         }
 
-        public async Task RemoveCountryAsync(CountryId id)
+        public async Task RemoveAsync(CountryId id)
         {
             var country = await _context.Countries.FindAsync(id);
 

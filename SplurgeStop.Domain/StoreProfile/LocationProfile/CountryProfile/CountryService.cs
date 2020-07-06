@@ -9,10 +9,10 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public sealed class CountryService : ICountryService
     {
-        private readonly ICountryRepository _repository;
+        private readonly IRepository<Country, CountryDto, CountryId> _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CountryService(ICountryRepository repository,
+        public CountryService(IRepository<Country, CountryDto, CountryId> repository,
                            IUnitOfWork unitOfWork)
         {
             this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -26,7 +26,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
                 Create cmd => HandleCreate(cmd),
                 SetCountryName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateCountryName(cmd.Name)),
-                DeleteCountry cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveCountryAsync(cmd.Id)),
+                DeleteCountry cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -38,7 +38,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
             var newCountry = Country.Create(cmd.Id, cmd.Name);
 
-            await _repository.AddCountryAsync(newCountry);
+            await _repository.AddAsync(newCountry);
 
             if (newCountry.EnsureValidState())
             {
@@ -48,7 +48,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
         private async Task HandleUpdateAsync(Guid countryId, Func<Country, Task> operation)
         {
-            var country = await _repository.LoadCountryAsync(countryId);
+            var country = await _repository.LoadAsync(countryId);
 
             if (country == null)
                 throw new InvalidOperationException($"Entity with id {countryId} cannot be found");
@@ -63,7 +63,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
         private async Task HandleUpdate(Guid countryId, Action<Country> operation)
         {
-            var country = await _repository.LoadCountryAsync(countryId);
+            var country = await _repository.LoadAsync(countryId);
 
             if (country == null)
                 throw new InvalidOperationException($"Entity with id {countryId} cannot be found");
@@ -78,12 +78,12 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
         public async Task<IEnumerable<CountryDto>> GetAllCountryDtoAsync()
         {
-            return await _repository.GetAllCountryDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<Country> GetCountryAsync(CountryId id)
         {
-            return await _repository.GetCountryAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

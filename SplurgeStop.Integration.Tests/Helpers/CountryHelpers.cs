@@ -24,7 +24,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var countryController = new CountryController(service);
             var country = await countryController.Post(command);
 
-            return await repository.GetCountryAsync(country.Value.Id);
+            return await repository.GetAsync(country.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidCountry()

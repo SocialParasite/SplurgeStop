@@ -36,8 +36,8 @@ namespace SplurgeStop.UI.WebApi.Tests
         {
             List<CountryDto> mockCountries = MockCountries();
 
-            var mockRepository = new Mock<ICountryRepository>();
-            mockRepository.Setup(repo => repo.GetAllCountryDtoAsync())
+            var mockRepository = new Mock<IRepository<Country, CountryDto, CountryId>>();
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockCountries.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +48,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await countryController.GetCountries();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllCountryDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 
