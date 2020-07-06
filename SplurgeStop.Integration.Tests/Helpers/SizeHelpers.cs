@@ -23,7 +23,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var sizeController = new SizeController(service);
             var size = await sizeController.Post(command);
 
-            return await repository.GetSizeAsync(size.Value.Id);
+            return await repository.GetAsync(size.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidSize()

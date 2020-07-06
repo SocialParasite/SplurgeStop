@@ -36,8 +36,8 @@ namespace SplurgeStop.UI.WebApi.Tests
         {
             List<SizeDto> mockSizes = MockSizes();
 
-            var mockRepository = new Mock<ISizeRepository>();
-            mockRepository.Setup(repo => repo.GetAllSizeDtoAsync())
+            var mockRepository = new Mock<IRepository<Size, SizeDto, SizeId>>();
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockSizes.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +48,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await sizeController.GetSizes();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllSizeDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 

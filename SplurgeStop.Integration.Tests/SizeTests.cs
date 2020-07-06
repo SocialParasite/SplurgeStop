@@ -15,7 +15,7 @@ namespace SplurgeStop.Integration.Tests
             Size size = await CreateValidSize();
 
             var repository = new SizeRepository(fixture.context);
-            var sut = await repository.LoadSizeAsync(size.Id);
+            var sut = await repository.LoadAsync(size.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.NotEmpty(sut.Amount);
@@ -37,7 +37,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new SizeRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(size.Id));
 
-            var sut = await repository.LoadSizeAsync(size.Id);
+            var sut = await repository.LoadAsync(size.Id);
 
             var sizeId = sut.Id;
 

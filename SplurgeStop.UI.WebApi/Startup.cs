@@ -53,7 +53,7 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
             services.AddTransient<IProductTypeService, ProductTypeService>();
-            services.AddTransient<ISizeRepository, SizeRepository>();
+            services.AddTransient<IRepository<Size, SizeDto, SizeId>, SizeRepository>();
             services.AddTransient<ISizeService, SizeService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
-    public sealed class SizeRepository : ISizeRepository
+    public sealed class SizeRepository : IRepository<Size, SizeDto, SizeId> //ISizeRepository
     {
         private readonly SplurgeStopDbContext _context;
 
@@ -17,24 +17,24 @@ namespace SplurgeStop.Data.EF.Repositories
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<bool> ExistsAsync(SizeId id)
+        public async Task<bool> ExistsAsync(SizeId id) //nullable?
         {
             return await _context.Size.FindAsync(id) != null;
         }
 
-        public async Task<Size> LoadSizeAsync(SizeId id)
+        public async Task<Size> LoadAsync(SizeId id)
         {
             return await _context.Size.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Size>> GetAllSizesAsync()
+        public async Task<IEnumerable<Size>> GetAllAsync()
         {
             return await _context.Size
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<SizeDto>> GetAllSizeDtoAsync()
+        public async Task<IEnumerable<SizeDto>> GetAllDtoAsync()
         {
             return await _context.Size
                 .Select(r => new SizeDto
@@ -46,19 +46,19 @@ namespace SplurgeStop.Data.EF.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Size> GetSizeAsync(SizeId id)
+        public async Task<Size> GetAsync(SizeId id)
         {
             return await _context.Size
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddSizeAsync(Size size)
+        public async Task AddAsync(Size size)
         {
             await _context.Size.AddAsync(size);
         }
 
-        public async Task RemoveSizeAsync(SizeId id)
+        public async Task RemoveAsync(SizeId id)
         {
             var size = await _context.Size.FindAsync(id);
 
