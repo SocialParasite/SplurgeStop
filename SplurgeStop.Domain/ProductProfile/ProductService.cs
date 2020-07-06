@@ -10,14 +10,14 @@ namespace SplurgeStop.Domain.ProductProfile
 {
     public sealed class ProductService : IProductService
     {
-        private readonly IProductRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ProductService(IProductRepository repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -25,55 +25,55 @@ namespace SplurgeStop.Domain.ProductProfile
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
-                ProductProfile.Commands.UpdateProduct cmd
+                UpdateProduct cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateProductName(cmd.Name)),
-                ProductProfile.Commands.ChangeBrand cmd
+                ChangeBrand cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateBrandAsync(c, cmd.BrandId)),
-                ProductProfile.Commands.ChangeProductType cmd
+                ChangeProductType cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateProductTypeAsync(c, cmd.ProductTypeId)),
-                ProductProfile.Commands.ChangeSize cmd
+                ChangeSize cmd
                     => HandleUpdateAsync(cmd.Id, async c => await UpdateSizeAsync(c, cmd.SizeId)),
-                ProductProfile.Commands.DeleteProduct cmd
-                    => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveProductAsync(cmd.Id)),
+                DeleteProduct cmd
+                    => HandleUpdateAsync(cmd.Id, _ => _repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task UpdateSizeAsync(Product product, Guid sizeId)
         {
-            await repository.ChangeSize(product, sizeId);
+            await _repository.ChangeSize(product, sizeId);
         }
 
         private async Task UpdateProductTypeAsync(Product product, Guid productTypeId)
         {
-            await repository.ChangeProductType(product, productTypeId);
+            await _repository.ChangeProductType(product, productTypeId);
         }
 
         private async Task UpdateBrandAsync(Product product, BrandId brandId)
         {
-            await repository.ChangeBrand(product, brandId);
+            await _repository.ChangeBrand(product, brandId);
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            var brand = await repository.GetBrandAsync(cmd.BrandId);
+            var brand = await _repository.GetBrandAsync(cmd.BrandId);
 
             var newProduct = Product.Create(cmd.Id, cmd.Name, brand);
 
-            await repository.AddProductAsync(newProduct);
+            await _repository.AddAsync(newProduct);
 
             if (newProduct.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid productId, Func<Product, Task> operation)
         {
-            var product = await repository.LoadProductAsync(productId);
+            var product = await _repository.LoadAsync(productId);
 
             if (product == null)
                 throw new InvalidOperationException($"Entity with id {productId} cannot be found");
@@ -82,13 +82,13 @@ namespace SplurgeStop.Domain.ProductProfile
 
             if (product.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid productId, Action<Product> operation)
         {
-            var product = await repository.LoadProductAsync(productId);
+            var product = await _repository.LoadAsync(productId);
 
             if (product == null)
                 throw new InvalidOperationException($"Entity with id {productId} cannot be found");
@@ -97,18 +97,18 @@ namespace SplurgeStop.Domain.ProductProfile
 
             if (product.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllProductDtoAsync()
         {
-            return await repository.GetAllProductDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<Product> GetProductAsync(ProductId id)
         {
-            return await repository.GetProductAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

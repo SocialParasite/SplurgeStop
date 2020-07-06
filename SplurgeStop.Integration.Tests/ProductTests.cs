@@ -19,7 +19,7 @@ namespace SplurgeStop.Integration.Tests
             Product product = await CreateValidProduct();
 
             var repository = new ProductRepository(fixture.context);
-            var sut = await repository.LoadProductAsync(product.Id);
+            var sut = await repository.LoadAsync(product.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -41,7 +41,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new ProductRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(product.Id));
 
-            var sut = await repository.LoadFullProductAsync(product.Id);
+            var sut = await repository.LoadFullProductTrackedAsync(product.Id);
 
             var productId = sut.Id;
 
@@ -71,7 +71,7 @@ namespace SplurgeStop.Integration.Tests
             var newBrand = await BrandHelpers.CreateValidBrand();
             await UpdateProductBrand(sut.Id, newBrand);
 
-            sut = await repository.LoadFullProductAsync(sut.Id);
+            sut = await repository.LoadFullProductTrackedAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newBrand.Id, sut.Brand.Id);
@@ -92,7 +92,7 @@ namespace SplurgeStop.Integration.Tests
             var newProductType = await ProductTypeHelpers.CreateValidProductType();
             await UpdateProductType(sut.Id, newProductType);
 
-            sut = await repository.LoadFullProductAsync(sut.Id);
+            sut = await repository.LoadFullProductTrackedAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newProductType.Id, sut.ProductType.Id);
@@ -113,7 +113,7 @@ namespace SplurgeStop.Integration.Tests
             var newSize = await SizeHelpers.CreateValidSize();
             await UpdateProductSize(sut.Id, newSize);
 
-            sut = await repository.LoadFullProductAsync(sut.Id);
+            sut = await repository.LoadFullProductTrackedAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newSize.Id, sut.Size.Id);

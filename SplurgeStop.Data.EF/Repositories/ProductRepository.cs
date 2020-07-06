@@ -25,19 +25,19 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Products.FindAsync(id) != null;
         }
 
-        public async Task<Product> LoadProductAsync(ProductId id)
+        public async Task<Product> LoadAsync(ProductId id)
         {
             return await _context.Products.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _context.Products
                     .AsNoTracking()
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductDtoAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllDtoAsync()
         {
             return await _context.Products
                     .Select(r => new ProductDto
@@ -49,7 +49,7 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
-        public async Task<Product> GetProductAsync(ProductId id)
+        public async Task<Product> GetAsync(ProductId id)
         {
             return await _context.Products
                 .AsNoTracking()
@@ -66,7 +66,7 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Product> LoadFullProductAsync(ProductId id)
+        public async Task<Product> LoadFullProductTrackedAsync(ProductId id)
         {
             return await _context.Products
                 .Include(p => p.Brand)
@@ -75,12 +75,12 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddProductAsync(Product product)
+        public async Task AddAsync(Product product)
         {
             await _context.Products.AddAsync(product);
         }
 
-        public async Task RemoveProductAsync(ProductId id)
+        public async Task RemoveAsync(ProductId id)
         {
             var product = await _context.Products.FindAsync(id);
 

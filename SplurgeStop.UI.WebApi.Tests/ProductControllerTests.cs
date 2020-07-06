@@ -37,7 +37,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             List<ProductDto> mockProducts = MockProducts();
 
             var mockRepository = new Mock<IProductRepository>();
-            mockRepository.Setup(repo => repo.GetAllProductDtoAsync())
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockProducts.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +48,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await productController.GetProducts();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllProductDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 
