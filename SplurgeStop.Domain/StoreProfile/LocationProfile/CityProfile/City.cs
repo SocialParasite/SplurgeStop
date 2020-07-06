@@ -21,7 +21,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
         public CityId Id { get; private set; }
         public string Name { get; private set; }
 
-        internal void UpdateCityName(string name)
+        public void UpdateCityName(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for city must be provided.");
         }

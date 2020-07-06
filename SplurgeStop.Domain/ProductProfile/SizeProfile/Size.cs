@@ -26,7 +26,7 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
             return size;
         }
 
-        internal void UpdateSizeAmount(string amount)
+        public void UpdateSizeAmount(string amount)
         {
             Amount = amount ?? throw new ArgumentNullException(nameof(amount), "A valid amount for size must be provided.");
         }

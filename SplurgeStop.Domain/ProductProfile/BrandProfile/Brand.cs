@@ -20,7 +20,7 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
         public BrandId Id { get; private set; }
         public string Name { get; private set; }
 
-        internal void UpdateBrandName(string name)
+        public void UpdateBrandName(string name)
         {
             Name = name ?? throw new ArgumentNullException("A valid name for brand must be provided.");
         }

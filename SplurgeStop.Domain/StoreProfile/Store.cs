@@ -26,7 +26,7 @@ namespace SplurgeStop.Domain.StoreProfile
         // chain, Kesko
         // store type, Citymarket
 
-        internal void UpdateStoreName(string name)
+        public void UpdateStoreName(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for store must be provided.");
         }

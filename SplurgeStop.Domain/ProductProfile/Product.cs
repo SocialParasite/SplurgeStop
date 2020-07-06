@@ -31,7 +31,7 @@ namespace SplurgeStop.Domain.ProductProfile
             return product;
         }
 
-        internal void UpdateProductName(string name)
+        public void UpdateProductName(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for product type must be provided.");
         }

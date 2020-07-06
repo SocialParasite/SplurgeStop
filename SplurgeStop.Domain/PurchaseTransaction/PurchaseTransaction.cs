@@ -75,7 +75,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             Store = store;
         }
 
-        internal void UpdateLineItem(LineItem.LineItem lineItem)
+        public void UpdateLineItem(LineItem.LineItem lineItem)
         {
             Apply(new Events.PurchaseTransactionLineItemChanged
             {
@@ -84,7 +84,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             });
         }
 
-        internal void UpdatePurchaseTransactionDate(PurchaseDate date)
+        public void UpdatePurchaseTransactionDate(PurchaseDate date)
         {
             Apply(new Events.PurchaseTransactionDateChanged
             {

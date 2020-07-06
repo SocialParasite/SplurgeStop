@@ -16,10 +16,11 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
             return country;
         }
+
         public CountryId Id { get; private set; }
         public string Name { get; set; }
 
-        internal void UpdateCountryName(string name)
+        public void UpdateCountryName(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for country must be provided.");
         }
