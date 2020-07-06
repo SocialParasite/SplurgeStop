@@ -32,7 +32,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var locationController = new LocationController(service);
             var location = await locationController.Post(command);
 
-            return await repository.GetLocationAsync(location.Value.Id);
+            return await repository.GetAsync(location.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidLocation(string invalidProp)

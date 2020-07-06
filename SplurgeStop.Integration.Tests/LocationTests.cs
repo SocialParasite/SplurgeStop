@@ -16,7 +16,7 @@ namespace SplurgeStop.Integration.Tests
             Location location = await CreateValidLocation();
 
             var repository = new LocationRepository(fixture.context);
-            var sut = await repository.LoadLocationAsync(location.Id);
+            var sut = await repository.LoadAsync(location.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.NotNull(sut.City);
@@ -41,14 +41,14 @@ namespace SplurgeStop.Integration.Tests
             var repository = new LocationRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(location.Id));
 
-            var sut = await repository.LoadLocationAsync(location.Id);
+            var sut = await repository.LoadAsync(location.Id);
 
             Assert.NotNull(sut);
 
             var newCity = await CityHelpers.CreateValidCity();
             await UpdateLocationCity(sut.Id, newCity);
 
-            sut = await repository.LoadLocationAsync(sut.Id);
+            sut = await repository.LoadAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newCity.Id, sut.City.Id);
@@ -62,14 +62,14 @@ namespace SplurgeStop.Integration.Tests
             var repository = new LocationRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(location.Id));
 
-            var sut = await repository.LoadLocationAsync(location.Id);
+            var sut = await repository.LoadAsync(location.Id);
 
             Assert.NotNull(sut);
 
             var newCountry = await CountryHelpers.CreateValidCountry();
             await UpdateLocationCountry(sut.Id, newCountry);
 
-            sut = await repository.LoadLocationAsync(sut.Id);
+            sut = await repository.LoadAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newCountry.Id, sut.Country.Id);

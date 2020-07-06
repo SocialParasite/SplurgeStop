@@ -38,7 +38,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             List<LocationDto> mockLocations = MockLocations();
 
             var mockRepository = new Mock<ILocationRepository>();
-            mockRepository.Setup(repo => repo.GetAllLocationDtoAsync())
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockLocations.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -49,7 +49,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await locationController.GetLocations();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllLocationDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 

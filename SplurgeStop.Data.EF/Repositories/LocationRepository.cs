@@ -25,7 +25,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Locations.FindAsync(id) != null;
         }
 
-        public async Task<Location> LoadLocationAsync(LocationId id)
+        public async Task<Location> LoadAsync(LocationId id)
         {
             return await _context.Locations
                 .Include(c => c.City)
@@ -33,14 +33,14 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<IEnumerable<Location>> GetAllLocationsAsync()
+        public async Task<IEnumerable<Location>> GetAllAsync()
         {
             return await _context.Locations
                     .AsNoTracking()
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<LocationDto>> GetAllLocationDtoAsync()
+        public async Task<IEnumerable<LocationDto>> GetAllDtoAsync()
         {
             return await _context.Locations
                     .Select(r => new LocationDto
@@ -53,19 +53,19 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
-        public async Task<Location> GetLocationAsync(LocationId id)
+        public async Task<Location> GetAsync(LocationId id)
         {
             return await _context.Locations
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddLocationAsync(Location location)
+        public async Task AddAsync(Location location)
         {
             await _context.Locations.AddAsync(location);
         }
 
-        public async Task RemoveLocationAsync(LocationId id)
+        public async Task RemoveAsync(LocationId id)
         {
             var location = await _context.Locations.FindAsync(id);
 

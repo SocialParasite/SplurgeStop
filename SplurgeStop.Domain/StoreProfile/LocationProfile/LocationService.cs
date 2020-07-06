@@ -30,7 +30,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
                     => HandleUpdateAsync(cmd.Id, async c => await ChangeCityAsync(c, cmd.City.Id)),
                 ChangeCountry cmd
                     => HandleUpdateAsync(cmd.Id, async c => await ChangeCountryAsync(c, cmd.Country.Id)),
-                DeleteLocation cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveLocationAsync(cmd.Id)),
+                DeleteLocation cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -59,7 +59,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 
             var newLocation = Location.Create(cmd.Id, city, country);
 
-            await _repository.AddLocationAsync(newLocation);
+            await _repository.AddAsync(newLocation);
 
             if (newLocation.EnsureValidState())
             {
@@ -69,7 +69,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 
         private async Task HandleUpdateAsync(Guid locationId, Func<Location, Task> operation)
         {
-            var location = await _repository.LoadLocationAsync(locationId);
+            var location = await _repository.LoadAsync(locationId);
 
             if (location == null)
                 throw new InvalidOperationException($"Entity with id {locationId} cannot be found");
@@ -84,12 +84,12 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 
         public async Task<IEnumerable<LocationDto>> GetAllLocationDtoAsync()
         {
-            return await _repository.GetAllLocationDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<Location> GetLocationAsync(LocationId id)
         {
-            return await _repository.GetLocationAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }
