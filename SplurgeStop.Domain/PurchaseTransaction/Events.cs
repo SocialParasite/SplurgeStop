@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SplurgeStop.Domain.PurchaseTransaction.LineItem;
+using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Domain.PurchaseTransaction
@@ -35,7 +35,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         public class PurchaseTransactionLineItemChanged
         {
             public Guid Id { get; set; }
-            public LineItem.LineItem LineItem { get; set; }
+            public LineItemProfile.LineItem LineItem { get; set; }
         }
 
         public class PurchaseTransactionDeleted

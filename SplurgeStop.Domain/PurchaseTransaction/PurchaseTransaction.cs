@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using SplurgeStop.Domain.PurchaseTransaction.LineItem;
+using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;
 
@@ -38,7 +38,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
 
         public PurchaseTransaction()
         {
-            LineItems ??= new List<LineItem.LineItem>();
+            LineItems ??= new List<LineItem>();
         }
 
         public PurchaseTransactionId Id { get; private set; }
@@ -50,7 +50,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
         }
 
         public Store Store { get; private set; }
-        public List<LineItem.LineItem> LineItems { get; private set; }
+        public List<LineItem> LineItems { get; private set; }
 
         public PurchaseTransactionNotes Notes { get; private set; }
 
@@ -75,7 +75,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             Store = store;
         }
 
-        public void UpdateLineItem(LineItem.LineItem lineItem)
+        public void UpdateLineItem(LineItem lineItem)
         {
             Apply(new Events.PurchaseTransactionLineItemChanged
             {
@@ -106,7 +106,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
                     Id = new PurchaseTransactionId(e.Id);
                     PurchaseDate = PurchaseDate.Now;
                     Store = null;
-                    LineItems = new List<LineItem.LineItem>();
+                    LineItems = new List<LineItem>();
                     Notes = PurchaseTransactionNotes.NoNotes;
                     break;
                 case Events.PurchaseTransactionDateChanged e:

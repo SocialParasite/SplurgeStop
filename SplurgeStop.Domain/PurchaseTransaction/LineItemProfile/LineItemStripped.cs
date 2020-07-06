@@ -2,7 +2,7 @@
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 
-namespace SplurgeStop.Domain.PurchaseTransaction.LineItem
+namespace SplurgeStop.Domain.PurchaseTransaction.LineItemProfile
 {
     public sealed class LineItemStripped
     {

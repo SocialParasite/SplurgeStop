@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.PurchaseTransaction.LineItem;
+using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
@@ -85,7 +85,7 @@ namespace SplurgeStop.Domain.PurchaseTransaction
             await repository.ChangeStore(pt, storeId);
         }
 
-        private async Task UpdateLineItemAsync(PurchaseTransaction transaction, SetPurchaseTransactionLineItem command, LineItem.LineItem lineItem)
+        private async Task UpdateLineItemAsync(PurchaseTransaction transaction, SetPurchaseTransactionLineItem command, LineItemProfile.LineItem lineItem)
         {
             if (command.LineItemId is null)
             {
