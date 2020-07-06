@@ -22,7 +22,7 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction();
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
@@ -36,7 +36,7 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateFullValidPurchaseTransaction();
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
             Assert.Equal(DateTime.Now.Date, sut.PurchaseDate);
@@ -71,7 +71,7 @@ namespace SplurgeStop.Integration.Tests
 
             var repository = new PurchaseTransactionRepository(fixture.context);
 
-            var sut = await repository.GetPurchaseTransactionFullAsync(purchaseTransactionId);
+            var sut = await repository.GetAsync(purchaseTransactionId);
             Assert.True(await repository.ExistsAsync(purchaseTransactionId));
 
             Assert.NotNull(sut);
@@ -95,7 +95,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
@@ -122,7 +122,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
@@ -152,7 +152,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new PurchaseTransactionRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(transactionId));
 
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.Single(sut.LineItems);
 
@@ -192,7 +192,7 @@ namespace SplurgeStop.Integration.Tests
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1m, lineItem);
 
             var repository = new PurchaseTransactionRepository(fixture.context);
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.True(await repository.ExistsAsync(transactionId));
             Assert.Equal("My Notes!", sut.LineItems.FirstOrDefault()?.Notes);
@@ -205,7 +205,7 @@ namespace SplurgeStop.Integration.Tests
 
             var repository = new PurchaseTransactionRepository(fixture.context);
 
-            var sut = await repository.GetPurchaseTransactionFullAsync(transactionId);
+            var sut = await repository.GetAsync(transactionId);
 
             Assert.NotNull(sut.LineItems);
             Assert.Single(sut.LineItems);

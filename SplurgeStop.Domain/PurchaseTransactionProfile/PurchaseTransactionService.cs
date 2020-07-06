@@ -13,14 +13,14 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public sealed class PurchaseTransactionService : IPurchaseTransactionService
     {
-        private readonly IPurchaseTransactionRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IPurchaseTransactionRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public PurchaseTransactionService(IPurchaseTransactionRepository repository,
                                           IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -40,24 +40,24 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
                         .WithNotes(cmd.Notes)
                         .WithProduct(cmd.Product)
                         .Build())),
-                DeletePurchaseTransaction cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemovePurchaseTransactionAsync(cmd.Id)),
+                DeletePurchaseTransaction cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreateFull(CreateFull cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newPurchaseTransaction = PurchaseTransaction.Create(cmd.Id);
             newPurchaseTransaction.UpdatePurchaseTransactionDate(cmd.TransactionDate);
-            var store = await repository.GetStoreAsync(cmd.StoreId);
+            var store = await _repository.GetStoreAsync(cmd.StoreId);
             newPurchaseTransaction.UpdateStore(store);
 
             foreach (var lineItem in cmd.LineItems)
             {
-                var prod = await repository.GetProductAsync(lineItem.Product.Id);
+                var prod = await _repository.GetProductAsync(lineItem.Product.Id);
 
                 var newLineItem = LineItemBuilder
                             .LineItem(new Price(decimal.Parse(lineItem.Price, CultureInfo.InvariantCulture),
@@ -72,20 +72,20 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
                 newPurchaseTransaction.UpdateLineItem(newLineItem);
             }
 
-            await repository.AddPurchaseTransactionAsync(newPurchaseTransaction);
+            await _repository.AddAsync(newPurchaseTransaction);
 
             if (newPurchaseTransaction.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task UpdateStoreAsync(PurchaseTransaction pt, StoreId storeId)
         {
-            await repository.ChangeStore(pt, storeId);
+            await _repository.ChangeStore(pt, storeId);
         }
 
-        private async Task UpdateLineItemAsync(PurchaseTransaction transaction, SetPurchaseTransactionLineItem command, LineItemProfile.LineItem lineItem)
+        private async Task UpdateLineItemAsync(PurchaseTransaction transaction, SetPurchaseTransactionLineItem command, LineItem lineItem)
         {
             if (command.LineItemId is null)
             {
@@ -93,13 +93,13 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
             }
             else
             {
-                await repository.ChangeLineItem(transaction, lineItem);
+                await _repository.ChangeLineItem(transaction, lineItem);
             }
         }
 
         private async Task HandleUpdateAsync(Guid transactionId, Func<PurchaseTransaction, Task> operation)
         {
-            var purchaseTransaction = await repository.LoadPurchaseTransactionAsync(transactionId);
+            var purchaseTransaction = await _repository.LoadAsync(transactionId);
 
             if (purchaseTransaction == null)
                 throw new InvalidOperationException($"Entity with id {transactionId} cannot be found");
@@ -108,13 +108,13 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 
             if (purchaseTransaction.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid transactionId, Action<PurchaseTransaction> operation)
         {
-            var purchaseTransaction = await repository.LoadPurchaseTransactionAsync(transactionId);
+            var purchaseTransaction = await _repository.LoadAsync(transactionId);
 
             if (purchaseTransaction == null)
                 throw new InvalidOperationException($"Entity with id {transactionId} cannot be found");
@@ -123,18 +123,18 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 
             if (purchaseTransaction.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactions()
         {
-            return await repository.GetAllPurchaseTransactionsAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<PurchaseTransaction> GetDetailedPurchaseTransaction(PurchaseTransactionId id)
         {
-            var purchaseTransaction = await repository.GetPurchaseTransactionFullAsync(id);
+            var purchaseTransaction = await _repository.GetAsync(id);
 
             //HACK: ?? to prevent PurchaseTransaction nav prop causing problem in serializatio to json
             foreach (var item in purchaseTransaction.LineItems)

@@ -159,7 +159,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var context = new SplurgeStopDbContext(connectionString);
             var repository = new PurchaseTransactionRepository(context);
 
-            return await repository.GetPurchaseTransactionFullAsync(id);
+            return await repository.GetAsync(id);
         }
     }
 }

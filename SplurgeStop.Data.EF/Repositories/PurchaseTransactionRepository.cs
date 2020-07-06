@@ -20,7 +20,13 @@ namespace SplurgeStop.Data.EF.Repositories
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddPurchaseTransactionAsync(PurchaseTransaction transaction)
+        // TODO: get rid of this
+        public Task<IEnumerable<PurchaseTransaction>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddAsync(PurchaseTransaction transaction)
         {
             await _context.Purchases.AddAsync(transaction);
         }
@@ -30,7 +36,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Purchases.FindAsync(id) != null;
         }
 
-        public async Task<PurchaseTransaction> GetPurchaseTransactionFullAsync(PurchaseTransactionId id)
+        public async Task<PurchaseTransaction> GetAsync(PurchaseTransactionId id)
         {
             return await _context.Purchases
                 .Include(p => p.Store)
@@ -47,7 +53,7 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllPurchaseTransactionsAsync()
+        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllDtoAsync()
         {
             return await _context.Purchases
                     .Include(s => s.Store)
@@ -64,7 +70,7 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
-        public async Task<PurchaseTransaction> LoadPurchaseTransactionAsync(PurchaseTransactionId id)
+        public async Task<PurchaseTransaction> LoadAsync(PurchaseTransactionId id)
         {
             return await _context.Purchases.FindAsync(id);
         }
@@ -74,6 +80,7 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Purchases.Include(s => s.Store)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
+
 
         public async Task<Store> GetStoreAsync(StoreId id)
         {
@@ -111,7 +118,7 @@ namespace SplurgeStop.Data.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemovePurchaseTransactionAsync(PurchaseTransactionId id)
+        public async Task RemoveAsync(PurchaseTransactionId id)
         {
             var pt = await _context.Purchases.FindAsync(id);
 

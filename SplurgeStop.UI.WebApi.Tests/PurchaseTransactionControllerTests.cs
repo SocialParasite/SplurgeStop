@@ -40,7 +40,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             List<PurchaseTransactionStripped> mockPurchaseTransactions = MockPurchaseTransactions();
 
             var mockRepository = new Mock<IPurchaseTransactionRepository>();
-            mockRepository.Setup(repo => repo.GetAllPurchaseTransactionsAsync())
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockPurchaseTransactions.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -51,7 +51,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await purchaseTransactionController.GetPurchaseTransactions();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllPurchaseTransactionsAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 
