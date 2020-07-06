@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using SplurgeStop.Domain.CountryProfile;
-using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile.Events;
@@ -16,23 +14,23 @@ namespace SplurgeStop.UI.WebApi.Controllers
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly ICountryService service;
+        private readonly ICountryService _service;
 
         public CountryController(ICountryService service)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this._service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         [HttpGet]
         public async Task<IEnumerable<CountryDto>> GetCountries()
         {
-            return await service.GetAllCountryDtoAsync();
+            return await _service.GetAllCountryDtoAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<Country> GetCountry(Guid id)
         {
-            return await service.GetCountryAsync(id);
+            return await _service.GetCountryAsync(id);
         }
 
         [HttpPost]
@@ -42,7 +40,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
             {
                 request.Id = new CountryId(SequentialGuid.NewSequentialGuid());
 
-                await RequestHandler.HandleCommand(request, service.Handle);
+                await RequestHandler.HandleCommand(request, _service.Handle);
 
                 // HACK: Future me, do something clever instead...
                 if (!string.IsNullOrEmpty(request.Name))
@@ -67,13 +65,13 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [Route("CountryInfo")]
         [HttpPut]
         public async Task<IActionResult> Put(Commands.SetCountryName request)
-            => await RequestHandler.HandleCommand(request, service.Handle);
+            => await RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<CountryDeleted>> DeleteCountry(Commands.DeleteCountry request)
         {
-            var result = await RequestHandler.HandleCommand(request, service.Handle);
+            var result = await RequestHandler.HandleCommand(request, _service.Handle);
 
             if (result.GetType() == typeof(OkResult))
                 return new CountryDeleted { Id = request.Id };

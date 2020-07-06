@@ -3,7 +3,7 @@ using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Controllers;
-using country = SplurgeStop.Domain.CountryProfile;
+using country = SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {

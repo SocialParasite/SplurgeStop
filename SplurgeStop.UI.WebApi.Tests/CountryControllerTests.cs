@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
-using SplurgeStop.Domain.CountryProfile.DTO;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;

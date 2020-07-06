@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.StoreProfile.DTO
+namespace SplurgeStop.Domain.StoreProfile
 {
     public sealed class StoreStripped
     {

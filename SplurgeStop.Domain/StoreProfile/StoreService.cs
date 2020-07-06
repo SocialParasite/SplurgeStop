@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
-using SplurgeStop.Domain.StoreProfile.DTO;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using static SplurgeStop.Domain.StoreProfile.Commands;
 

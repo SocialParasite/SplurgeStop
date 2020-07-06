@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SplurgeStop.Domain.StoreProfile.DTO;
 
 namespace SplurgeStop.Domain.StoreProfile
 {

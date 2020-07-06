@@ -5,7 +5,6 @@ using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SplurgeStop.Domain.StoreProfile;
-using SplurgeStop.Domain.StoreProfile.DTO;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.StoreProfile.Events;
 

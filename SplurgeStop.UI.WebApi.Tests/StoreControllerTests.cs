@@ -7,7 +7,6 @@ using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
-using SplurgeStop.Domain.StoreProfile.DTO;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 
