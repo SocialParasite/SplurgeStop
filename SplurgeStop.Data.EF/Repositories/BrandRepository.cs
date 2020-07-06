@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.ProductProfile.DTO;
 
 namespace SplurgeStop.Data.EF.Repositories
 {

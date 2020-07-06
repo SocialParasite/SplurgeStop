@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.ProductProfile.DTO;
 
 namespace SplurgeStop.Domain.DA_Interfaces
 {

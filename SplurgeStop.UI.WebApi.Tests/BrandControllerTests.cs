@@ -6,7 +6,6 @@ using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.ProductProfile.DTO;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;

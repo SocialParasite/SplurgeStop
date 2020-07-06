@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using SplurgeStop.Domain.ProductProfile.DTO;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.UI.WebApi.Common;
 using static SplurgeStop.Domain.ProductProfile.TypeProfile.Events;

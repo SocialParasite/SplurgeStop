@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.ProductProfile.DTO
+namespace SplurgeStop.Domain.ProductProfile.SizeProfile
 {
     public sealed class SizeDto
     {

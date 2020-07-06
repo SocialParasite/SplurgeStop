@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.ProductProfile.DTO
+namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 {
-    public sealed class ProductTypeDto
+    public sealed class BrandDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

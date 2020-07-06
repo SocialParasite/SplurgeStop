@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.ProductProfile.DTO;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 

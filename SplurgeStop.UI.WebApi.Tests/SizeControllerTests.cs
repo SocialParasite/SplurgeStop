@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.ProductProfile.DTO;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;

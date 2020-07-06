@@ -4,7 +4,6 @@ using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using SplurgeStop.Domain.ProductProfile.DTO;
 using System.Linq;
 
 namespace SplurgeStop.Data.EF.Repositories
