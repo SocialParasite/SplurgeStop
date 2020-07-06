@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from '../Styles';
+import './Header.css';
 
 export const Header = () => (
   <div
@@ -29,8 +30,31 @@ export const Header = () => (
     >
       Splurge Stop!
     </a>
-    <a href="/">Purchase transactions</a>
-    <a href="/Store">Stores</a>
+    <div class="dropdown">
+      <button class="dropbtn">Purchase transactions</button>
+      <div class="dropdown-content">
+        <a href="/">Purchase transactions</a>
+        <a href="/Currency">Currencies</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Stores</button>
+      <div class="dropdown-content">
+        <a href="/Store">Stores</a>
+        <a href="/Location">Locations</a>
+        <a href="/City">Cities</a>
+        <a href="/Country">Countries</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Products</button>
+      <div class="dropdown-content">
+        <a href="/Product">Products</a>
+        {/* size */}
+        <a href="/Brand">Brands</a>
+        <a href="/ProductType">Product types</a>
+      </div>
+    </div>
     <input
       type="text"
       placeholder="Search..."
