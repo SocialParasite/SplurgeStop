@@ -31,7 +31,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             await storeController.Post(command);
 
 
-            return await repository.GetStoreFullAsync(command.Id);
+            return await repository.GetAsync(command.Id);
         }
 
         public static async Task<dynamic> CreateInvalidStore()

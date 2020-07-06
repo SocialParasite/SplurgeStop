@@ -1,24 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 
 namespace SplurgeStop.Domain.DA_Interfaces
 {
-    public interface IStoreRepository
+    public interface IStoreRepository : IRepository<Store, StoreStripped, StoreId>
     {
-        Task AddStoreAsync(Store store);
-        Task<bool> ExistsAsync(StoreId id);
-        Task<Store> LoadStoreAsync(StoreId id);
-        Task<IEnumerable<Store>> GetAllStoresAsync();
-        Task<Store> GetStoreFullAsync(StoreId id);
-        Task<Store> LoadFullStoreAsync(StoreId id);
-
-        Task<IEnumerable<StoreStripped>> GetAllStoresStrippedAsync();
+        Task<Store> GetTrackedAsync(StoreId id);
         Task<Location> GetLocationAsync(LocationId id);
-
-
-        Task RemoveStoreAsync(StoreId id);
         Task ChangeLocation(Store store, LocationId locationId);
     }
 }

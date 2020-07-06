@@ -30,7 +30,7 @@ namespace SplurgeStop.Domain.StoreProfile
                     c => c.UpdateStoreName(cmd.Name)),
                 ChangeLocation cmd
                     => HandleUpdateAsync(cmd.Id, async c => await ChangeLocationAsync(c, cmd.Location.Id)),
-                DeleteStore cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveStoreAsync(cmd.Id)),
+                DeleteStore cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -60,7 +60,7 @@ namespace SplurgeStop.Domain.StoreProfile
 
             var newStore = Store.Create(cmd.Id, cmd.Name, location);
 
-            await _repository.AddStoreAsync(newStore);
+            await _repository.AddAsync(newStore);
 
             if (newStore.EnsureValidState())
             {
@@ -70,7 +70,7 @@ namespace SplurgeStop.Domain.StoreProfile
 
         private async Task HandleUpdateAsync(Guid storeId, Func<Store, Task> operation, Action<Store> op2 = null)
         {
-            var store = await _repository.LoadStoreAsync(storeId);
+            var store = await _repository.LoadAsync(storeId);
 
             if (store == null)
                 throw new InvalidOperationException($"Entity with id {storeId} cannot be found");
@@ -101,12 +101,12 @@ namespace SplurgeStop.Domain.StoreProfile
 
         public async Task<IEnumerable<StoreStripped>> GetAllStoresStripped()
         {
-            return await _repository.GetAllStoresStrippedAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<Store> GetDetailedStore(StoreId id)
         {
-            return await _repository.GetStoreFullAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

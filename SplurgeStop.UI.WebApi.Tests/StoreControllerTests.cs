@@ -37,7 +37,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             List<StoreStripped> mockStores = MockStores();
 
             var mockRepository = new Mock<IStoreRepository>();
-            mockRepository.Setup(repo => repo.GetAllStoresStrippedAsync())
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockStores.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +48,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await storeController.GetStores();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllStoresStrippedAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 

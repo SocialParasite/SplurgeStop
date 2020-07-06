@@ -19,7 +19,7 @@ namespace SplurgeStop.Integration.Tests
             Store store = await CreateValidStore();
 
             var repository = new StoreRepository(fixture.context);
-            var sut = await repository.LoadStoreAsync(store.Id);
+            var sut = await repository.LoadAsync(store.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -41,7 +41,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new StoreRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(store.Id));
 
-            var sut = await repository.LoadFullStoreAsync(store.Id);
+            var sut = await repository.GetTrackedAsync(store.Id);
 
             var storeId = sut.Id;
 
@@ -64,14 +64,14 @@ namespace SplurgeStop.Integration.Tests
             var repository = new StoreRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(store.Id));
 
-            var sut = await repository.LoadStoreAsync(store.Id);
+            var sut = await repository.LoadAsync(store.Id);
 
             Assert.NotNull(sut);
 
             var newLocation = await LocationHelpers.CreateValidLocation();
             await UpdateStoreLocation(sut.Id, newLocation);
 
-            sut = await repository.LoadFullStoreAsync(sut.Id);
+            sut = await repository.GetTrackedAsync(sut.Id);
             await fixture.context.Entry(sut).ReloadAsync();
 
             Assert.Equal(newLocation.Id, sut.Location.Id);
