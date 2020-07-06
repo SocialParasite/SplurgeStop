@@ -10,10 +10,10 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
     public sealed class CityService : ICityService
     {
-        private readonly ICityRepository _repository;
+        private readonly IRepository<City, CityDto, CityId> _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CityService(ICityRepository repository,
+        public CityService(IRepository<City, CityDto, CityId> repository,
                            IUnitOfWork unitOfWork)
         {
             this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -27,7 +27,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
                 Create cmd => HandleCreate(cmd),
                 SetCityName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateCityName(cmd.Name)),
-                DeleteCity cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveCityAsync(cmd.Id)),
+                DeleteCity cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -39,7 +39,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 
             var newCity = City.Create(cmd.Id, cmd.Name);
 
-            await _repository.AddCityAsync(newCity);
+            await _repository.AddAsync(newCity);
 
             if (newCity.EnsureValidState())
             {
@@ -49,7 +49,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 
         private async Task HandleUpdateAsync(Guid cityId, Func<City, Task> operation)
         {
-            var city = await _repository.LoadCityAsync(cityId);
+            var city = await _repository.LoadAsync(cityId);
 
             if (city == null)
                 throw new InvalidOperationException($"Entity with id {cityId} cannot be found");
@@ -64,7 +64,7 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 
         private async Task HandleUpdate(Guid cityId, Action<City> operation)
         {
-            var city = await _repository.LoadCityAsync(cityId);
+            var city = await _repository.LoadAsync(cityId);
 
             if (city == null)
                 throw new InvalidOperationException($"Entity with id {cityId} cannot be found");
@@ -79,12 +79,12 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 
         public async Task<IEnumerable<CityDto>> GetAllCityDtoAsync()
         {
-            return await _repository.GetAllCityDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<City> GetCityAsync(CityId id)
         {
-            return await _repository.GetCityAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

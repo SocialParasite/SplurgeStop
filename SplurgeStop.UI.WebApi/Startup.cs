@@ -44,7 +44,7 @@ namespace SplurgeStop.UI.WebApi
             services.AddTransient<IPurchaseTransactionService, PurchaseTransactionService>();
             services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddTransient<IStoreService, StoreService>();
-            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IRepository<City, CityDto, CityId>, CityRepository>();
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IRepository<Country, CountryDto, CountryId>, CountryRepository>();
             services.AddTransient<ICountryService, CountryService>();

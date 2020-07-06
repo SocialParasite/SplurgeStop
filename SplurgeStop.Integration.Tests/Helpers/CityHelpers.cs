@@ -25,7 +25,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var cityController = new CityController(service);
             var city = await cityController.Post(command);
 
-            return await repository.GetCityAsync(city.Value.Id);
+            return await repository.GetAsync(city.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidCity()

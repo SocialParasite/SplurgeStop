@@ -15,7 +15,7 @@ namespace SplurgeStop.Integration.Tests
             City city = await CreateValidCity();
 
             var repository = new CityRepository(fixture.context);
-            var sut = await repository.LoadCityAsync(city.Id);
+            var sut = await repository.LoadAsync(city.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -37,7 +37,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new CityRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(city.Id));
 
-            var sut = await repository.LoadCityAsync(city.Id);
+            var sut = await repository.LoadAsync(city.Id);
 
             var cityId = sut.Id;
 

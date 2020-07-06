@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
+using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
@@ -36,8 +37,8 @@ namespace SplurgeStop.UI.WebApi.Tests
         {
             List<CityDto> mockCities = MockCities();
 
-            var mockRepository = new Mock<ICityRepository>();
-            mockRepository.Setup(repo => repo.GetAllCityDtoAsync())
+            var mockRepository = new Mock<IRepository<City, CityDto, CityId>>();
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockCities.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +49,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await cityController.GetCities();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllCityDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 
