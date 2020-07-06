@@ -23,7 +23,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var productTypeController = new ProductTypeController(service);
             var productType = await productTypeController.Post(command);
 
-            return await repository.GetProductTypeAsync(productType.Value.Id);
+            return await repository.GetAsync(productType.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidProductType()

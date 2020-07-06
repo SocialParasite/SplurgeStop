@@ -9,10 +9,10 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 {
     public sealed class ProductTypeService : IProductTypeService
     {
-        private readonly IProductTypeRepository _repository;
+        private readonly IRepository<ProductType, ProductTypeDto, ProductTypeId> _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductTypeService(IProductTypeRepository repository,
+        public ProductTypeService(IRepository<ProductType, ProductTypeDto, ProductTypeId> repository,
                            IUnitOfWork unitOfWork)
         {
             this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -26,7 +26,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
                 Create cmd => HandleCreate(cmd),
                 SetProductTypeName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateProductTypeName(cmd.Name)),
-                DeleteProductType cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveProductTypeAsync(cmd.Id)),
+                DeleteProductType cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
@@ -38,7 +38,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
             var newProductType = ProductType.Create(cmd.Id, cmd.Name);
 
-            await _repository.AddProductTypeAsync(newProductType);
+            await _repository.AddAsync(newProductType);
 
             if (newProductType.EnsureValidState())
             {
@@ -48,7 +48,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         private async Task HandleUpdateAsync(Guid productTypeId, Func<ProductType, Task> operation)
         {
-            var productType = await _repository.LoadProductTypeAsync(productTypeId);
+            var productType = await _repository.LoadAsync(productTypeId);
 
             if (productType == null)
                 throw new InvalidOperationException($"Entity with id {productTypeId} cannot be found");
@@ -63,7 +63,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         private async Task HandleUpdate(Guid productTypeId, Action<ProductType> operation)
         {
-            var productType = await _repository.LoadProductTypeAsync(productTypeId);
+            var productType = await _repository.LoadAsync(productTypeId);
 
             if (productType == null)
                 throw new InvalidOperationException($"Entity with id {productTypeId} cannot be found");
@@ -78,12 +78,12 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         public async Task<IEnumerable<ProductTypeDto>> GetAllProductTypeDtoAsync()
         {
-            return await _repository.GetAllProductTypeDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<ProductType> GetProductTypeAsync(ProductTypeId id)
         {
-            return await _repository.GetProductTypeAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

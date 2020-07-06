@@ -8,7 +8,7 @@ using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
-    public sealed class ProductTypeRepository : IProductTypeRepository
+    public sealed class ProductTypeRepository : IRepository<ProductType, ProductTypeDto, ProductTypeId> // IProductTypeRepository
     {
         private readonly SplurgeStopDbContext _context;
 
@@ -22,19 +22,19 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.ProductTypes.FindAsync(id) != null;
         }
 
-        public async Task<ProductType> LoadProductTypeAsync(ProductTypeId id)
+        public async Task<ProductType> LoadAsync(ProductTypeId id)
         {
             return await _context.ProductTypes.FindAsync(id);
         }
 
-        public async Task<IEnumerable<ProductType>> GetAllProductTypesAsync()
+        public async Task<IEnumerable<ProductType>> GetAllAsync()
         {
             return await _context.ProductTypes
                     .AsNoTracking()
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<ProductTypeDto>> GetAllProductTypeDtoAsync()
+        public async Task<IEnumerable<ProductTypeDto>> GetAllDtoAsync()
         {
             return await _context.ProductTypes
                     .Select(r => new ProductTypeDto
@@ -46,19 +46,19 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
-        public async Task<ProductType> GetProductTypeAsync(ProductTypeId id)
+        public async Task<ProductType> GetAsync(ProductTypeId id)
         {
             return await _context.ProductTypes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddProductTypeAsync(ProductType productType)
+        public async Task AddAsync(ProductType productType)
         {
             await _context.ProductTypes.AddAsync(productType);
         }
 
-        public async Task RemoveProductTypeAsync(ProductTypeId id)
+        public async Task RemoveAsync(ProductTypeId id)
         {
             var productType = await _context.ProductTypes.FindAsync(id);
 

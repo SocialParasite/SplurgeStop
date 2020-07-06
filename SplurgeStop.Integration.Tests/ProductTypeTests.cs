@@ -15,7 +15,7 @@ namespace SplurgeStop.Integration.Tests
             ProductType productType = await CreateValidProductType();
 
             var repository = new ProductTypeRepository(fixture.context);
-            var sut = await repository.LoadProductTypeAsync(productType.Id);
+            var sut = await repository.LoadAsync(productType.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -37,7 +37,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new ProductTypeRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(productType.Id));
 
-            var sut = await repository.LoadProductTypeAsync(productType.Id);
+            var sut = await repository.LoadAsync(productType.Id);
 
             var productTypeId = sut.Id;
 
