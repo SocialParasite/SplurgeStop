@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.Shared;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public class PurchaseTransactionId : ValueObject
     {

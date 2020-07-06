@@ -13,7 +13,7 @@ using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.ProductProfile.SizeProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
-using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;

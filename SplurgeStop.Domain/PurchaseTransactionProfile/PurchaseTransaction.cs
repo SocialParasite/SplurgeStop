@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public class PurchaseTransaction
     {

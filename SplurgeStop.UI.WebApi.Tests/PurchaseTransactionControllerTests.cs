@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;

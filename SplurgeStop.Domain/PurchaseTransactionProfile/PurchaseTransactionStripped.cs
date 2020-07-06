@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public class PurchaseTransactionStripped
     {

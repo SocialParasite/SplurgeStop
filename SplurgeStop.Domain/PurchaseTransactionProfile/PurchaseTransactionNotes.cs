@@ -1,4 +1,4 @@
-﻿namespace SplurgeStop.Domain.PurchaseTransaction
+﻿namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public sealed class PurchaseTransactionNotes
     {

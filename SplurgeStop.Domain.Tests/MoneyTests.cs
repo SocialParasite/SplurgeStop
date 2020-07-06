@@ -1,5 +1,5 @@
 ﻿using System;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using Xunit;
 
 namespace SplurgeStop.Domain.Tests

@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 
 namespace SplurgeStop.Data.EF
 {

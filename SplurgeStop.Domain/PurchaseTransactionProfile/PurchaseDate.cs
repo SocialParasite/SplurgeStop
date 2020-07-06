@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SplurgeStop.Domain.Shared;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     /// <summary></summary>
     public class PurchaseDate : ValueObject

@@ -2,10 +2,10 @@
 using GuidHelpers;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using Xunit;
-using Price = SplurgeStop.Domain.PurchaseTransaction.PriceProfile.Price;
+using Price = SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile.Price;
 
 namespace SplurgeStop.Domain.Tests
 {

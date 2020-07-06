@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SplurgeStop.Domain.PurchaseTransaction.PriceProfile
+namespace SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile
 {
     public class Currency
     {

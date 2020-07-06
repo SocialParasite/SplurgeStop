@@ -4,13 +4,13 @@ using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.PurchaseTransaction;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
+using Commands = SplurgeStop.Domain.PurchaseTransactionProfile.Commands;
 using store = SplurgeStop.Domain.StoreProfile;
-using transaction = SplurgeStop.Domain.PurchaseTransaction;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {
@@ -25,7 +25,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
 
-            var command = new transaction.Commands.CreateFull();
+            var command = new Commands.CreateFull();
             command.Id = null;
             command.TransactionDate = DateTime.Now;
 
@@ -64,7 +64,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
 
-            var command = new transaction.Commands.CreateFull();
+            var command = new Commands.CreateFull();
             command.Id = null;
 
             // Add PurchaseDate
@@ -107,7 +107,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new transaction.Commands.SetPurchaseTransactionDate();
+            var updateCommand = new Commands.SetPurchaseTransactionDate();
             updateCommand.Id = id;
             updateCommand.TransactionDate = date;
 
@@ -123,7 +123,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new transaction.Commands.SetPurchaseTransactionLineItem();
+            var updateCommand = new Commands.SetPurchaseTransactionLineItem();
             updateCommand.Id = id;
             updateCommand.LineItemId = lineItem.Id;
             updateCommand.Price = lineItem.Price.Amount;
@@ -146,7 +146,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new transaction.Commands.SetPurchaseTransactionStore();
+            var updateCommand = new Commands.SetPurchaseTransactionStore();
             updateCommand.Id = id;
             updateCommand.StoreId = store.Id;
 

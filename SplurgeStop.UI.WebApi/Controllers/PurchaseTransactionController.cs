@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using GuidHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using SplurgeStop.Domain.PurchaseTransaction;
+using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.UI.WebApi.Common;
-using static SplurgeStop.Domain.PurchaseTransaction.Events;
+using static SplurgeStop.Domain.PurchaseTransactionProfile.Events;
 
 namespace SplurgeStop.UI.WebApi.Controllers
 {

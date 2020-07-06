@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using SplurgeStop.Domain.ProductProfile;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public static class Commands
     {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile;
-using static SplurgeStop.Domain.PurchaseTransaction.Commands;
+using static SplurgeStop.Domain.PurchaseTransactionProfile.Commands;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public sealed class PurchaseTransactionService : IPurchaseTransactionService
     {

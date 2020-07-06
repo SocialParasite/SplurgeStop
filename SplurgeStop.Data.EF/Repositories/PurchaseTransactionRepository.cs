@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile;
-using SplurgeStop.Domain.PurchaseTransaction;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.StoreProfile;
 
 namespace SplurgeStop.Data.EF.Repositories

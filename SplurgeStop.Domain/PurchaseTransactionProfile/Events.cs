@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using SplurgeStop.Domain.PurchaseTransaction.LineItemProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.StoreProfile;
 
-namespace SplurgeStop.Domain.PurchaseTransaction
+namespace SplurgeStop.Domain.PurchaseTransactionProfile
 {
     public static class Events
     {

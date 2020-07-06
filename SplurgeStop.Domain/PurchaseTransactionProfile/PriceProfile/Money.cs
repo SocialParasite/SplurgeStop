@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SplurgeStop.Domain.Shared;
 
-namespace SplurgeStop.Domain.PurchaseTransaction.PriceProfile
+namespace SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile
 {
     public class Money : ValueObject
     {

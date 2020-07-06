@@ -1,8 +1,8 @@
 ﻿using System;
 using SplurgeStop.Domain.ProductProfile;
-using SplurgeStop.Domain.PurchaseTransaction.PriceProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 
-namespace SplurgeStop.Domain.PurchaseTransaction.LineItemProfile
+namespace SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile
 {
     public sealed class LineItemStripped
     {
