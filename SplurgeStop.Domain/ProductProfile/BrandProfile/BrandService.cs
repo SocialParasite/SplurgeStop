@@ -9,14 +9,14 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 {
     public sealed class BrandService : IBrandService
     {
-        private readonly IBrandRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IRepository<Brand, BrandDto, BrandId> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BrandService(IBrandRepository repository,
+        public BrandService(IRepository<Brand, BrandDto, BrandId> repository,
                            IUnitOfWork unitOfWork)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -24,31 +24,31 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
-                Commands.SetBrandName cmd
+                SetBrandName cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateBrandName(cmd.Name)),
-                Commands.DeleteBrand cmd => HandleUpdateAsync(cmd.Id, _ => this.repository.RemoveBrandAsync(cmd.Id)),
+                DeleteBrand cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }
 
         private async Task HandleCreate(Create cmd)
         {
-            if (await repository.ExistsAsync(cmd.Id))
+            if (await _repository.ExistsAsync(cmd.Id))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var newBrand = Brand.Create(cmd.Id, cmd.Name);
 
-            await repository.AddBrandAsync(newBrand);
+            await _repository.AddAsync(newBrand);
 
             if (newBrand.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdateAsync(Guid brandId, Func<Brand, Task> operation)
         {
-            var brand = await repository.LoadBrandAsync(brandId);
+            var brand = await _repository.LoadAsync(brandId);
 
             if (brand == null)
                 throw new InvalidOperationException($"Entity with id {brandId} cannot be found");
@@ -57,13 +57,13 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 
             if (brand.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         private async Task HandleUpdate(Guid brandId, Action<Brand> operation)
         {
-            var brand = await repository.LoadBrandAsync(brandId);
+            var brand = await _repository.LoadAsync(brandId);
 
             if (brand == null)
                 throw new InvalidOperationException($"Entity with id {brandId} cannot be found");
@@ -72,18 +72,18 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 
             if (brand.EnsureValidState())
             {
-                await unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
         }
 
         public async Task<IEnumerable<BrandDto>> GetAllBrandDtoAsync()
         {
-            return await repository.GetAllBrandDtoAsync();
+            return await _repository.GetAllDtoAsync();
         }
 
         public async Task<Brand> GetBrandAsync(BrandId id)
         {
-            return await repository.GetBrandAsync(id);
+            return await _repository.GetAsync(id);
         }
     }
 }

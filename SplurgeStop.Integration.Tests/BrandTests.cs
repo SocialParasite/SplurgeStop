@@ -15,7 +15,7 @@ namespace SplurgeStop.Integration.Tests
             Brand brand = await CreateValidBrand();
 
             var repository = new BrandRepository(fixture.context);
-            var sut = await repository.LoadBrandAsync(brand.Id);
+            var sut = await repository.LoadAsync(brand.Id);
 
             Assert.True(await repository.ExistsAsync(sut.Id));
             Assert.True(sut.Name.Length > 0);
@@ -37,7 +37,7 @@ namespace SplurgeStop.Integration.Tests
             var repository = new BrandRepository(fixture.context);
             Assert.True(await repository.ExistsAsync(brand.Id));
 
-            var sut = await repository.LoadBrandAsync(brand.Id);
+            var sut = await repository.LoadAsync(brand.Id);
 
             var brandId = sut.Id;
 

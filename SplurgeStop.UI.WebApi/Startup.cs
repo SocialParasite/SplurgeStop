@@ -51,7 +51,7 @@ namespace SplurgeStop.UI.WebApi
 
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<ILocationService, LocationService>();
-            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IRepository<Brand, BrandDto, BrandId>, BrandRepository>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();

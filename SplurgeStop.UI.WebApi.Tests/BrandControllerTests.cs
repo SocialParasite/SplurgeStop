@@ -36,8 +36,8 @@ namespace SplurgeStop.UI.WebApi.Tests
         {
             List<BrandDto> mockBrands = MockBrands();
 
-            var mockRepository = new Mock<IBrandRepository>();
-            mockRepository.Setup(repo => repo.GetAllBrandDtoAsync())
+            var mockRepository = new Mock<IRepository<Brand, BrandDto, BrandId>>();
+            mockRepository.Setup(repo => repo.GetAllDtoAsync())
                 .Returns(() => Task.FromResult(mockBrands.AsEnumerable()));
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -48,7 +48,7 @@ namespace SplurgeStop.UI.WebApi.Tests
             var result = await brandController.GetBrands();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(mock => mock.GetAllBrandDtoAsync(), Times.Once());
+            mockRepository.Verify(mock => mock.GetAllDtoAsync(), Times.Once());
         }
 
 

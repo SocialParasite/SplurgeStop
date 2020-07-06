@@ -23,7 +23,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var brandController = new BrandController(service);
             var brand = await brandController.Post(command);
 
-            return await repository.GetBrandAsync(brand.Value.Id);
+            return await repository.GetAsync(brand.Value.Id);
         }
 
         public static async Task<dynamic> CreateInvalidBrand()
