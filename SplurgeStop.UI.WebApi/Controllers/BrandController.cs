@@ -14,23 +14,23 @@ namespace SplurgeStop.UI.WebApi.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {
-        private readonly IBrandService service;
+        private readonly IBrandService _service;
 
         public BrandController(IBrandService service)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this._service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         [HttpGet]
         public async Task<IEnumerable<BrandDto>> GetBrands()
         {
-            return await service.GetAllBrandDtoAsync();
+            return await _service.GetAllBrandDtoAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<Brand> GetBrand(Guid id)
         {
-            return await service.GetBrandAsync(id);
+            return await _service.GetBrandAsync(id);
         }
 
         [HttpPost]
@@ -40,12 +40,13 @@ namespace SplurgeStop.UI.WebApi.Controllers
             {
                 request.Id = new BrandId(SequentialGuid.NewSequentialGuid());
 
-                await RequestHandler.HandleCommand(request, service.Handle);
+                await RequestHandler.HandleCommand(request, _service.Handle);
 
                 // HACK: Future me, do something clever instead...
                 if (!string.IsNullOrEmpty(request.Name))
                 {
-                    return new BrandCreated { Id = (Guid)request.Id, Name = request.Name };
+                    if (request.Id != null)
+                        return new BrandCreated { Id = (Guid)request.Id, Name = request.Name };
                 }
                 return new BadRequestObjectResult(
                     new
@@ -65,19 +66,18 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [Route("BrandInfo")]
         [HttpPut]
         public async Task<IActionResult> Put(Commands.SetBrandName request)
-            => await RequestHandler.HandleCommand(request, service.Handle);
+            => await RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<BrandDeleted>> DeleteBrand(Commands.DeleteBrand request)
         {
-            var result = await RequestHandler.HandleCommand(request, service.Handle);
+            var result = await RequestHandler.HandleCommand(request, _service.Handle);
 
             if (result.GetType() == typeof(OkResult))
                 return new BrandDeleted { Id = request.Id };
 
-            else
-                return new BadRequestObjectResult(new { error = "Error occurred during delete attempt." });
+            return new BadRequestObjectResult(new { error = "Error occurred during delete attempt." });
 
         }
     }

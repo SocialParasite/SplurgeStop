@@ -6,6 +6,12 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
     {
         public static Brand Create(BrandId id, string name)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "Brand without unique identifier cannot be created.");
+
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "Brand without name cannot be created.");
+
             var brand = new Brand();
 
             brand.Apply(new Events.BrandCreated
@@ -22,7 +28,13 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 
         public void UpdateBrandName(string name)
         {
-            Name = name ?? throw new ArgumentNullException("A valid name for brand must be provided.");
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "A valid name for brand must be provided.");
+
+            if (name.Length < 1 || name.Length > 128)
+                throw new ArgumentException("Name length should be 128 characters or less.", nameof(name));
+
+            Name = name;
         }
 
         private void Apply(object @event)

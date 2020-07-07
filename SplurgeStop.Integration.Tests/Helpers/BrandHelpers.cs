@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
@@ -37,8 +38,8 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var command = new Commands.Create();
             command.Id = null;
 
-            // Create Store
             var brandController = new BrandController(service);
+
             return await brandController.Post(command);
         }
 

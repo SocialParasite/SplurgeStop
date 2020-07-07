@@ -15,8 +15,8 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
         public BrandService(IRepository<Brand, BrandDto, BrandId> repository,
                            IUnitOfWork unitOfWork)
         {
-            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
