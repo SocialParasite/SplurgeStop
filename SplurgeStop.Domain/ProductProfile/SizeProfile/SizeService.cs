@@ -15,8 +15,8 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
         public SizeService(IRepository<Size, SizeDto, SizeId> repository,
                            IUnitOfWork unitOfWork)
         {
-            this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public Task Handle(object command)
@@ -24,9 +24,9 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
             return command switch
             {
                 Create cmd => HandleCreate(cmd),
-                Commands.SetSizeAmount cmd
+                SetSizeAmount cmd
                     => HandleUpdate(cmd.Id, c => c.UpdateSizeAmount(cmd.Amount)),
-                Commands.DeleteSize cmd => HandleUpdateAsync(cmd.Id, _ => this._repository.RemoveAsync(cmd.Id)),
+                DeleteSize cmd => HandleUpdateAsync(cmd.Id, _ => _repository.RemoveAsync(cmd.Id)),
                 _ => Task.CompletedTask
             };
         }

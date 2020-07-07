@@ -32,7 +32,7 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
                 throw new ArgumentNullException(nameof(name), "A valid name for brand must be provided.");
 
             if (name.Length < 1 || name.Length > 128)
-                throw new ArgumentException("Name length should be 128 characters or less.", nameof(name));
+                throw new ArgumentException("Name length should be 128 characters or less, but not empty.", nameof(name));
 
             Name = name;
         }

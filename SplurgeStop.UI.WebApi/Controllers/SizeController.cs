@@ -45,7 +45,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
                 // HACK: Future me, do something clever instead...
                 if (!string.IsNullOrEmpty(request.Amount))
                 {
-                    return new SizeCreated { Id = (Guid)request.Id, Amount = request.Amount };
+                    if (request.Id != null) return new SizeCreated { Id = (Guid)request.Id, Amount = request.Amount };
                 }
                 return new BadRequestObjectResult(
                     new

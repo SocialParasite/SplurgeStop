@@ -15,6 +15,12 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
 
         public static Size Create(SizeId id, string amount)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "Size without unique identifier cannot be created.");
+
+            if (amount is null)
+                throw new ArgumentNullException(nameof(amount), "Size without amount cannot be created.");
+
             var size = new Size();
 
             size.Apply(new Events.SizeCreated
@@ -28,7 +34,13 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
 
         public void UpdateSizeAmount(string amount)
         {
-            Amount = amount ?? throw new ArgumentNullException(nameof(amount), "A valid amount for size must be provided.");
+            if (amount is null)
+                throw new ArgumentNullException(nameof(amount), "A valid amount for size must be provided.");
+
+            if (amount.Length < 1)
+                throw new ArgumentException("Amount cannot be empty.", nameof(amount));
+
+            Amount = amount;
         }
 
         private void Apply(object @event)
