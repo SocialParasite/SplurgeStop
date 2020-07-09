@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SplurgeStop.Domain.DA_Interfaces
 {
-    public interface IRepository<T, TDto, in TId>
+    public interface IRepository<T, TDto, TId>
     {
         // Queries
         Task<IEnumerable<TDto>> GetAllDtoAsync();
