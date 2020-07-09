@@ -9,6 +9,12 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         public static ProductType Create(ProductTypeId id, string name)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "Product type without unique identifier cannot be created.");
+
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "Product type without name cannot be created.");
+
             var productType = new ProductType();
 
             productType.Apply(new Events.ProductTypeCreated
@@ -22,7 +28,13 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 
         public void UpdateProductTypeName(string name)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for product type must be provided.");
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "A valid name for product type must be provided.");
+
+            if (name.Length < 1 || name.Length > 128)
+                throw new ArgumentException("Name length should be 128 characters or less, but not empty.", nameof(name));
+
+            Name = name;
         }
 
         private void Apply(object @event)
