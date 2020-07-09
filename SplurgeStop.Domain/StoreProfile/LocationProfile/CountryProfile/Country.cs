@@ -6,6 +6,12 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
     {
         public static Country Create(CountryId id, string name)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "Country without unique identifier cannot be created.");
+
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "Country without name cannot be created.");
+
             var country = new Country();
 
             country.Apply(new Events.CountryCreated
@@ -22,7 +28,13 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 
         public void UpdateCountryName(string name)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for country must be provided.");
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "A valid name for a country must be provided.");
+
+            if (name.Length < 1 || name.Length > 128)
+                throw new ArgumentException("Name length should be 128 characters or less, but not empty.", nameof(name));
+
+            Name = name;
         }
 
         private void Apply(object @event)
