@@ -23,6 +23,7 @@ namespace SplurgeStop.Domain.Tests
         {
             new object[] { null, "My brand" },
             new object[] { new BrandId(SequentialGuid.NewSequentialGuid()), null },
+            new object[] { new BrandId(SequentialGuid.NewSequentialGuid()), "" },
             new object[] { null, null },
         };
 

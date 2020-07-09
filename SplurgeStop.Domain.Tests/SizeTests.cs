@@ -23,6 +23,7 @@ namespace SplurgeStop.Domain.Tests
         {
             new object[] { null, "Perfect fit" },
             new object[] { new SizeId(SequentialGuid.NewSequentialGuid()), null },
+            new object[] { new SizeId(SequentialGuid.NewSequentialGuid()), "" },
             new object[] { null, null },
         };
 

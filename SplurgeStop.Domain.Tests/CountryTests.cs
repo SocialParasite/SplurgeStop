@@ -23,6 +23,7 @@ namespace SplurgeStop.Domain.Tests
         {
             new object[] { null, "Dystopia" },
             new object[] { new CountryId(SequentialGuid.NewSequentialGuid()), null },
+            new object[] { new CountryId(SequentialGuid.NewSequentialGuid()), "" },
             new object[] { null, null },
         };
 

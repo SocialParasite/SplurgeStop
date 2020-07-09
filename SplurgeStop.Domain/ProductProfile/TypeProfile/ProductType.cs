@@ -12,7 +12,7 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
             if (id is null)
                 throw new ArgumentNullException(nameof(id), "Product type without unique identifier cannot be created.");
 
-            if (name is null)
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name), "Product type without name cannot be created.");
 
             var productType = new ProductType();

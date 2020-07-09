@@ -12,7 +12,7 @@ namespace SplurgeStop.Domain.StoreProfile
             if (id is null)
                 throw new ArgumentNullException(nameof(id), "Store without unique identifier cannot be created.");
 
-            if (name is null)
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name), "Store without name cannot be created.");
 
             var store = new Store();

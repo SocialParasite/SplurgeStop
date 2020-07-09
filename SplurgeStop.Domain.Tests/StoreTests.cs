@@ -26,6 +26,7 @@ namespace SplurgeStop.Domain.Tests
         {
             new object[] { null, "Kwik-E-Mart" },
             new object[] { new StoreId(SequentialGuid.NewSequentialGuid()), null },
+            new object[] { new StoreId(SequentialGuid.NewSequentialGuid()), "" },
             new object[] { null, null },
         };
 

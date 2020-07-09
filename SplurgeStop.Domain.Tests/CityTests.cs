@@ -23,6 +23,7 @@ namespace SplurgeStop.Domain.Tests
         {
             new object[] { null, "Rapture" },
             new object[] { new CityId(SequentialGuid.NewSequentialGuid()), null },
+            new object[] { new CityId(SequentialGuid.NewSequentialGuid()), "" },
             new object[] { null, null },
         };
 

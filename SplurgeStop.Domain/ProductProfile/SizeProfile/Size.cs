@@ -18,7 +18,7 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
             if (id is null)
                 throw new ArgumentNullException(nameof(id), "Size without unique identifier cannot be created.");
 
-            if (amount is null)
+            if (string.IsNullOrWhiteSpace(amount))
                 throw new ArgumentNullException(nameof(amount), "Size without amount cannot be created.");
 
             var size = new Size();
