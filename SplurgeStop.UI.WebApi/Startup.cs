@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;

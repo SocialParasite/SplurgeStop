@@ -1,5 +1,4 @@
 ﻿using System;
-using SplurgeStop.Domain.CityProfile;
 
 namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
@@ -7,6 +6,12 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
     {
         public static City Create(CityId id, string name)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "City without unique identifier cannot be created.");
+
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "City without name cannot be created.");
+
             var city = new City();
 
             city.Apply(new Events.CityCreated
@@ -23,7 +28,13 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 
         public void UpdateCityName(string name)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name), "A valid name for city must be provided.");
+            if (name is null)
+                throw new ArgumentNullException(nameof(name), "A valid name for a city must be provided.");
+
+            if (name.Length < 1 || name.Length > 128)
+                throw new ArgumentException("Name length should be 128 characters or less, but not empty.", nameof(name));
+
+            Name = name;
         }
 
         private void Apply(object @event)

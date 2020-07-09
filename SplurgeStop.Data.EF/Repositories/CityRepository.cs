@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SplurgeStop.Domain.DA_Interfaces;
-using SplurgeStop.Domain.CityProfile;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SplurgeStop.Domain.CityProfile;
 
 namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {

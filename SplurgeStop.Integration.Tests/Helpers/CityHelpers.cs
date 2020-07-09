@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
-using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using SplurgeStop.UI.WebApi.Controllers;
-using city = SplurgeStop.Domain.CityProfile;
 
 namespace SplurgeStop.Integration.Tests.Helpers
 {

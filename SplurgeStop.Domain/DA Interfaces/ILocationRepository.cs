@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;

@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
 using Xunit;
@@ -24,9 +24,7 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Invalid_City()
         {
-            var result = await CreateInvalidCity();
-
-            Assert.IsAssignableFrom<BadRequestObjectResult>(result.Result);
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await CreateInvalidCity());
         }
 
         [Fact]

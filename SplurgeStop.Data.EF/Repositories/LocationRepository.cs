@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SplurgeStop.Domain.CityProfile;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
 using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
