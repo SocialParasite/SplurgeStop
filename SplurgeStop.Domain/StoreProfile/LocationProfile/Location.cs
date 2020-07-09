@@ -8,6 +8,15 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
     {
         public static Location Create(LocationId id, City city, Country country)
         {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id), "Location without unique identifier cannot be created.");
+
+            if (city is null)
+                throw new ArgumentNullException(nameof(city), "Location without a city cannot be created.");
+
+            if (country is null)
+                throw new ArgumentNullException(nameof(country), "Location without a country cannot be created.");
+
             var location = new Location();
 
             location.Apply(new Events.LocationCreated
