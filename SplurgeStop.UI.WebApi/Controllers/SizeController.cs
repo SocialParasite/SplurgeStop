@@ -14,23 +14,23 @@ namespace SplurgeStop.UI.WebApi.Controllers
     [ApiController]
     public class SizeController : ControllerBase
     {
-        private readonly ISizeService service;
+        private readonly ISizeService _service;
 
         public SizeController(ISizeService service)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this._service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         [HttpGet]
         public async Task<IEnumerable<SizeDto>> GetSizes()
         {
-            return await service.GetAllSizeDtoAsync();
+            return await _service.GetAllSizeDtoAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<Size> GetSize(Guid id)
         {
-            return await service.GetSizeAsync(id);
+            return await _service.GetSizeAsync(id);
         }
 
         [HttpPost]
@@ -40,7 +40,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
             {
                 request.Id = new SizeId(SequentialGuid.NewSequentialGuid());
 
-                await RequestHandler.HandleCommand(request, service.Handle);
+                await RequestHandler.HandleCommand(request, _service.Handle);
 
                 // HACK: Future me, do something clever instead...
                 if (!string.IsNullOrEmpty(request.Amount))
@@ -65,13 +65,13 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [Route("SizeInfo")]
         [HttpPut]
         public async Task<IActionResult> Put(Commands.SetSizeAmount request)
-            => await RequestHandler.HandleCommand(request, service.Handle);
+            => await RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<SizeDeleted>> DeleteSize(Commands.DeleteSize request)
         {
-            var result = await RequestHandler.HandleCommand(request, service.Handle);
+            var result = await RequestHandler.HandleCommand(request, _service.Handle);
 
             if (result.GetType() == typeof(OkResult))
                 return new SizeDeleted { Id = request.Id };

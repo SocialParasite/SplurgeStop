@@ -14,24 +14,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public BrandRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(BrandId id)
-        {
-            return await _context.Brands.FindAsync(id) != null;
-        }
-
-        public async Task<Brand> LoadAsync(BrandId id)
-        {
-            return await _context.Brands.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Brand>> GetAllAsync()
-        {
-            return await _context.Brands
-                    .AsNoTracking()
-                    .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<BrandDto>> GetAllDtoAsync()
@@ -46,11 +29,21 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
+        public async Task<Brand> LoadAsync(BrandId id)
+        {
+            return await _context.Brands.FindAsync(id);
+        }
+
         public async Task<Brand> GetAsync(BrandId id)
         {
             return await _context.Brands
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(BrandId id)
+        {
+            return await _context.Brands.FindAsync(id) != null;
         }
 
         public async Task AddAsync(Brand brand)

@@ -11,11 +11,9 @@ namespace SplurgeStop.Domain.DA_Interfaces
         : IRepository<PurchaseTransaction, PurchaseTransactionStripped, PurchaseTransactionId>
     {
         Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id);
+        Task<Product> GetProductAsync(ProductId id);
         Task<Store> GetStoreAsync(StoreId id);
         Task ChangeStore(PurchaseTransaction purchaseTransaction, StoreId storeId);
-
         Task ChangeLineItem(PurchaseTransaction purchaseTransaction, LineItem lineItem);
-
-        Task<Product> GetProductAsync(ProductId id);
     }
 }

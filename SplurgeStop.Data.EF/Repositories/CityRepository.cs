@@ -15,24 +15,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public CityRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(CityId id)
-        {
-            return await _context.Cities.FindAsync(id) != null;
-        }
-
-        public async Task<City> LoadAsync(CityId id)
-        {
-            return await _context.Cities.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<City>> GetAllAsync()
-        {
-            return await _context.Cities
-                    .AsNoTracking()
-                    .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<CityDto>> GetAllDtoAsync()
@@ -46,12 +29,21 @@ namespace SplurgeStop.Data.EF.Repositories
                     .AsNoTracking()
                     .ToListAsync();
         }
+        public async Task<City> LoadAsync(CityId id)
+        {
+            return await _context.Cities.FindAsync(id);
+        }
 
         public async Task<City> GetAsync(CityId id)
         {
             return await _context.Cities
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(CityId id)
+        {
+            return await _context.Cities.FindAsync(id) != null;
         }
 
         public async Task AddAsync(City city)

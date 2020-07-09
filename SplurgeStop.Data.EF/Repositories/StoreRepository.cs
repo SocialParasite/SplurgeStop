@@ -15,52 +15,8 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public StoreRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
-        public async Task AddAsync(Store store)
-        {
-            await _context.Stores.AddAsync(store);
-        }
-
-        public async Task<bool> ExistsAsync(StoreId id)
-        {
-            return await _context.Stores.FindAsync(id) != null;
-        }
-
-        public async Task<Store> GetAsync(StoreId id)
-        {
-            return await _context.Stores
-                .AsNoTracking()
-                .Include(s => s.Location)
-                .ThenInclude(l => l.City)
-                .Include(s => s.Location)
-                .ThenInclude(l => l.Country)
-                .FirstOrDefaultAsync(s => s.Id == id);
-        }
-
-        public async Task<Store> GetTrackedAsync(StoreId id)
-        {
-            return await _context.Stores
-                .Include(s => s.Location)
-                .ThenInclude(l => l.City)
-                .Include(s => s.Location)
-                .ThenInclude(l => l.Country)
-                .FirstOrDefaultAsync(s => s.Id == id);
-        }
-
-        public async Task<IEnumerable<Store>> GetAllAsync()
-        {
-            return await _context.Stores
-                    .AsNoTracking()
-                    .ToListAsync();
-        }
-
-        public async Task<Store> LoadAsync(StoreId id)
-        {
-            return await _context.Stores.FindAsync(id);
-        }
-
 
         public async Task<IEnumerable<StoreStripped>> GetAllDtoAsync()
         {
@@ -74,12 +30,54 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
+        public async Task<Store> LoadAsync(StoreId id)
+        {
+            return await _context.Stores.FindAsync(id);
+        }
+
+        public async Task<Store> GetAsync(StoreId id)
+        {
+            return await _context.Stores
+                .AsNoTracking()
+                .Include(s => s.Location)
+                .ThenInclude(l => l.City)
+                .Include(s => s.Location)
+                .ThenInclude(l => l.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+
+        public async Task<bool> ExistsAsync(StoreId id)
+        {
+            return await _context.Stores.FindAsync(id) != null;
+        }
+
+        public async Task AddAsync(Store store)
+        {
+            await _context.Stores.AddAsync(store);
+        }
+
         public async Task RemoveAsync(StoreId id)
         {
             var store = await _context.Stores.FindAsync(id);
 
             if (store != null)
                 _context.Stores.Remove(store);
+        }
+
+        public async Task<Store> GetTrackedAsync(StoreId id)
+        {
+            return await _context.Stores
+                .Include(s => s.Location)
+                .ThenInclude(l => l.City)
+                .Include(s => s.Location)
+                .ThenInclude(l => l.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<Location> GetLocationAsync(LocationId id)
+        {
+            return await _context.Locations.FindAsync(id);
         }
 
         public async Task ChangeLocation(Store store, LocationId locationId)
@@ -89,9 +87,5 @@ namespace SplurgeStop.Data.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Location> GetLocationAsync(LocationId id)
-        {
-            return await _context.Locations.FindAsync(id);
-        }
     }
 }

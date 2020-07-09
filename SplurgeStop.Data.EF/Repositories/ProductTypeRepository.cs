@@ -8,30 +8,13 @@ using SplurgeStop.Domain.ProductProfile.TypeProfile;
 
 namespace SplurgeStop.Data.EF.Repositories
 {
-    public sealed class ProductTypeRepository : IRepository<ProductType, ProductTypeDto, ProductTypeId> // IProductTypeRepository
+    public sealed class ProductTypeRepository : IRepository<ProductType, ProductTypeDto, ProductTypeId>
     {
         private readonly SplurgeStopDbContext _context;
 
         public ProductTypeRepository(SplurgeStopDbContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(ProductTypeId id)
-        {
-            return await _context.ProductTypes.FindAsync(id) != null;
-        }
-
-        public async Task<ProductType> LoadAsync(ProductTypeId id)
-        {
-            return await _context.ProductTypes.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<ProductType>> GetAllAsync()
-        {
-            return await _context.ProductTypes
-                    .AsNoTracking()
-                    .ToListAsync();
         }
 
         public async Task<IEnumerable<ProductTypeDto>> GetAllDtoAsync()
@@ -45,12 +28,21 @@ namespace SplurgeStop.Data.EF.Repositories
                     .AsNoTracking()
                     .ToListAsync();
         }
+        public async Task<ProductType> LoadAsync(ProductTypeId id)
+        {
+            return await _context.ProductTypes.FindAsync(id);
+        }
 
         public async Task<ProductType> GetAsync(ProductTypeId id)
         {
             return await _context.ProductTypes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(ProductTypeId id)
+        {
+            return await _context.ProductTypes.FindAsync(id) != null;
         }
 
         public async Task AddAsync(ProductType productType)

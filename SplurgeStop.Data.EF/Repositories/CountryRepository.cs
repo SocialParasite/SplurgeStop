@@ -14,24 +14,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public CountryRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(CountryId id)
-        {
-            return await _context.Countries.FindAsync(id) != null;
-        }
-
-        public async Task<Country> LoadAsync(CountryId id)
-        {
-            return await _context.Countries.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Country>> GetAllAsync()
-        {
-            return await _context.Countries
-                    .AsNoTracking()
-                    .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<CountryDto>> GetAllDtoAsync()
@@ -46,11 +29,20 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
+        public async Task<Country> LoadAsync(CountryId id)
+        {
+            return await _context.Countries.FindAsync(id);
+        }
         public async Task<Country> GetAsync(CountryId id)
         {
             return await _context.Countries
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(CountryId id)
+        {
+            return await _context.Countries.FindAsync(id) != null;
         }
 
         public async Task AddAsync(Country country)

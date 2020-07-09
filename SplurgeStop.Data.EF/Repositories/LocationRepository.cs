@@ -17,27 +17,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public LocationRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(LocationId id)
-        {
-            return await _context.Locations.FindAsync(id) != null;
-        }
-
-        public async Task<Location> LoadAsync(LocationId id)
-        {
-            return await _context.Locations
-                .Include(c => c.City)
-                .Include(c => c.Country)
-                .FirstOrDefaultAsync(l => l.Id == id);
-        }
-
-        public async Task<IEnumerable<Location>> GetAllAsync()
-        {
-            return await _context.Locations
-                    .AsNoTracking()
-                    .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<LocationDto>> GetAllDtoAsync()
@@ -52,12 +32,24 @@ namespace SplurgeStop.Data.EF.Repositories
                     .AsNoTracking()
                     .ToListAsync();
         }
+        public async Task<Location> LoadAsync(LocationId id)
+        {
+            return await _context.Locations
+                .Include(c => c.City)
+                .Include(c => c.Country)
+                .FirstOrDefaultAsync(l => l.Id == id);
+        }
 
         public async Task<Location> GetAsync(LocationId id)
         {
             return await _context.Locations
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(LocationId id)
+        {
+            return await _context.Locations.FindAsync(id) != null;
         }
 
         public async Task AddAsync(Location location)
@@ -83,6 +75,13 @@ namespace SplurgeStop.Data.EF.Repositories
             return await _context.Countries.FindAsync(id);
         }
 
+        public async Task ChangeCity(Location location, CityId cityId)
+        {
+            var modLocation = await _context.Locations.FindAsync(location.Id);
+            modLocation.UpdateCity(await GetCityAsync(cityId));
+            await _context.SaveChangesAsync();
+        }
+
         public async Task ChangeCountry(Location location, CountryId countryId)
         {
             var modLocation = await _context.Locations.FindAsync(location.Id);
@@ -90,11 +89,5 @@ namespace SplurgeStop.Data.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task ChangeCity(Location location, CityId cityId)
-        {
-            var modLocation = await _context.Locations.FindAsync(location.Id);
-            modLocation.UpdateCity(await GetCityAsync(cityId));
-            await _context.SaveChangesAsync();
-        }
     }
 }

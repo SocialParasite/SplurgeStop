@@ -14,24 +14,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public SizeRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(SizeId id) //nullable?
-        {
-            return await _context.Size.FindAsync(id) != null;
-        }
-
-        public async Task<Size> LoadAsync(SizeId id)
-        {
-            return await _context.Size.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Size>> GetAllAsync()
-        {
-            return await _context.Size
-                .AsNoTracking()
-                .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<SizeDto>> GetAllDtoAsync()
@@ -46,11 +29,21 @@ namespace SplurgeStop.Data.EF.Repositories
                 .ToListAsync();
         }
 
+        public async Task<Size> LoadAsync(SizeId id)
+        {
+            return await _context.Size.FindAsync(id);
+        }
+
         public async Task<Size> GetAsync(SizeId id)
         {
             return await _context.Size
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(SizeId id)
+        {
+            return await _context.Size.FindAsync(id) != null;
         }
 
         public async Task AddAsync(Size size)

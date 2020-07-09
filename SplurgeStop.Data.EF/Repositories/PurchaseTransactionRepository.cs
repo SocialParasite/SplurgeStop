@@ -20,20 +20,26 @@ namespace SplurgeStop.Data.EF.Repositories
             this._context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // TODO: get rid of this
-        public Task<IEnumerable<PurchaseTransaction>> GetAllAsync()
+        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllDtoAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Purchases
+                .Include(s => s.Store)
+                .Include(l => l.LineItems)
+                .Select(r => new PurchaseTransactionStripped
+                {
+                    Id = r.Id,
+                    StoreName = r.Store.Name,
+                    PurchaseDate = r.PurchaseDate.Value,
+                    TotalPrice = r.TotalPrice,
+                    ItemCount = r.LineItems.Count
+                })
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async Task AddAsync(PurchaseTransaction transaction)
+        public async Task<PurchaseTransaction> LoadAsync(PurchaseTransactionId id)
         {
-            await _context.Purchases.AddAsync(transaction);
-        }
-
-        public async Task<bool> ExistsAsync(PurchaseTransactionId id)
-        {
-            return await _context.Purchases.FindAsync(id) != null;
+            return await _context.Purchases.FindAsync(id);
         }
 
         public async Task<PurchaseTransaction> GetAsync(PurchaseTransactionId id)
@@ -53,26 +59,22 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<PurchaseTransactionStripped>> GetAllDtoAsync()
+        public async Task<bool> ExistsAsync(PurchaseTransactionId id)
         {
-            return await _context.Purchases
-                    .Include(s => s.Store)
-                    .Include(l => l.LineItems)
-                    .Select(r => new PurchaseTransactionStripped
-                    {
-                        Id = r.Id,
-                        StoreName = r.Store.Name,
-                        PurchaseDate = r.PurchaseDate.Value,
-                        TotalPrice = r.TotalPrice,
-                        ItemCount = r.LineItems.Count
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
+            return await _context.Purchases.FindAsync(id) != null;
         }
 
-        public async Task<PurchaseTransaction> LoadAsync(PurchaseTransactionId id)
+        public async Task AddAsync(PurchaseTransaction transaction)
         {
-            return await _context.Purchases.FindAsync(id);
+            await _context.Purchases.AddAsync(transaction);
+        }
+
+        public async Task RemoveAsync(PurchaseTransactionId id)
+        {
+            var pt = await _context.Purchases.FindAsync(id);
+
+            if (pt != null)
+                _context.Purchases.Remove(pt);
         }
 
         public async Task<PurchaseTransaction> LoadFullPurchaseTransactionAsync(PurchaseTransactionId id)
@@ -81,6 +83,14 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public async Task<Product> GetProductAsync(ProductId id)
+        {
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.ProductType)
+                .Include(p => p.Size)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
 
         public async Task<Store> GetStoreAsync(StoreId id)
         {
@@ -116,23 +126,6 @@ namespace SplurgeStop.Data.EF.Repositories
             purchaseTransaction.LineItems.Add(lineItem);
 
             await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveAsync(PurchaseTransactionId id)
-        {
-            var pt = await _context.Purchases.FindAsync(id);
-
-            if (pt != null)
-                _context.Purchases.Remove(pt);
-        }
-
-        public async Task<Product> GetProductAsync(ProductId id)
-        {
-            return await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.ProductType)
-                .Include(p => p.Size)
-                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

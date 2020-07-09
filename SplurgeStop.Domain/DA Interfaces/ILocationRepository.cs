@@ -10,11 +10,11 @@ namespace SplurgeStop.Domain.DA_Interfaces
 
     {
         // Queries
-        Task<Country> GetCountryAsync(CountryId id);
         Task<City> GetCityAsync(CityId id);
+        Task<Country> GetCountryAsync(CountryId id);
 
         // Commands
-        Task ChangeCountry(Location location, CountryId countryId);
         Task ChangeCity(Location location, CityId cityId);
+        Task ChangeCountry(Location location, CountryId countryId);
     }
 }

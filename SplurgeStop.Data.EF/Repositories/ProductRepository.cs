@@ -17,24 +17,7 @@ namespace SplurgeStop.Data.EF.Repositories
 
         public ProductRepository(SplurgeStopDbContext context)
         {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<bool> ExistsAsync(ProductId id)
-        {
-            return await _context.Products.FindAsync(id) != null;
-        }
-
-        public async Task<Product> LoadAsync(ProductId id)
-        {
-            return await _context.Products.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Product>> GetAllAsync()
-        {
-            return await _context.Products
-                    .AsNoTracking()
-                    .ToListAsync();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllDtoAsync()
@@ -49,11 +32,34 @@ namespace SplurgeStop.Data.EF.Repositories
                     .ToListAsync();
         }
 
+        public async Task<Product> LoadAsync(ProductId id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
+
         public async Task<Product> GetAsync(ProductId id)
         {
             return await _context.Products
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<bool> ExistsAsync(ProductId id)
+        {
+            return await _context.Products.FindAsync(id) != null;
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            await _context.Products.AddAsync(product);
+        }
+
+        public async Task RemoveAsync(ProductId id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product != null)
+                _context.Products.Remove(product);
         }
 
         public async Task<Product> GetProductFullAsync(ProductId id)
@@ -75,19 +81,6 @@ namespace SplurgeStop.Data.EF.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task AddAsync(Product product)
-        {
-            await _context.Products.AddAsync(product);
-        }
-
-        public async Task RemoveAsync(ProductId id)
-        {
-            var product = await _context.Products.FindAsync(id);
-
-            if (product != null)
-                _context.Products.Remove(product);
-        }
-
         public async Task<Brand> GetBrandAsync(BrandId brandId)
         {
             return await _context.Brands.FindAsync(brandId);
@@ -107,11 +100,6 @@ namespace SplurgeStop.Data.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
-        {
-            return await _context.ProductTypes.FindAsync(productTypeId);
-        }
-
         public async Task ChangeSize(Product prod, SizeId sizeId)
         {
             var product = await _context.Products.FindAsync(prod.Id);
@@ -122,6 +110,11 @@ namespace SplurgeStop.Data.EF.Repositories
         private async Task<Size> GetSizeAsync(SizeId sizeId)
         {
             return await _context.Size.FindAsync(sizeId);
+        }
+
+        private async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
+        {
+            return await _context.ProductTypes.FindAsync(productTypeId);
         }
     }
 }
