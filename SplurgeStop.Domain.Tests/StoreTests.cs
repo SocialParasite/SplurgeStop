@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.StoreProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using Xunit;
 
 namespace SplurgeStop.Domain.Tests
@@ -68,6 +71,27 @@ namespace SplurgeStop.Domain.Tests
             Action action = () => sut.UpdateStoreName(null);
 
             Assert.Throws<ArgumentNullException>(action.Invoke);
+        }
+
+        [Fact]
+        public void Valid_location_update()
+        {
+            var newLocation = Location.Create(new LocationId(SequentialGuid.NewSequentialGuid()),
+                                City.Create(new CityId(SequentialGuid.NewSequentialGuid()), "Rapture"),
+                                Country.Create(new CountryId(SequentialGuid.NewSequentialGuid()), "Dystopia"));
+
+            var sut = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "Kwik-E-Mart");
+            sut.UpdateLocation(newLocation);
+
+            Assert.Equal(newLocation.Id, sut.Location.Id);
+        }
+
+        [Fact]
+        public void Invalid_location_update()
+        {
+            var sut = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "Kwik-E-Mart");
+
+            Assert.Throws<ArgumentNullException>(() => sut.UpdateLocation(null));
         }
     }
 }
