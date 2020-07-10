@@ -31,6 +31,9 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
         public static implicit operator PurchaseDate(DateTime value)
             => new PurchaseDate(value);
 
+        public static explicit operator DateTime(PurchaseDate value)
+            => value.Value;
+
         public static PurchaseDate Now
             => new PurchaseDate(DateTime.Now);
     }

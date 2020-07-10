@@ -5,7 +5,6 @@ using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.ProductHelpers;
-using product = SplurgeStop.Domain.ProductProfile;
 
 namespace SplurgeStop.Integration.Tests
 {

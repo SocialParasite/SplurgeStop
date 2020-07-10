@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
@@ -22,19 +23,38 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
             return purchaseTransaction;
         }
 
-        public static PurchaseTransaction CreateFull(PurchaseTransactionId id, Store store, ICollection<LineItemStripped> lineItems)
+        public static PurchaseTransaction CreateFull(PurchaseTransactionId id,
+            Store store,
+            ICollection<LineItemStripped> lineItems,
+            PurchaseDate transactionDate)
         {
+            ValidateParameters();
+
             var purchaseTransaction = new PurchaseTransaction();
 
             purchaseTransaction.Apply(new Events.PurchaseTransactionFullCreated
             {
                 Id = id,
                 Store = store,
-                LineItems = lineItems
+                LineItems = lineItems,
+                TransactionDate = (DateTime)transactionDate
             });
 
             return purchaseTransaction;
+
+            void ValidateParameters()
+            {
+                if (id is null)
+                    throw new ArgumentNullException(nameof(id), "Purchase transaction without valid identifier cannot be created.");
+                if (store is null)
+                    throw new ArgumentNullException(nameof(id), "Purchase transaction without valid store cannot be created.");
+                if (lineItems is null)
+                    throw new ArgumentNullException(nameof(id), "Purchase transaction without at least one line item cannot be created.");
+                if (transactionDate is null)
+                    throw new ArgumentNullException(nameof(id), "Purchase transaction without purchase date cannot be created.");
+            }
         }
+
 
         public PurchaseTransaction()
         {
@@ -72,7 +92,7 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 
         public void UpdateStore(Store store)
         {
-            Store = store;
+            Store = store ?? throw new ArgumentNullException(nameof(store), "Invalid store provided. Update failed.");
         }
 
         public void UpdateLineItem(LineItem lineItem)
@@ -106,6 +126,13 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
                     Id = new PurchaseTransactionId(e.Id);
                     PurchaseDate = PurchaseDate.Now;
                     Store = null;
+                    LineItems = new List<LineItem>();
+                    Notes = PurchaseTransactionNotes.NoNotes;
+                    break;
+                case Events.PurchaseTransactionFullCreated e:
+                    Id = new PurchaseTransactionId((Guid)e.Id);
+                    PurchaseDate = PurchaseDate.Now;
+                    Store = e.Store;
                     LineItems = new List<LineItem>();
                     Notes = PurchaseTransactionNotes.NoNotes;
                     break;
