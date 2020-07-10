@@ -24,10 +24,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var city = await CityHelpers.CreateValidCity();
             var country = await CountryHelpers.CreateValidCountry();
 
-            var command = new Commands.Create();
-            command.Id = null;
-            command.CityId = city.Id;
-            command.CountryId = country.Id;
+            var command = new Commands.Create { Id = null, CityId = city.Id, CountryId = country.Id };
 
             var locationController = new LocationController(service);
             var location = await locationController.Post(command);
@@ -43,10 +40,12 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new LocationService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Id = null;
-            command.CityId = invalidProp == "CityId" ? default : Guid.NewGuid();
-            command.CountryId = invalidProp == "CountryId" ? default : Guid.NewGuid();
+            var command = new Commands.Create
+            {
+                Id = null,
+                CityId = invalidProp == "CityId" ? default : Guid.NewGuid(),
+                CountryId = invalidProp == "CountryId" ? default : Guid.NewGuid()
+            };
 
             var locationController = new LocationController(service);
             return await locationController.Post(command);
@@ -61,9 +60,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new Commands.ChangeCity();
-            updateCommand.Id = id;
-            updateCommand.City = city;
+            var updateCommand = new Commands.ChangeCity
+            {
+                Id = id,
+                City = city
+            };
 
             await locationController.Put(updateCommand);
         }
@@ -77,9 +78,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new Commands.ChangeCountry();
-            updateCommand.Id = id;
-            updateCommand.Country = country;
+            var updateCommand = new Commands.ChangeCountry
+            {
+                Id = id,
+                Country = country
+            };
 
             await locationController.Put(updateCommand);
         }
@@ -102,8 +105,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new LocationService(repository, unitOfWork);
             var locationController = new LocationController(service);
 
-            var updateCommand = new Commands.DeleteLocation();
-            updateCommand.Id = id;
+            var updateCommand = new Commands.DeleteLocation
+            {
+                Id = id
+            };
 
             await locationController.DeleteLocation(updateCommand);
         }

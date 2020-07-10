@@ -16,9 +16,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CityService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Name = "New Mansester";
-            command.Id = null;
+            var command = new Commands.Create
+            {
+                Name = "New Mansester",
+                Id = null
+            };
 
             var cityController = new CityController(service);
             var city = await cityController.Post(command);
@@ -34,8 +36,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CityService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Id = null;
+            var command = new Commands.Create { Id = null };
 
             // Create Store
             var cityController = new CityController(service);
@@ -51,9 +52,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CityService(repository, unitOfWork);
             var cityController = new CityController(service);
 
-            var updateCommand = new Commands.SetCityName();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
+            var updateCommand = new Commands.SetCityName { Id = id, Name = name };
 
             await cityController.Put(updateCommand);
         }
@@ -76,8 +75,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CityService(repository, unitOfWork);
             var cityController = new CityController(service);
 
-            var updateCommand = new Commands.DeleteCity();
-            updateCommand.Id = id;
+            var updateCommand = new Commands.DeleteCity
+            {
+                Id = id
+            };
 
             await cityController.DeleteCity(updateCommand);
         }

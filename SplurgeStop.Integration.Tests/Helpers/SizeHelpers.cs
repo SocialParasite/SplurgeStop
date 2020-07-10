@@ -16,9 +16,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new size.SizeService(repository, unitOfWork);
 
-            var command = new size.Commands.Create();
-            command.Amount = "L";
-            command.Id = null;
+            var command = new size.Commands.Create
+            {
+                Amount = "L",
+                Id = null
+            };
 
             var sizeController = new SizeController(service);
             var size = await sizeController.Post(command);
@@ -34,8 +36,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new size.SizeService(repository, unitOfWork);
 
-            var command = new size.Commands.Create();
-            command.Id = null;
+            var command = new size.Commands.Create
+            {
+                Id = null
+            };
 
             var sizeController = new SizeController(service);
             return await sizeController.Post(command);
@@ -50,9 +54,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new size.SizeService(repository, unitOfWork);
             var sizeController = new SizeController(service);
 
-            var updateCommand = new size.Commands.SetSizeAmount();
-            updateCommand.Id = id;
-            updateCommand.Amount = amount;
+            var updateCommand = new size.Commands.SetSizeAmount
+            {
+                Id = id,
+                Amount = amount
+            };
 
             await sizeController.Put(updateCommand);
         }
@@ -75,8 +81,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new size.SizeService(repository, unitOfWork);
             var sizeController = new SizeController(service);
 
-            var updateCommand = new size.Commands.DeleteSize();
-            updateCommand.Id = id;
+            var updateCommand = new size.Commands.DeleteSize
+            {
+                Id = id
+            };
 
             await sizeController.DeleteSize(updateCommand);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SplurgeStop.Data.EF;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
@@ -17,9 +16,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new BrandService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Name = "Levi's";
-            command.Id = null;
+            var command = new Commands.Create { Name = "Levi's", Id = null };
 
             var brandController = new BrandController(service);
             var brand = await brandController.Post(command);
@@ -35,8 +32,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new BrandService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Id = null;
+            var command = new Commands.Create { Id = null };
 
             var brandController = new BrandController(service);
 
@@ -52,9 +48,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new BrandService(repository, unitOfWork);
             var brandController = new BrandController(service);
 
-            var updateCommand = new Commands.SetBrandName();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
+            var updateCommand = new Commands.SetBrandName { Id = id, Name = name };
 
             await brandController.Put(updateCommand);
         }
@@ -77,8 +71,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new BrandService(repository, unitOfWork);
             var brandController = new BrandController(service);
 
-            var updateCommand = new Commands.DeleteBrand();
-            updateCommand.Id = id;
+            var updateCommand = new Commands.DeleteBrand
+            {
+                Id = id
+            };
 
             await brandController.DeleteBrand(updateCommand);
         }

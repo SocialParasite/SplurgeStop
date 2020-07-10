@@ -22,10 +22,12 @@ namespace SplurgeStop.Integration.Tests.Helpers
 
             var newBrand = await BrandHelpers.CreateValidBrand();
 
-            var command = new product.Commands.Create();
-            command.Name = "New product";
-            command.Id = null;
-            command.BrandId = newBrand.Id;
+            var command = new product.Commands.Create
+            {
+                Name = "New product",
+                Id = null,
+                BrandId = newBrand.Id
+            };
 
 
             // Create product
@@ -44,8 +46,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new ProductService(repository, unitOfWork);
 
-            var command = new product.Commands.Create();
-            command.Id = null;
+            var command = new product.Commands.Create
+            {
+                Id = null
+            };
 
             // Create product
             var productController = new ProductController(service);
@@ -61,10 +65,12 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductService(repository, unitOfWork);
             var productController = new ProductController(service);
 
-            var updateCommand = new product.Commands.UpdateProduct();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
-            updateCommand.BrandId = brandId;
+            var updateCommand = new product.Commands.UpdateProduct
+            {
+                Id = id,
+                Name = name,
+                BrandId = brandId
+            };
 
             await productController.Put(updateCommand);
         }
@@ -78,9 +84,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductService(repository, unitOfWork);
             var productController = new ProductController(service);
 
-            var updateCommand = new product.Commands.ChangeBrand();
-            updateCommand.Id = id;
-            updateCommand.BrandId = brand.Id;
+            var updateCommand = new product.Commands.ChangeBrand
+            {
+                Id = id,
+                BrandId = brand.Id
+            };
 
             await productController.Put(updateCommand);
         }
@@ -94,9 +102,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductService(repository, unitOfWork);
             var productController = new ProductController(service);
 
-            var updateCommand = new product.Commands.ChangeProductType();
-            updateCommand.Id = id;
-            updateCommand.ProductTypeId = productType.Id;
+            var updateCommand = new product.Commands.ChangeProductType
+            {
+                Id = id,
+                ProductTypeId = productType.Id
+            };
 
             await productController.Put(updateCommand);
         }
@@ -110,9 +120,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductService(repository, unitOfWork);
             var productController = new ProductController(service);
 
-            var updateCommand = new product.Commands.ChangeSize();
-            updateCommand.Id = id;
-            updateCommand.SizeId = size.Id;
+            var updateCommand = new product.Commands.ChangeSize
+            {
+                Id = id,
+                SizeId = size.Id
+            };
 
             await productController.Put(updateCommand);
         }
@@ -126,8 +138,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductService(repository, unitOfWork);
             var productController = new ProductController(service);
 
-            var updateCommand = new product.Commands.DeleteProduct();
-            updateCommand.Id = id;
+            var updateCommand = new product.Commands.DeleteProduct
+            {
+                Id = id
+            };
 
             await productController.DeleteProduct(updateCommand);
         }

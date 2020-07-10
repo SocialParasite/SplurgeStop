@@ -20,10 +20,12 @@ namespace SplurgeStop.Integration.Tests.Helpers
 
             var newLocation = await LocationHelpers.CreateValidLocation();
 
-            var command = new store.Commands.Create();
-            command.Name = "New store";
-            command.Id = null;
-            command.LocationId = newLocation.Id;
+            var command = new store.Commands.Create
+            {
+                Name = "New store",
+                Id = null,
+                LocationId = newLocation.Id
+            };
 
 
             // Create Store
@@ -42,8 +44,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new StoreService(repository, unitOfWork);
 
-            var command = new store.Commands.Create();
-            command.Id = null;
+            var command = new store.Commands.Create
+            {
+                Id = null
+            };
 
             // Create Store
             var storeController = new StoreController(service);
@@ -59,10 +63,12 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new StoreService(repository, unitOfWork);
             var storeController = new StoreController(service);
 
-            var updateCommand = new store.Commands.UpdateStore();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
-            updateCommand.LocationId = locationId;
+            var updateCommand = new store.Commands.UpdateStore
+            {
+                Id = id,
+                Name = name,
+                LocationId = locationId
+            };
 
             await storeController.Put(updateCommand);
         }
@@ -76,9 +82,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new StoreService(repository, unitOfWork);
             var storeController = new StoreController(service);
 
-            var updateCommand = new store.Commands.ChangeLocation();
-            updateCommand.Id = id;
-            updateCommand.Location = location;
+            var updateCommand = new store.Commands.ChangeLocation
+            {
+                Id = id,
+                Location = location
+            };
 
             await storeController.Put(updateCommand);
         }
@@ -92,8 +100,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new StoreService(repository, unitOfWork);
             var storeController = new StoreController(service);
 
-            var updateCommand = new store.Commands.DeleteStore();
-            updateCommand.Id = id;
+            var updateCommand = new store.Commands.DeleteStore
+            {
+                Id = id
+            };
 
             await storeController.DeleteStore(updateCommand);
         }

@@ -17,9 +17,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CountryService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Name = "Rapture";
-            command.Id = null;
+            var command = new Commands.Create
+            {
+                Name = "Rapture",
+                Id = null
+            };
 
             var countryController = new CountryController(service);
             var country = await countryController.Post(command);
@@ -35,8 +37,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new CountryService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Id = null;
+            var command = new Commands.Create
+            {
+                Id = null
+            };
 
             // Create Store
             var countryController = new CountryController(service);
@@ -52,9 +56,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CountryService(repository, unitOfWork);
             var countryController = new CountryController(service);
 
-            var updateCommand = new Commands.SetCountryName();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
+            var updateCommand = new Commands.SetCountryName
+            {
+                Id = id,
+                Name = name
+            };
 
             await countryController.Put(updateCommand);
         }
@@ -77,8 +83,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new CountryService(repository, unitOfWork);
             var countryController = new CountryController(service);
 
-            var updateCommand = new Commands.DeleteCountry();
-            updateCommand.Id = id;
+            var updateCommand = new Commands.DeleteCountry
+            {
+                Id = id
+            };
 
             await countryController.DeleteCountry(updateCommand);
         }

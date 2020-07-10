@@ -37,17 +37,19 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var prod = await ProductHelpers.CreateValidProduct();
 
             // Add one LineItem
-            command.LineItems = new List<LineItemStripped>();
-            command.LineItems.Add(new LineItemStripped
+            command.LineItems = new List<LineItemStripped>
             {
-                Price = price.ToString(CultureInfo.InvariantCulture),
-                CurrencyCode = "EUR",
-                CurrencySymbol = "€",
-                CurrencySymbolPosition = CurrencySymbolPosition.End,
-                Booking = Booking.Credit,
-                Notes = lineItem?.Notes,
-                Product = prod
-            });
+                new LineItemStripped
+                {
+                    Price = price.ToString(CultureInfo.InvariantCulture),
+                    CurrencyCode = "EUR",
+                    CurrencySymbol = "€",
+                    CurrencySymbolPosition = CurrencySymbolPosition.End,
+                    Booking = Booking.Credit,
+                    Notes = lineItem?.Notes,
+                    Product = prod
+                }
+            };
 
             // Create PurchaseTransaction
             var transactionController = new PurchaseTransactionController(service);
@@ -64,11 +66,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new PurchaseTransactionService(repository, unitOfWork);
 
-            var command = new Commands.CreateFull();
-            command.Id = null;
-
-            // Add PurchaseDate
-            command.TransactionDate = DateTime.Now;
+            var command = new Commands.CreateFull
+            {
+                Id = null,
+                TransactionDate = DateTime.Now
+            };
 
             // Add Store
             var store = await StoreHelpers.CreateValidStore();
@@ -89,8 +91,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 Product = prod
             };
 
-            command.LineItems = new List<LineItemStripped>();
-            command.LineItems.Add(newLineItem);
+            command.LineItems = new List<LineItemStripped>
+            {
+                newLineItem
+            };
 
             var transactionController = new PurchaseTransactionController(service);
             await transactionController.Post(command);
@@ -107,9 +111,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new Commands.SetPurchaseTransactionDate();
-            updateCommand.Id = id;
-            updateCommand.TransactionDate = date;
+            var updateCommand = new Commands.SetPurchaseTransactionDate
+            {
+                Id = id,
+                TransactionDate = date
+            };
 
             await transactionController.Put(updateCommand);
         }
@@ -123,16 +129,18 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new Commands.SetPurchaseTransactionLineItem();
-            updateCommand.Id = id;
-            updateCommand.LineItemId = lineItem.Id;
-            updateCommand.Price = lineItem.Price.Amount;
-            updateCommand.Currency = lineItem.Price.Currency.CurrencyCode;
-            updateCommand.CurrencySymbol = lineItem.Price.Currency.CurrencySymbol;
-            updateCommand.Booking = lineItem.Price.Booking;
-            updateCommand.CurrencySymbolPosition = lineItem.Price.Currency.PositionRelativeToPrice;
-            updateCommand.Notes = lineItem.Notes;
-            updateCommand.Product = lineItem.Product;
+            var updateCommand = new Commands.SetPurchaseTransactionLineItem
+            {
+                Id = id,
+                LineItemId = lineItem.Id,
+                Price = lineItem.Price.Amount,
+                Currency = lineItem.Price.Currency.CurrencyCode,
+                CurrencySymbol = lineItem.Price.Currency.CurrencySymbol,
+                Booking = lineItem.Price.Booking,
+                CurrencySymbolPosition = lineItem.Price.Currency.PositionRelativeToPrice,
+                Notes = lineItem.Notes,
+                Product = lineItem.Product
+            };
 
             await transactionController.Put(updateCommand);
         }
@@ -146,9 +154,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new PurchaseTransactionService(repository, unitOfWork);
             var transactionController = new PurchaseTransactionController(service);
 
-            var updateCommand = new Commands.SetPurchaseTransactionStore();
-            updateCommand.Id = id;
-            updateCommand.StoreId = store.Id;
+            var updateCommand = new Commands.SetPurchaseTransactionStore
+            {
+                Id = id,
+                StoreId = store.Id
+            };
 
             await transactionController.Put(updateCommand);
         }

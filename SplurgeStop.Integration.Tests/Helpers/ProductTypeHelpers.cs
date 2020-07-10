@@ -16,9 +16,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new ProductTypeService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Name = "trousers";
-            command.Id = null;
+            var command = new Commands.Create
+            {
+                Name = "trousers",
+                Id = null
+            };
 
             var productTypeController = new ProductTypeController(service);
             var productType = await productTypeController.Post(command);
@@ -34,8 +36,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var unitOfWork = new EfCoreUnitOfWork(context);
             var service = new ProductTypeService(repository, unitOfWork);
 
-            var command = new Commands.Create();
-            command.Id = null;
+            var command = new Commands.Create { Id = null };
 
             // Create ProductType
             var productTypeController = new ProductTypeController(service);
@@ -51,9 +52,11 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductTypeService(repository, unitOfWork);
             var productTypeController = new ProductTypeController(service);
 
-            var updateCommand = new Commands.SetProductTypeName();
-            updateCommand.Id = id;
-            updateCommand.Name = name;
+            var updateCommand = new Commands.SetProductTypeName
+            {
+                Id = id,
+                Name = name
+            };
 
             await productTypeController.Put(updateCommand);
         }
@@ -76,8 +79,10 @@ namespace SplurgeStop.Integration.Tests.Helpers
             var service = new ProductTypeService(repository, unitOfWork);
             var productTypeController = new ProductTypeController(service);
 
-            var updateCommand = new Commands.DeleteProductType();
-            updateCommand.Id = id;
+            var updateCommand = new Commands.DeleteProductType
+            {
+                Id = id
+            };
 
             await productTypeController.DeleteProductType(updateCommand);
         }
