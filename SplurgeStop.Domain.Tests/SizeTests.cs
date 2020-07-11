@@ -42,7 +42,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shou")]
         public void Valid_size_amount(string amount)
         {
-            var sut = new Size();
+            var sut = Size.Create(Guid.NewGuid(), "10");
 
             sut.UpdateSizeAmount(amount);
 
@@ -53,7 +53,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("")]
         public void Invalid_size_amount(string amount)
         {
-            var sut = new Size();
+            var sut = Size.Create(Guid.NewGuid(), "10");
 
             Action action = () => sut.UpdateSizeAmount(amount);
 
@@ -63,7 +63,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Size_amount_cannot_be_null()
         {
-            var sut = new Size();
+            var sut = Size.Create(Guid.NewGuid(), "10");
 
             Action action = () => sut.UpdateSizeAmount(null);
 

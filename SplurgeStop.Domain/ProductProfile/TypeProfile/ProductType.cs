@@ -4,6 +4,8 @@ namespace SplurgeStop.Domain.ProductProfile.TypeProfile
 {
     public class ProductType
     {
+        private ProductType() { }
+
         public ProductTypeId Id { get; set; }
         public string Name { get; set; }
 

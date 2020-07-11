@@ -55,12 +55,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Country()
         {
-            var mockCountry = new Mock<Country>();
             var id = Guid.NewGuid();
+            var country = Country.Create(id, "country");
 
             var mockCountryService = new Mock<ICountryService>();
             mockCountryService.Setup(s => s.GetCountryAsync(id))
-                .Returns(() => Task.FromResult(mockCountry.Object));
+                .Returns(() => Task.FromResult(country));
 
             var countryController = new CountryController(mockCountryService.Object);
             var result = await countryController.GetCountry(id);
@@ -72,12 +72,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockCountry = new Mock<Country>();
             var id = Guid.NewGuid();
+            var country = Country.Create(id, "country");
 
             var mockCountryService = new Mock<ICountryService>();
             mockCountryService.Setup(s => s.GetCountryAsync(Guid.NewGuid()))
-                .Returns(() => Task.FromResult(mockCountry.Object));
+                .Returns(() => Task.FromResult(country));
 
             var countryController = new CountryController(mockCountryService.Object);
 

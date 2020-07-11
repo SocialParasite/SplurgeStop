@@ -22,8 +22,11 @@ namespace SplurgeStop.Domain.Tests
                                    string currencySymbol,
                                    CurrencySymbolPosition currencySymbolPosition)
         {
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(Guid.NewGuid(), "product", brand);
+
             var price = new Price(amount, booking, currencyCode, currencySymbol, currencySymbolPosition);
-            var sut = LineItemBuilder.LineItem(price).WithProduct(new Product()).Build();
+            var sut = LineItemBuilder.LineItem(price).WithProduct(product).Build();
 
             Assert.IsType<LineItem>(sut);
             Assert.Equal(amount, sut.Price.Amount);
@@ -36,10 +39,13 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Has_notes()
         {
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(Guid.NewGuid(), "product", brand);
+
             var price = new Price(1.00m);
             var sut = LineItemBuilder.LineItem(price)
                 .WithNotes("No kun sai niin halvalla.")
-                .WithProduct(new Product())
+                .WithProduct(product)
                 .Build();
 
             Assert.Contains("halvalla", sut.Notes);
@@ -50,7 +56,7 @@ namespace SplurgeStop.Domain.Tests
         {
             var price = new Price(1.00m);
 
-            var brand = new Brand();
+            var brand = Brand.Create(Guid.NewGuid(), "test");
             var prodId = new ProductId(SequentialGuid.NewSequentialGuid());
             var product = Product.Create(prodId, "newProd", brand);
             var sut = LineItemBuilder.LineItem(price).WithProduct(product).Build();

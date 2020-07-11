@@ -55,12 +55,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_City()
         {
-            var mockCity = new Mock<City>();
             var id = Guid.NewGuid();
+            var city = City.Create(id, "city");
 
             var mockCityService = new Mock<ICityService>();
             mockCityService.Setup(s => s.GetCityAsync(id))
-                .Returns(() => Task.FromResult(mockCity.Object));
+                .Returns(() => Task.FromResult(city));
 
             var cityController = new CityController(mockCityService.Object);
             var result = await cityController.GetCity(id);
@@ -72,12 +72,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockCity = new Mock<City>();
             var id = Guid.NewGuid();
+            var city = City.Create(id, "city");
 
             var mockCityService = new Mock<ICityService>();
             mockCityService.Setup(s => s.GetCityAsync(Guid.NewGuid()))
-                .Returns(() => Task.FromResult(mockCity.Object));
+                .Returns(() => Task.FromResult(city));
 
             var cityController = new CityController(mockCityService.Object);
 

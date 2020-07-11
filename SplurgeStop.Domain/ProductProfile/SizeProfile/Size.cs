@@ -4,6 +4,8 @@ namespace SplurgeStop.Domain.ProductProfile.SizeProfile
 {
     public class Size
     {
+        private Size() { }
+
         public SizeId Id { get; private set; }
         public string Amount { get; set; }
         public string Unit { get; set; }

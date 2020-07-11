@@ -7,6 +7,8 @@ namespace SplurgeStop.Domain.ProductProfile
 {
     public class Product
     {
+        private Product() { }
+
         public ProductId Id { get; set; }
 
         public Brand Brand { get; set; }

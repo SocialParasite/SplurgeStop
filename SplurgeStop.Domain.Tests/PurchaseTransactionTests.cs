@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GuidHelpers;
-using Moq;
 using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.ProductProfile.BrandProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
@@ -112,11 +112,12 @@ namespace SplurgeStop.Domain.Tests
             Assert.NotNull(sut.LineItems);
             Assert.True(sut.LineItems.Count == 0);
 
-            var mockProduct = new Mock<Product>();
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(Guid.NewGuid(), "prod", brand);
 
             var newLineItem = LineItemBuilder
                 .LineItem(new Price(1.1m))
-                .WithProduct(mockProduct.Object)
+                .WithProduct(product)
                 .Build();
             sut.UpdateLineItem(newLineItem);
 

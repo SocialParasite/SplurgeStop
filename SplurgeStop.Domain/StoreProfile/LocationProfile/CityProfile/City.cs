@@ -4,6 +4,8 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile
 {
     public class City
     {
+        private City() { }
+
         public static City Create(CityId id, string name)
         {
             if (id is null)

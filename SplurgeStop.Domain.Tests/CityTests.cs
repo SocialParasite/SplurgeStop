@@ -42,7 +42,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shou")]
         public void Valid_city_name(string name)
         {
-            var sut = new City();
+            var sut = City.Create(Guid.NewGuid(), "city");
 
             sut.UpdateCityName(name);
 
@@ -54,7 +54,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shoul")]
         public void Invalid_city_name(string name)
         {
-            var sut = new City();
+            var sut = City.Create(Guid.NewGuid(), "city");
 
             Action action = () => sut.UpdateCityName(name);
 
@@ -64,7 +64,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void City_name_cannot_be_null()
         {
-            var sut = new City();
+            var sut = City.Create(Guid.NewGuid(), "city");
 
             Action action = () => sut.UpdateCityName(null);
 

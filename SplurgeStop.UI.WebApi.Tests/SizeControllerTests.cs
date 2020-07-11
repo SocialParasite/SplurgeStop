@@ -55,12 +55,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Size()
         {
-            var mockSize = new Mock<Size>();
             var id = Guid.NewGuid();
+            var size = Size.Create(id, "M");
 
             var mockSizeService = new Mock<ISizeService>();
             mockSizeService.Setup(s => s.GetSizeAsync(id))
-                .Returns(() => Task.FromResult(mockSize.Object));
+                .Returns(() => Task.FromResult(size));
 
             var sizeController = new SizeController(mockSizeService.Object);
             var result = await sizeController.GetSize(id);

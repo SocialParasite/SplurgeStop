@@ -42,7 +42,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shou")]
         public void Valid_brand_name(string name)
         {
-            var sut = new Brand();
+            var sut = Brand.Create(Guid.NewGuid(), "test");
 
             sut.UpdateBrandName(name);
 
@@ -54,7 +54,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shoul")]
         public void Invalid_brand_name(string name)
         {
-            var sut = new Brand();
+            var sut = Brand.Create(Guid.NewGuid(), "test");
 
             Action action = () => sut.UpdateBrandName(name);
 
@@ -64,7 +64,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Brand_name_cannot_be_null()
         {
-            var sut = new Brand();
+            var sut = Brand.Create(Guid.NewGuid(), "test");
 
             Action action = () => sut.UpdateBrandName(null);
 

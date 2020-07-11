@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GuidHelpers;
+using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using Xunit;
 
@@ -42,7 +43,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shou")]
         public void Valid_product_type_name(string name)
         {
-            var sut = new ProductType();
+            var sut = ProductType.Create(Guid.NewGuid(), "type");
 
             sut.UpdateProductTypeName(name);
 
@@ -54,7 +55,7 @@ namespace SplurgeStop.Domain.Tests
         [InlineData("Bacon ipsum dolor amet burgdoggen beef turkey venison landjaeger frankfurter bresaola, andouille tail beef ribs. Burgdoggen shoul")]
         public void Invalid_product_type_name(string name)
         {
-            var sut = new ProductType();
+            var sut = ProductType.Create(Guid.NewGuid(), "type");
 
             Action action = () => sut.UpdateProductTypeName(name);
 
@@ -64,7 +65,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Product_type_name_cannot_be_null()
         {
-            var sut = new ProductType();
+            var sut = ProductType.Create(Guid.NewGuid(), "type");
 
             Action action = () => sut.UpdateProductTypeName(null);
 

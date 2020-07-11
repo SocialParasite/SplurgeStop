@@ -4,6 +4,8 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile
 {
     public class Country
     {
+        private Country() { }
+
         public static Country Create(CountryId id, string name)
         {
             if (id is null)

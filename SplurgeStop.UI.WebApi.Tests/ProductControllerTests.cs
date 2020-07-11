@@ -9,6 +9,7 @@ using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
+using Brand = SplurgeStop.Domain.ProductProfile.BrandProfile.Brand;
 
 namespace SplurgeStop.UI.WebApi.Tests
 {
@@ -55,12 +56,13 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Product()
         {
-            var mockProduct = new Mock<Product>();
             var id = Guid.NewGuid();
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(id, "product", brand);
 
             var mockProductService = new Mock<IProductService>();
             mockProductService.Setup(s => s.GetProductAsync(id))
-                .Returns(() => Task.FromResult(mockProduct.Object));
+                .Returns(() => Task.FromResult(product));
 
             var productController = new ProductController(mockProductService.Object);
             var result = await productController.GetProduct(id);

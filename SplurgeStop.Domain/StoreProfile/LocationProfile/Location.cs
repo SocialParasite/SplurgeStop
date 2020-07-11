@@ -6,6 +6,8 @@ namespace SplurgeStop.Domain.StoreProfile.LocationProfile
 {
     public class Location
     {
+        private Location() { }
+
         public static Location Create(LocationId id, City city, Country country)
         {
             if (id is null)

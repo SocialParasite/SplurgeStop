@@ -7,6 +7,8 @@ using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.Domain.StoreProfile.LocationProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CityProfile;
+using SplurgeStop.Domain.StoreProfile.LocationProfile.CountryProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 
@@ -56,12 +58,14 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Location()
         {
-            var mockLocation = new Mock<Location>();
             var id = Guid.NewGuid();
+            var city = City.Create(Guid.NewGuid(), "city");
+            var country = Country.Create(Guid.NewGuid(), "country");
+            var location = Location.Create(id, city, country);
 
             var mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetLocationAsync(id))
-                .Returns(() => Task.FromResult(mockLocation.Object));
+                .Returns(() => Task.FromResult(location));
 
             var locationController = new LocationController(mockLocationService.Object);
             var result = await locationController.GetLocation(id);
@@ -73,12 +77,14 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockLocation = new Mock<Location>();
             var id = Guid.NewGuid();
+            var city = City.Create(Guid.NewGuid(), "city");
+            var country = Country.Create(Guid.NewGuid(), "country");
+            var location = Location.Create(id, city, country);
 
             var mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetLocationAsync(Guid.NewGuid()))
-                .Returns(() => Task.FromResult(mockLocation.Object));
+                .Returns(() => Task.FromResult(location));
 
             var locationController = new LocationController(mockLocationService.Object);
 

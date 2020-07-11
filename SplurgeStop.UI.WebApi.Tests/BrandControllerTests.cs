@@ -55,12 +55,11 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Brand()
         {
-            var mockBrand = new Mock<Brand>();
             var id = Guid.NewGuid();
-
+            var brand = Brand.Create(id, "test");
             var mockBrandService = new Mock<IBrandService>();
             mockBrandService.Setup(s => s.GetBrandAsync(id))
-                .Returns(() => Task.FromResult(mockBrand.Object));
+                .Returns(() => Task.FromResult(brand));
 
             var brandController = new BrandController(mockBrandService.Object);
             var result = await brandController.GetBrand(id);
@@ -72,12 +71,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockBrand = new Mock<Brand>();
             var id = Guid.NewGuid();
+            var brand = Brand.Create(id, "test");
 
             var mockBrandService = new Mock<IBrandService>();
             mockBrandService.Setup(s => s.GetBrandAsync(Guid.NewGuid()))
-                .Returns(() => Task.FromResult(mockBrand.Object));
+                .Returns(() => Task.FromResult(brand));
 
             var brandController = new BrandController(mockBrandService.Object);
 

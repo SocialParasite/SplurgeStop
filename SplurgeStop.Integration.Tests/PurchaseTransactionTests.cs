@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SplurgeStop.Data.EF.Migrations;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile;
@@ -9,6 +10,8 @@ using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using SplurgeStop.Integration.Tests.Helpers;
 using Xunit;
 using static SplurgeStop.Integration.Tests.Helpers.PurchaseTransactionHelpers;
+using Brand = SplurgeStop.Domain.ProductProfile.BrandProfile.Brand;
+using Price = SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile.Price;
 
 namespace SplurgeStop.Integration.Tests
 {
@@ -184,9 +187,11 @@ namespace SplurgeStop.Integration.Tests
         [Fact]
         public async Task Add_lineItem_with_notes()
         {
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(Guid.NewGuid(), "product", brand);
             var lineItem = LineItemBuilder.LineItem(new Price(1.00m))
                 .WithNotes("My Notes!")
-                .WithProduct(new Product())
+                .WithProduct(product)
                 .Build();
 
             PurchaseTransactionId transactionId = await CreateValidPurchaseTransaction(1m, lineItem);

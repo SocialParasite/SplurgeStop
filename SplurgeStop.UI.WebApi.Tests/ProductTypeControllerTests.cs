@@ -55,12 +55,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_ProductType()
         {
-            var mockProductType = new Mock<ProductType>();
             var id = Guid.NewGuid();
+            var productType = ProductType.Create(id, "type");
 
             var mockProductTypeService = new Mock<IProductTypeService>();
             mockProductTypeService.Setup(s => s.GetProductTypeAsync(id))
-                .Returns(() => Task.FromResult(mockProductType.Object));
+                .Returns(() => Task.FromResult(productType));
 
             var productTypeController = new ProductTypeController(mockProductTypeService.Object);
             var result = await productTypeController.GetProductType(id);
@@ -72,12 +72,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Invalid_Id_Returns_Null()
         {
-            var mockProductType = new Mock<ProductType>();
             var id = Guid.NewGuid();
+            var productType = ProductType.Create(id, "type");
 
             var mockProductTypeService = new Mock<IProductTypeService>();
             mockProductTypeService.Setup(s => s.GetProductTypeAsync(Guid.NewGuid()))
-                .Returns(() => Task.FromResult(mockProductType.Object));
+                .Returns(() => Task.FromResult(productType));
 
             var productTypeController = new ProductTypeController(mockProductTypeService.Object);
 

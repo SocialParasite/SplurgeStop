@@ -4,6 +4,7 @@ namespace SplurgeStop.Domain.ProductProfile.BrandProfile
 {
     public class Brand
     {
+        private Brand() { }
         public static Brand Create(BrandId id, string name)
         {
             if (id is null)
