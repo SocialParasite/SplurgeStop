@@ -6,7 +6,9 @@ using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.PurchaseTransactionProfile;
+using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.Shared;
+using SplurgeStop.Domain.StoreProfile;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
 
@@ -58,12 +60,15 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_PurchaseTransaction()
         {
-            var mockPurchaseTransaction = new Mock<PurchaseTransaction>();
             var id = Guid.NewGuid();
+            var store = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "Kwik-E-Mart");
+            var lineItem = new List<LineItemStripped>();
+            PurchaseDate transactionDate = new PurchaseDate(DateTime.Now);
+            var purchaseTransaction = PurchaseTransaction.CreateFull(id, store, lineItem, transactionDate);
 
             var mockPurchaseTransactionService = new Mock<IPurchaseTransactionService>();
             mockPurchaseTransactionService.Setup(s => s.GetDetailedPurchaseTransaction(id))
-                .Returns(() => Task.FromResult(mockPurchaseTransaction.Object));
+                .Returns(() => Task.FromResult(purchaseTransaction));
 
             var purchaseTransactionController = new PurchaseTransactionController(mockPurchaseTransactionService.Object);
             var result = await purchaseTransactionController.GetPurchaseTransaction(id);

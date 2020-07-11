@@ -56,7 +56,7 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
         }
 
 
-        public PurchaseTransaction()
+        private PurchaseTransaction()
         {
             LineItems ??= new List<LineItem>();
         }

@@ -54,12 +54,12 @@ namespace SplurgeStop.UI.WebApi.Tests
         [Fact]
         public async Task Valid_Id_Returns_Store()
         {
-            var mockStore = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "Kwik-E-Mart");
+            var store = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "Kwik-E-Mart");
             var id = Guid.NewGuid();
 
             var mockStoreService = new Mock<IStoreService>();
             mockStoreService.Setup(s => s.GetDetailedStore(id))
-                .Returns(() => Task.FromResult(mockStore));
+                .Returns(() => Task.FromResult(store));
 
             var storeController = new StoreController(mockStoreService.Object);
             var result = await storeController.GetStore(id);
