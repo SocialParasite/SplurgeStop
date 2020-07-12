@@ -15,7 +15,7 @@
             => text.Value;
 
         public static implicit operator PurchaseTransactionNotes(string text)
-            => text;
+            => new PurchaseTransactionNotes(text);
 
         public static PurchaseTransactionNotes NoNotes
             => new PurchaseTransactionNotes();

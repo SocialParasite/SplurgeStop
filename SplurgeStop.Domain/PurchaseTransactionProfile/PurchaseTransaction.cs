@@ -92,7 +92,14 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 
         public void UpdateStore(Store store)
         {
-            Store = store ?? throw new ArgumentNullException(nameof(store), "Invalid store provided. Update failed.");
+            if (store is null)
+                throw new ArgumentNullException(nameof(store), "Invalid store provided. Update failed.");
+
+            Apply(new Events.PurchaseTransactionStoreChanged
+            {
+                Id = Id,
+                Store = store
+            });
         }
 
         public void UpdateLineItem(LineItem lineItem)
@@ -145,6 +152,9 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
                         LineItems.Remove(LineItems.Find(l => l.Id == e.LineItem.Id));
                     }
                     LineItems.Add(e.LineItem);
+                    break;
+                case Events.PurchaseTransactionStoreChanged e:
+                    Store = e.Store;
                     break;
             }
         }

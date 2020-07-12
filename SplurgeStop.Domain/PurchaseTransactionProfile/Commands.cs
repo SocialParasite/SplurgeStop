@@ -55,7 +55,7 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
         public class UpdateLineItem
         {
             public Guid Id { get; set; }
-            public LineItemProfile.LineItem LineItem { get; set; }
+            public LineItem LineItem { get; set; }
         }
     }
 }

@@ -117,5 +117,33 @@ namespace SplurgeStop.Domain.Tests
 
             Assert.True(sut.LineItems.Count == 1);
         }
+
+        [Fact]
+        public void Total_sum_of_line_items()
+        {
+            var sut = CreatePurchaseTransaction();
+
+            var brand = Brand.Create(Guid.NewGuid(), "brand");
+            var product = Product.Create(Guid.NewGuid(), "prod", brand);
+            for (int i = 1; i < 6; i++)
+            {
+                var lineItem = LineItemBuilder.LineItem(new Price(1.0m * i))
+                    .WithProduct(product)
+                    .Build();
+                sut.UpdateLineItem(lineItem);
+            }
+
+            //var totalPrice = sut.TotalPrice.Split(' ');
+            //Assert.Equal(15m, Convert.ToDecimal(totalPrice[0]));
+            Assert.Contains("15.0", sut.TotalPrice);
+        }
+
+        [Fact]
+        public void Total_sum_with_no_line_items()
+        {
+            var sut = CreatePurchaseTransaction();
+
+            Assert.Equal("N/A", sut.TotalPrice);
+        }
     }
 }
