@@ -50,6 +50,15 @@ namespace SplurgeStop.Domain.Tests
             new object[] { null, null, null },
         };
 
+        private static PurchaseTransaction CreatePurchaseTransaction()
+        {
+            var purchaseTransactionId = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
+            var storeId = new StoreId(SequentialGuid.NewSequentialGuid());
+            var store = Store.Create(storeId, "Kwik-E-Mart");
+            return PurchaseTransaction
+                .CreateFull(purchaseTransactionId, store, new List<LineItemStripped>(), DateTime.Now);
+        }
+
         [Theory]
         [MemberData(nameof(InvalidPurchaseTransactionData))]
         public void PurchaseTransaction_not_created(PurchaseTransactionId purchaseTransactionId, Store store, ICollection<LineItemStripped> lineItems)
@@ -62,10 +71,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Valid_store_update()
         {
-            var purchaseTransactionId = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-            var storeId = new StoreId(SequentialGuid.NewSequentialGuid());
-            var store = Store.Create(storeId, "Kwik-E-Mart");
-            var sut = PurchaseTransaction.CreateFull(purchaseTransactionId, store, new List<LineItemStripped>(), DateTime.Now);
+            var sut = CreatePurchaseTransaction();
 
             var newStore = Store.Create(new StoreId(SequentialGuid.NewSequentialGuid()), "City-wok");
 
@@ -77,22 +83,14 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Invalid_store_update()
         {
-            var purchaseTransactionId = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-            var storeId = new StoreId(SequentialGuid.NewSequentialGuid());
-            var store = Store.Create(storeId, "Kwik-E-Mart");
-            var sut = PurchaseTransaction.CreateFull(purchaseTransactionId, store, new List<LineItemStripped>(), DateTime.Now);
-
+            var sut = CreatePurchaseTransaction();
             Assert.Throws<ArgumentNullException>(() => sut.UpdateStore(null));
         }
 
         [Fact]
         public void Valid_purchase_date_update()
         {
-            var purchaseTransactionId = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-            var storeId = new StoreId(SequentialGuid.NewSequentialGuid());
-            var store = Store.Create(storeId, "Kwik-E-Mart");
-            var sut = PurchaseTransaction.CreateFull(purchaseTransactionId, store, new List<LineItemStripped>(), DateTime.Now);
-
+            var sut = CreatePurchaseTransaction();
             Assert.Equal(DateTime.Now.Day, sut.PurchaseDate.Value.Day);
 
             var newDate = DateTime.Now.AddDays(-1);
@@ -104,11 +102,7 @@ namespace SplurgeStop.Domain.Tests
         [Fact]
         public void Valid_line_item_update()
         {
-            var purchaseTransactionId = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-            var storeId = new StoreId(SequentialGuid.NewSequentialGuid());
-            var store = Store.Create(storeId, "Kwik-E-Mart");
-            var sut = PurchaseTransaction.CreateFull(purchaseTransactionId, store, new List<LineItemStripped>(), DateTime.Now);
-
+            var sut = CreatePurchaseTransaction();
             Assert.NotNull(sut.LineItems);
             Assert.True(sut.LineItems.Count == 0);
 
