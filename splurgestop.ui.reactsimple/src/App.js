@@ -16,6 +16,9 @@ import { CountryPage } from './StoreProfile/CountryProfile/CountryPage';
 import { BrandList } from './ProductProfile/BrandProfile/BrandList';
 import { NewBrand } from './ProductProfile/BrandProfile/NewBrand';
 import { BrandPage } from './ProductProfile/BrandProfile/BrandPage';
+import { ProductTypeList } from './ProductProfile/ProductTypeProfile/ProductTypeList';
+import { NewProductType } from './ProductProfile/ProductTypeProfile/NewProductType';
+import { ProductTypePage } from './ProductProfile/ProductTypeProfile/ProductTypePage';
 
 function App() {
   return (
@@ -51,6 +54,10 @@ function App() {
           <Route exact path="/Brand" component={BrandList} />
           <Route exact path="/Brand/Add" component={NewBrand} />
           <Route path="/BrandInfo/:id" component={BrandPage} />
+          {/* Product type */}
+          <Route exact path="/ProductType" component={ProductTypeList} />
+          <Route exact path="/ProductType/Add" component={NewProductType} />
+          <Route path="/ProductTypeInfo/:id" component={ProductTypePage} />
         </Switch>
       </BrowserRouter>
     </div>
