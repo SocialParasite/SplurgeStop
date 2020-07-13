@@ -4,26 +4,26 @@ import { css, jsx } from '@emotion/core';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Page } from './../../Components/Page';
-import { updateCountry } from './CountryCommands';
+import { updateBrand } from './BrandCommands';
 
-export function CountryPage({ match }) {
-  const [country, setCountry] = useState(null);
-  const [countriesLoading, setCountriesLoading] = useState(true);
+export function BrandPage({ match }) {
+  const [brand, setBrand] = useState(null);
+  const [brandsLoading, setBrandsLoading] = useState(true);
   const [isEditing, setEditing] = useState(false);
 
   useEffect(() => {
-    const loadCountry = async () => {
+    const loadBrand = async () => {
       const id = match.params.id;
-      const url = 'https://localhost:44304/api/Country/' + id;
+      const url = 'https://localhost:44304/api/Brand/' + id;
       const response = await fetch(url);
       const data = await response.json();
-      setCountry(data);
-      setCountriesLoading(false);
+      setBrand(data);
+      setBrandsLoading(false);
     };
 
     if (match.params.id) {
-      const countryId = match.params.id;
-      loadCountry(countryId);
+      const brandId = match.params.id;
+      loadBrand(brandId);
     }
   }, [match.params.id]);
 
@@ -32,24 +32,24 @@ export function CountryPage({ match }) {
   };
 
   const handleSubmit = async () => {
-    await updateCountry({
-      id: country.id.value,
-      name: country.name,
+    await updateBrand({
+      id: brand.id.value,
+      name: brand.name,
     });
   };
 
   const changeHandler = (e) => {
-    country.name = e.currentTarget.value;
-    setCountry(country);
+    brand.name = e.currentTarget.value;
+    setBrand(brand);
   };
 
   return (
-    <Page title={country?.name}>
+    <Page title={brand?.name}>
       <Button onClick={editModeClick} className="float-right">
         Edit
       </Button>
       <div>
-        {countriesLoading ? (
+        {brandsLoading ? (
           <div
             css={css`
               font-size: 16px;
@@ -70,8 +70,8 @@ export function CountryPage({ match }) {
                   <input
                     type="text"
                     name="name"
-                    label="Country name"
-                    placeholder={country.name}
+                    label="Brand name"
+                    placeholder={brand.name}
                     onChange={changeHandler}
                   />
                   <div
@@ -83,7 +83,7 @@ export function CountryPage({ match }) {
                 </form>
               ) : (
                 <div>
-                  <h1>{country.name}</h1>
+                  <h1>{brand.name}</h1>
                 </div>
               )}
             </div>
