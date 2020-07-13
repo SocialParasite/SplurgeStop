@@ -45,7 +45,6 @@ export function NewStore() {
   };
 
   const handleSubmit = async () => {
-    console.log(store);
     let error = await addStore({
       id: null,
       name: store?.name,

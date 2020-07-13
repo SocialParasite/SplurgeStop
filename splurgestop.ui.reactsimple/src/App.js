@@ -7,6 +7,9 @@ import { StoreList } from './StoreProfile/StoreList';
 import { StorePage } from './StoreProfile/StorePage';
 import { NewStore } from './StoreProfile/NewStore';
 import { NewPurchaseTransaction } from './PurchaseTransaction/NewPurchaseTransaction';
+import { CityList } from './StoreProfile/CityProfile/CityList';
+import { NewCity } from './StoreProfile/CityProfile/NewCity';
+import { CityPage } from './StoreProfile/CityProfile/CityPage';
 
 function App() {
   return (
@@ -26,9 +29,14 @@ function App() {
             path="/PurchaseTransaction/:id"
             component={PurchaseTransactionPage}
           />
+          {/* Store */}
           <Route exact path="/Store" component={StoreList} />
           <Route exact path="/Store/Add" component={NewStore} />
           <Route path="/StoreInfo/:id" component={StorePage} />
+          {/* City */}
+          <Route exact path="/City" component={CityList} />
+          <Route exact path="/City/Add" component={NewCity} />
+          <Route path="/CityInfo/:id" component={CityPage} />
         </Switch>
       </BrowserRouter>
     </div>
