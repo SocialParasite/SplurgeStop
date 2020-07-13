@@ -133,8 +133,6 @@ namespace SplurgeStop.Domain.Tests
                 sut.UpdateLineItem(lineItem);
             }
 
-            //var totalPrice = sut.TotalPrice.Split(' ');
-            //Assert.Equal(15m, Convert.ToDecimal(totalPrice[0]));
             Assert.Contains("15.0", sut.TotalPrice);
         }
 
