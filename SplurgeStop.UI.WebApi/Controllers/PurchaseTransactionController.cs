@@ -14,11 +14,11 @@ namespace SplurgeStop.UI.WebApi.Controllers
     [ApiController]
     public class PurchaseTransactionController : ControllerBase
     {
-        private readonly IPurchaseTransactionService service;
+        private readonly IPurchaseTransactionService _service;
 
         public PurchaseTransactionController(IPurchaseTransactionService service)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this._service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         [HttpGet]
@@ -27,13 +27,13 @@ namespace SplurgeStop.UI.WebApi.Controllers
             // TODO:
             // "number" e.g. Period.Year, 2020 / Period.Month, 12 / Period.Week, 42 / Period.Day 30 ????
             // e.g. SearchItem { Period, INumber }
-            return await service.GetAllPurchaseTransactions();
+            return await _service.GetAllPurchaseTransactions();
         }
 
         [HttpGet("{id}")]
         public async Task<PurchaseTransaction> GetPurchaseTransaction(Guid id)
         {
-            return await service.GetDetailedPurchaseTransaction(id);
+            return await _service.GetDetailedPurchaseTransaction(id);
         }
 
         [HttpPost]
@@ -42,7 +42,7 @@ namespace SplurgeStop.UI.WebApi.Controllers
             try
             {
                 request.Id = new PurchaseTransactionId(SequentialGuid.NewSequentialGuid());
-                await RequestHandler.HandleCommand(request, service.Handle);
+                await RequestHandler.HandleCommand(request, _service.Handle);
 
                 //return new PurchaseTransactionCreated { Id = (Guid)request.Id };
                 return RedirectToAction("GetPurchaseTransaction", new { id = request.Id });
@@ -58,23 +58,23 @@ namespace SplurgeStop.UI.WebApi.Controllers
         [Route("purchaseDate")]
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionDate request)
-            => RequestHandler.HandleCommand(request, service.Handle);
+            => RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("purchaseStore")]
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionStore request)
-            => RequestHandler.HandleCommand(request, service.Handle);
+            => RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("purchaseLineItem")]
         [HttpPut]
         public Task<IActionResult> Put(Commands.SetPurchaseTransactionLineItem request)
-            => RequestHandler.HandleCommand(request, service.Handle);
+            => RequestHandler.HandleCommand(request, _service.Handle);
 
         [Route("Delete")]
         [HttpPost]
         public async Task<ActionResult<PurchaseTransactionDeleted>> Delete(Commands.DeletePurchaseTransaction request)
         {
-            var result = await RequestHandler.HandleCommand(request, service.Handle);
+            var result = await RequestHandler.HandleCommand(request, _service.Handle);
 
             if (result.GetType() == typeof(OkResult))
                 return new PurchaseTransactionDeleted { Id = request.Id };

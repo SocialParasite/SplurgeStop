@@ -37,16 +37,17 @@ namespace SplurgeStop.Data.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new PurchaseTransactionConfig());
-            modelBuilder.ApplyConfiguration(new LineItemConfig());
-            modelBuilder.ApplyConfiguration(new StoreConfig());
-            modelBuilder.ApplyConfiguration(new CityConfig());
-            modelBuilder.ApplyConfiguration(new CountryConfig());
-            modelBuilder.ApplyConfiguration(new LocationConfig());
-            modelBuilder.ApplyConfiguration((new ProductConfig()));
-            modelBuilder.ApplyConfiguration((new BrandConfig()));
-            modelBuilder.ApplyConfiguration((new ProductTypeConfig()));
-            modelBuilder.ApplyConfiguration((new SizeConfig()));
+            //modelBuilder.ApplyConfiguration(new PurchaseTransactionConfig());
+            //modelBuilder.ApplyConfiguration(new LineItemConfig());
+            //modelBuilder.ApplyConfiguration(new StoreConfig());
+            //modelBuilder.ApplyConfiguration(new CityConfig());
+            //modelBuilder.ApplyConfiguration(new CountryConfig());
+            //modelBuilder.ApplyConfiguration(new LocationConfig());
+            //modelBuilder.ApplyConfiguration((new ProductConfig()));
+            //modelBuilder.ApplyConfiguration((new BrandConfig()));
+            //modelBuilder.ApplyConfiguration((new ProductTypeConfig()));
+            //modelBuilder.ApplyConfiguration((new SizeConfig()));
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BrandConfig).Assembly);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
