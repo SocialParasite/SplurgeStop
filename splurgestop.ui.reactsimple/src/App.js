@@ -10,6 +10,9 @@ import { NewPurchaseTransaction } from './PurchaseTransaction/NewPurchaseTransac
 import { CityList } from './StoreProfile/CityProfile/CityList';
 import { NewCity } from './StoreProfile/CityProfile/NewCity';
 import { CityPage } from './StoreProfile/CityProfile/CityPage';
+import { CountryList } from './StoreProfile/CountryProfile/CountryList';
+import { NewCountry } from './StoreProfile/CountryProfile/NewCountry';
+import { CountryPage } from './StoreProfile/CountryProfile/CountryPage';
 
 function App() {
   return (
@@ -37,6 +40,10 @@ function App() {
           <Route exact path="/City" component={CityList} />
           <Route exact path="/City/Add" component={NewCity} />
           <Route path="/CityInfo/:id" component={CityPage} />
+          {/* Country */}
+          <Route exact path="/Country" component={CountryList} />
+          <Route exact path="/Country/Add" component={NewCountry} />
+          <Route path="/CountryInfo/:id" component={CountryPage} />
         </Switch>
       </BrowserRouter>
     </div>
