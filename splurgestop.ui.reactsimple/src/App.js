@@ -19,6 +19,9 @@ import { BrandPage } from './ProductProfile/BrandProfile/BrandPage';
 import { ProductTypeList } from './ProductProfile/ProductTypeProfile/ProductTypeList';
 import { NewProductType } from './ProductProfile/ProductTypeProfile/NewProductType';
 import { ProductTypePage } from './ProductProfile/ProductTypeProfile/ProductTypePage';
+import { LocationList } from './StoreProfile/LocationProfile/LocationList';
+import { NewLocation } from './StoreProfile/LocationProfile/NewLocation';
+import { LocationPage } from './StoreProfile/LocationProfile/LocationPage';
 
 function App() {
   return (
@@ -42,6 +45,10 @@ function App() {
           <Route exact path="/Store" component={StoreList} />
           <Route exact path="/Store/Add" component={NewStore} />
           <Route path="/StoreInfo/:id" component={StorePage} />
+          {/* Location */}
+          <Route exact path="/Location" component={LocationList} />
+          <Route exact path="/Location/Add" component={NewLocation} />
+          <Route path="/LocationInfo/:id" component={LocationPage} />
           {/* City */}
           <Route exact path="/City" component={CityList} />
           <Route exact path="/City/Add" component={NewCity} />
