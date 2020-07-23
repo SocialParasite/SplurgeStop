@@ -57,7 +57,7 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile
 
             foreach (var lineItem in cmd.LineItems)
             {
-                var prod = await _repository.GetProductAsync(lineItem.Product.Id);
+                var prod = await _repository.GetProductAsync(lineItem.ProductId);
 
                 var newLineItem = LineItemBuilder
                             .LineItem(new Price(decimal.Parse(lineItem.Price, CultureInfo.InvariantCulture),

@@ -30,25 +30,25 @@ export const Header = () => (
     >
       Splurge Stop!
     </a>
-    <div class="dropdown">
-      <button class="dropbtn">Purchase transactions</button>
-      <div class="dropdown-content">
+    <div className="dropdown">
+      <button className="dropbtn">Purchase transactions</button>
+      <div className="dropdown-content">
         <a href="/">Purchase transactions</a>
         <a href="/Currency">Currencies</a>
       </div>
     </div>
-    <div class="dropdown">
-      <button class="dropbtn">Stores</button>
-      <div class="dropdown-content">
+    <div className="dropdown">
+      <button className="dropbtn">Stores</button>
+      <div className="dropdown-content">
         <a href="/Store">Stores</a>
         <a href="/Location">Locations</a>
         <a href="/City">Cities</a>
         <a href="/Country">Countries</a>
       </div>
     </div>
-    <div class="dropdown">
-      <button class="dropbtn">Products</button>
-      <div class="dropdown-content">
+    <div className="dropdown">
+      <button className="dropbtn">Products</button>
+      <div className="dropdown-content">
         <a href="/Product">Products</a>
         {/* size */}
         <a href="/Brand">Brands</a>

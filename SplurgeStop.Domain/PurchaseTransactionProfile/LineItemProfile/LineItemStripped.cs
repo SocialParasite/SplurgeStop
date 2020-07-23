@@ -7,7 +7,7 @@ namespace SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile
     public sealed class LineItemStripped
     {
         public Guid? Id { get; set; }
-        public Product Product { get; set; }
+        public Guid ProductId { get; set; }
         public string Price { get; set; }
         public string CurrencyCode { get; set; }
         public string CurrencySymbol { get; set; }

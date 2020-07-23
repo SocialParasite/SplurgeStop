@@ -47,7 +47,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                     CurrencySymbolPosition = CurrencySymbolPosition.End,
                     Booking = Booking.Credit,
                     Notes = lineItem?.Notes,
-                    Product = prod
+                    ProductId = prod.Id
                 }
             };
 
@@ -88,7 +88,7 @@ namespace SplurgeStop.Integration.Tests.Helpers
                 CurrencySymbol = "€",
                 CurrencySymbolPosition = CurrencySymbolPosition.End,
                 Notes = "New notes",
-                Product = prod
+                ProductId = prod.Id
             };
 
             command.LineItems = new List<LineItemStripped>
