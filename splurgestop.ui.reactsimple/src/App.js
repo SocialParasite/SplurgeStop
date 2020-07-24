@@ -13,6 +13,9 @@ import { CityPage } from './StoreProfile/CityProfile/CityPage';
 import { CountryList } from './StoreProfile/CountryProfile/CountryList';
 import { NewCountry } from './StoreProfile/CountryProfile/NewCountry';
 import { CountryPage } from './StoreProfile/CountryProfile/CountryPage';
+import { ProductList } from './ProductProfile/ProductList';
+import { NewProduct } from './ProductProfile/NewProduct';
+import { ProductPage } from './ProductProfile/ProductPage';
 import { BrandList } from './ProductProfile/BrandProfile/BrandList';
 import { NewBrand } from './ProductProfile/BrandProfile/NewBrand';
 import { BrandPage } from './ProductProfile/BrandProfile/BrandPage';
@@ -57,6 +60,10 @@ function App() {
           <Route exact path="/Country" component={CountryList} />
           <Route exact path="/Country/Add" component={NewCountry} />
           <Route path="/CountryInfo/:id" component={CountryPage} />
+          {/* Product */}
+          <Route exact path="/Product" component={ProductList} />
+          <Route exact path="/Product/Add" component={NewProduct} />
+          <Route path="/ProductInfo/:id" component={ProductPage} />
           {/* Brand */}
           <Route exact path="/Brand" component={BrandList} />
           <Route exact path="/Brand/Add" component={NewBrand} />
