@@ -70,7 +70,6 @@ export function LocationPage({ match }) {
   };
 
   const handleSubmit = async () => {
-    console.log(location.city);
     await updateLocation({
       id: location.id,
       cityId: location.city.id,

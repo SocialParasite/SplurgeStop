@@ -98,7 +98,7 @@ export function LocationList() {
                         `}
                         to={`LocationInfo/${location.id}`}
                       >
-                        {(location.cityName, location.countryName)}
+                        {location.cityName + ', ' + location.countryName}
                       </Link>
                     </td>
                     <td

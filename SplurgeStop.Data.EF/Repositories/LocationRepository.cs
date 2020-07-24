@@ -43,6 +43,8 @@ namespace SplurgeStop.Data.EF.Repositories
         {
             return await _context.Locations
                 .AsNoTracking()
+                .Include(c => c.City)
+                .Include(c => c.Country)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
