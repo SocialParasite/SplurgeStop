@@ -78,7 +78,7 @@ export function PurchaseTransactionList() {
                 <th>Purchase date</th>
                 <th>Store</th>
                 <th>Total spent</th>
-                <th>Item count</th>
+                <th>Items</th>
                 <th>Details</th>
                 <th>Remove</th>
               </tr>

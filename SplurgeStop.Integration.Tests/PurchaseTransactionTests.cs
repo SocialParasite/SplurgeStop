@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using SplurgeStop.Data.EF.Migrations;
 using SplurgeStop.Data.EF.Repositories;
 using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
@@ -188,7 +190,10 @@ namespace SplurgeStop.Integration.Tests
         public async Task Add_lineItem_with_notes()
         {
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(Guid.NewGuid(), "product", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(Guid.NewGuid(), "product", brand, productType, size);
             var lineItem = LineItemBuilder.LineItem(new Price(1.00m))
                 .WithNotes("My Notes!")
                 .WithProduct(product)

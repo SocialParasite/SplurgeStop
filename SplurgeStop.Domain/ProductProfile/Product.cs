@@ -19,7 +19,7 @@ namespace SplurgeStop.Domain.ProductProfile
 
         public Size Size { get; set; }
 
-        public static Product Create(ProductId id, string name, Brand brand)
+        public static Product Create(ProductId id, string name, Brand brand, ProductType productType, Size size)
         {
             if (id is null)
                 throw new ArgumentNullException(nameof(id), "Product without unique identifier cannot be created.");
@@ -33,7 +33,9 @@ namespace SplurgeStop.Domain.ProductProfile
             {
                 Id = id,
                 Name = name,
-                Brand = brand
+                Brand = brand,
+                ProductType = productType,
+                Size = size
             });
 
             return product;
@@ -79,6 +81,8 @@ namespace SplurgeStop.Domain.ProductProfile
                     Id = new ProductId(e.Id);
                     Name = e.Name;
                     Brand = e.Brand;
+                    ProductType = e.ProductType;
+                    Size = e.Size;
                     break;
                 case Events.ProductNameChanged e:
                     Name = e.Name;

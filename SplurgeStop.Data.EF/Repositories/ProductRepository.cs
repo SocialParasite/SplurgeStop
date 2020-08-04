@@ -107,12 +107,12 @@ namespace SplurgeStop.Data.EF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<Size> GetSizeAsync(SizeId sizeId)
+        public async Task<Size> GetSizeAsync(SizeId sizeId)
         {
             return await _context.Size.FindAsync(sizeId);
         }
 
-        private async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
+        public async Task<ProductType> GetProductTypeAsync(ProductTypeId productTypeId)
         {
             return await _context.ProductTypes.FindAsync(productTypeId);
         }

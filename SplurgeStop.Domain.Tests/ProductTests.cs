@@ -17,7 +17,9 @@ namespace SplurgeStop.Domain.Tests
         {
             var productId = new ProductId(SequentialGuid.NewSequentialGuid());
             var brandId = Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff");
-            var sut = Product.Create(productId, "Duff", brandId);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+            var sut = Product.Create(productId, "Duff", brandId, productType, size);
 
             Assert.NotNull(sut);
             Assert.Contains("Duff", sut.Name);
@@ -25,16 +27,16 @@ namespace SplurgeStop.Domain.Tests
 
         public static List<object[]> InvalidProductData = new List<object[]>
         {
-            new object[] { null, "Duff",  null },
-            new object[] { new ProductId(SequentialGuid.NewSequentialGuid()), "", null },
-            new object[] { null, null, null },
+            new object[] { null, "Duff",  null, null, null },
+            new object[] { new ProductId(SequentialGuid.NewSequentialGuid()), "", null, null, null },
+            new object[] { null, null, null, null, null }
         };
 
         [Theory]
         [MemberData(nameof(InvalidProductData))]
-        public void Product_not_created(ProductId id, string name, Brand brand)
+        public void Product_not_created(ProductId id, string name, Brand brand, ProductType productType, Size size)
         {
-            Action sut = () => Product.Create(id, name, brand);
+            Action sut = () => Product.Create(id, name, brand, productType, size);
 
             Assert.Throws<ArgumentNullException>(sut.Invoke);
         }
@@ -46,7 +48,9 @@ namespace SplurgeStop.Domain.Tests
         public void Valid_product_name(string name)
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             sut.UpdateProductName(name);
 
@@ -59,7 +63,9 @@ namespace SplurgeStop.Domain.Tests
         public void Invalid_product_name(string name)
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             Action action = () => sut.UpdateProductName(name);
 
@@ -70,7 +76,9 @@ namespace SplurgeStop.Domain.Tests
         public void Product_name_cannot_be_null()
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             Action action = () => sut.UpdateProductName(null);
 
@@ -82,7 +90,9 @@ namespace SplurgeStop.Domain.Tests
         {
 
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             var newBrand = Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "DuffZ");
             sut.UpdateBrand(newBrand);
@@ -94,7 +104,9 @@ namespace SplurgeStop.Domain.Tests
         public void Invalid_brand_update()
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             Assert.Throws<ArgumentNullException>(() => sut.UpdateBrand(null));
         }
@@ -104,7 +116,9 @@ namespace SplurgeStop.Domain.Tests
         {
 
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             var newProductType = ProductType.Create(new ProductTypeId(SequentialGuid.NewSequentialGuid()), "Duff IPA");
             sut.UpdateProductType(newProductType);
@@ -116,7 +130,9 @@ namespace SplurgeStop.Domain.Tests
         public void Invalid_product_type_update()
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             Assert.Throws<ArgumentNullException>(() => sut.UpdateProductType(null));
         }
@@ -126,7 +142,9 @@ namespace SplurgeStop.Domain.Tests
         {
 
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             var newSize = Size.Create(new SizeId(SequentialGuid.NewSequentialGuid()), "0.33");
             sut.UpdateSize(newSize);
@@ -138,7 +156,9 @@ namespace SplurgeStop.Domain.Tests
         public void Invalid_size_update()
         {
             var sut = Product.Create(new ProductId(SequentialGuid.NewSequentialGuid()), "Duff",
-                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"));
+                Brand.Create(new BrandId(SequentialGuid.NewSequentialGuid()), "Duff"),
+                ProductType.Create(Guid.NewGuid(), "product type"),
+                Size.Create(Guid.NewGuid(), "your size"));
 
             Assert.Throws<ArgumentNullException>(() => sut.UpdateSize(null));
         }

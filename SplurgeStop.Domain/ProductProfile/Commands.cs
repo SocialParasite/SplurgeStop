@@ -9,6 +9,8 @@ namespace SplurgeStop.Domain.ProductProfile
             public Guid? Id { get; set; }
             public string Name { get; set; }
             public Guid? BrandId { get; set; }
+            public Guid? ProductTypeId { get; set; }
+            public Guid? SizeId { get; set; }
 
         }
         public class UpdateProduct
@@ -16,6 +18,7 @@ namespace SplurgeStop.Domain.ProductProfile
             public Guid Id { get; set; }
             public string Name { get; set; }
             public Guid? BrandId { get; set; }
+            public Guid? ProductTypeId { get; set; }
         }
 
         public class ChangeBrand

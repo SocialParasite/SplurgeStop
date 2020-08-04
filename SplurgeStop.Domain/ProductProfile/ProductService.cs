@@ -60,8 +60,10 @@ namespace SplurgeStop.Domain.ProductProfile
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
             var brand = await _repository.GetBrandAsync(cmd.BrandId);
+            var productType = await _repository.GetProductTypeAsync(cmd.ProductTypeId);
+            var size = await _repository.GetSizeAsync(cmd.SizeId);
 
-            var newProduct = Product.Create(cmd.Id, cmd.Name, brand);
+            var newProduct = Product.Create(cmd.Id, cmd.Name, brand, productType, size);
 
             await _repository.AddAsync(newProduct);
 
@@ -108,7 +110,7 @@ namespace SplurgeStop.Domain.ProductProfile
 
         public async Task<Product> GetProductAsync(ProductId id)
         {
-            return await _repository.GetAsync(id);
+            return await _repository.GetProductFullAsync(id);
         }
     }
 }

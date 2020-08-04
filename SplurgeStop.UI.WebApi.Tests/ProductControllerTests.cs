@@ -6,6 +6,8 @@ using GuidHelpers;
 using Moq;
 using SplurgeStop.Domain.DA_Interfaces;
 using SplurgeStop.Domain.ProductProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.Shared;
 using SplurgeStop.UI.WebApi.Controllers;
 using Xunit;
@@ -58,7 +60,10 @@ namespace SplurgeStop.UI.WebApi.Tests
         {
             var id = Guid.NewGuid();
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(id, "product", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(id, "product", brand, productType, size);
 
             var mockProductService = new Mock<IProductService>();
             mockProductService.Setup(s => s.GetProductAsync(id))

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using GuidHelpers;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
@@ -107,7 +109,10 @@ namespace SplurgeStop.Domain.Tests
             Assert.True(sut.LineItems.Count == 0);
 
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(Guid.NewGuid(), "prod", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(Guid.NewGuid(), "prod", brand, productType, size);
 
             var newLineItem = LineItemBuilder
                 .LineItem(new Price(1.1m))
@@ -124,7 +129,10 @@ namespace SplurgeStop.Domain.Tests
             var sut = CreatePurchaseTransaction();
 
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(Guid.NewGuid(), "prod", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(Guid.NewGuid(), "prod", brand, productType, size);
             for (int i = 1; i < 6; i++)
             {
                 var lineItem = LineItemBuilder.LineItem(new Price(1.0m * i))

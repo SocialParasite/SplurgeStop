@@ -2,6 +2,8 @@
 using GuidHelpers;
 using SplurgeStop.Domain.ProductProfile;
 using SplurgeStop.Domain.ProductProfile.BrandProfile;
+using SplurgeStop.Domain.ProductProfile.SizeProfile;
+using SplurgeStop.Domain.ProductProfile.TypeProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.LineItemProfile;
 using SplurgeStop.Domain.PurchaseTransactionProfile.PriceProfile;
 using Xunit;
@@ -23,7 +25,10 @@ namespace SplurgeStop.Domain.Tests
                                    CurrencySymbolPosition currencySymbolPosition)
         {
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(Guid.NewGuid(), "product", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(Guid.NewGuid(), "product", brand, productType, size);
 
             var price = new Price(amount, booking, currencyCode, currencySymbol, currencySymbolPosition);
             var sut = LineItemBuilder.LineItem(price).WithProduct(product).Build();
@@ -40,7 +45,10 @@ namespace SplurgeStop.Domain.Tests
         public void Has_notes()
         {
             var brand = Brand.Create(Guid.NewGuid(), "brand");
-            var product = Product.Create(Guid.NewGuid(), "product", brand);
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
+            var product = Product.Create(Guid.NewGuid(), "product", brand, productType, size);
 
             var price = new Price(1.00m);
             var sut = LineItemBuilder.LineItem(price)
@@ -57,8 +65,11 @@ namespace SplurgeStop.Domain.Tests
             var price = new Price(1.00m);
 
             var brand = Brand.Create(Guid.NewGuid(), "test");
+            var productType = ProductType.Create(Guid.NewGuid(), "product type");
+            var size = Size.Create(Guid.NewGuid(), "your size");
+
             var prodId = new ProductId(SequentialGuid.NewSequentialGuid());
-            var product = Product.Create(prodId, "newProd", brand);
+            var product = Product.Create(prodId, "newProd", brand, productType, size);
             var sut = LineItemBuilder.LineItem(price).WithProduct(product).Build();
 
             Assert.Contains("newProd", sut.Product.Name);
